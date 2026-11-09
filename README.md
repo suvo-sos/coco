@@ -1,10 +1,10 @@
-# Hop Steps
+# Kanwar
 
 A Video.js v10 video skin for React, styled with CSS. It started from the Scaffold skin.
 
 ## Design thinking
 
-Hop Steps throws away the flat seek bar. The timeline is a staircase of 12 steps rising left to right, and a squashy blue ball hops up the steps as the video plays — and squashes flat when you pause. Play is the ball itself: a big blue ball in the centre, and a blue ball in the bar. Everything else stays honest: round 44px buttons, a floating dark pill bar that stays readable over bright and dark video, visible focus, full keyboard control, and no hopping at all when reduced motion is on. Crazy to look at, still a real player to use.
+Kanwar throws away the flat seek bar. The timeline is a staircase of 12 steps rising left to right, and a squashy blue ball hops up the steps as the video plays — and squashes flat when you pause. Play is the ball itself: a big blue ball in the centre, and a blue ball in the bar. Everything else stays honest: round 44px buttons, a floating dark pill bar that stays readable over bright and dark video, visible focus, full keyboard control, and no hopping at all when reduced motion is on. Crazy to look at, still a real player to use.
 
 Mux playback ID (bonus): the preview plays Mux asset `83EzHOvVzVN01AsrD01BCpiH02Pj3S8mfzBOu101w2nHC5s` (NASA Cosmic Dawn trailer, HLS).
 

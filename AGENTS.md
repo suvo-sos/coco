@@ -10,7 +10,7 @@ We are building this for the Video.js hackathon, where we have to build the next
 
 ## The player right now
 
-- **The preview renders the custom Hop Steps skin**: `apps/preview/src/frame/player.tsx` imports `VideoSkin` from `@/video/skin`. The stock Video.js default skin is one import away — swap `VideoSkin` back to `@videojs/react/video` plus `@videojs/react/video/skin.css`.
+- **The preview renders the custom Kanwar skin**: `apps/preview/src/frame/player.tsx` imports `VideoSkin` from `@/video/skin`. The stock Video.js default skin is one import away — swap `VideoSkin` back to `@videojs/react/video` plus `@videojs/react/video/skin.css`.
 - One page, white background, just the player — no header, no picker, no upload.
 - It plays one video: `video-4k60.mp4` in `apps/preview/public/`.
 - Clean mode: by default the video shows nothing at all, even on hover. Move the cursor to the bottom and the bottom bar shows: the thin seekbar, the time, and all the buttons — play, volume, captions, settings, AirPlay, PiP, fullscreen, and fill window (player as big as the browser window, not display fullscreen; click again or Esc to exit). The big centre play stays hidden (the bottom play button does its job), and so does the top bar. A 100ms loop decides: the bar shows only while the cursor is over the bottom bar and has really moved in the last 1.5s — small mouse shakes under 20px don't count — so it can never get stuck showing or stuck hidden. Clicking the seekbar focuses its thumb, but that alone never pins the bar open — only a keyboard (Tab) focus does — and a right-drag whose release is missed outside the window ends itself on the next press or move.
