@@ -1,0 +1,2857 @@
+@layer components {
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-button {
+      width: calc(var(--media-spacing) * 8);
+      height: calc(var(--media-spacing) * 8);
+      cursor: pointer;
+      background-color: var(--media-background);
+      color: inherit;
+      border-radius: 0;
+      outline-style: none;
+      flex-shrink: 0;
+      place-items: center;
+      padding: 0;
+      display: grid;
+      position: relative;
+    }
+
+    @media (hover: hover) {
+      .media-button:hover {
+        background-color: var(--media-button-highlight);
+      }
+    }
+
+    .media-button:focus-visible {
+      background-color: var(--media-button-highlight);
+      outline-offset: 2px;
+      outline-width: 2px;
+      outline-style: solid;
+      outline-color: var(--media-ring);
+    }
+
+    .media-button:disabled,
+    .media-button[aria-disabled="true"] {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .media-button[aria-expanded="true"] {
+      background-color: var(--media-button-highlight);
+    }
+
+    .media-button[data-hidden] {
+      display: none;
+    }
+
+    @media (forced-colors: active) {
+      .media-button {
+        color: buttontext;
+        forced-color-adjust: none;
+        background-color: buttonface;
+        border: 1px solid buttontext;
+      }
+
+      @media (hover: hover) {
+        .media-button:hover {
+          color: highlighttext;
+          background-color: highlight;
+        }
+      }
+
+      .media-button:focus-visible {
+        color: highlighttext;
+        background-color: highlight;
+      }
+
+      .media-button[aria-disabled="true"] {
+        color: graytext;
+        opacity: 1;
+      }
+
+      .media-button[aria-expanded="true"] {
+        color: highlighttext;
+        background-color: highlight;
+      }
+    }
+
+    @media (pointer: coarse) {
+      .media-button:before {
+        content: "";
+        position: absolute;
+        inset: -3px;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      @media (hover: hover) {
+        .media-button:hover {
+          background-color: var(--media-foreground);
+          color: var(--media-background);
+        }
+      }
+
+      .media-button:focus-visible,
+      .media-button[aria-expanded="true"] {
+        background-color: var(--media-foreground);
+        color: var(--media-background);
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-dialog-backdrop {
+      z-index: 40;
+      background-color: #000;
+      position: absolute;
+      inset: 0;
+    }
+
+    .media-dialog-backdrop:not([data-open]) {
+      display: none;
+    }
+
+    .media-dialog-backdrop[data-scope="document"] {
+      position: fixed;
+    }
+
+    .media-dialog-close {
+      height: calc(var(--media-spacing) * 8);
+      width: auto;
+      padding-inline: calc(var(--media-spacing) * 3);
+      border-style: solid;
+      border-color: currentColor;
+      justify-self: flex-end;
+      border-style: solid !important;
+      border-width: 1px !important;
+    }
+
+    .media-dialog-description {
+      font-size: calc(var(--media-spacing) * 3.5);
+    }
+
+    .media-dialog-popup {
+      z-index: 50;
+      max-height: calc(100% - var(--media-spacing) * 8);
+      width: calc(100% - var(--media-spacing) * 8);
+      max-width: calc(var(--media-spacing) * 80);
+      gap: calc(var(--media-spacing) * 3);
+      background-color: var(--media-popover);
+      padding: calc(var(--media-spacing) * 5);
+      color: var(--media-popover-foreground);
+      border-radius: 0;
+      outline-style: none;
+      display: grid;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      overflow: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    .media-dialog-popup:not([data-open]) {
+      display: none;
+    }
+
+    .media-dialog-popup:focus-visible {
+      outline-offset: -2px;
+      outline-width: 2px;
+      outline-style: solid;
+      outline-color: var(--media-ring);
+    }
+
+    .media-dialog-popup[data-scope="document"] {
+      max-height: calc(100dvh - var(--media-spacing) * 8);
+      position: fixed;
+    }
+
+    @media (forced-colors: active) {
+      .media-dialog-popup {
+        border: 1px solid canvastext;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-dialog-popup {
+        border: 1px solid;
+      }
+    }
+
+    .media-dialog-title {
+      font-size: calc(var(--media-spacing) * 4.5);
+      line-height: calc(var(--media-spacing) * 7);
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-indicator {
+      pointer-events: none;
+      align-items: center;
+      gap: calc(var(--media-spacing) * 2);
+      background-color: var(--media-background);
+      padding-inline: calc(var(--media-spacing) * 2.5);
+      padding-block: var(--media-spacing);
+      border-radius: 0;
+      display: flex;
+    }
+
+    @media (forced-colors: active) {
+      .media-indicator {
+        color: canvastext;
+        background-color: canvas;
+        outline: 1px solid canvastext;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-indicator {
+        background-color: var(--media-background);
+        outline: 1px solid;
+      }
+    }
+
+    .media-indicator-group {
+      pointer-events: none;
+      z-index: 20;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      place-items: center;
+      display: grid;
+      position: absolute;
+      inset: 0;
+    }
+
+    @media (forced-colors: active) {
+      .media-indicator-group {
+        z-index: 40;
+      }
+    }
+
+    .media-status-indicator {
+      margin-top: calc(var(--media-spacing) * 3);
+      grid-row-start: 1;
+      grid-column-start: 2;
+      align-self: flex-start;
+    }
+
+    @scope (.media-status-indicator) {
+      &[data-status="captions-off"] .media-status-indicator-captions-off-icon,
+      &[data-status="captions-on"] .media-status-indicator-captions-on-icon,
+      &[data-status="fullscreen"] .media-status-indicator-fullscreen-enter-icon,
+      &[data-status="exit-fullscreen"] .media-status-indicator-fullscreen-exit-icon {
+        display: block;
+      }
+    }
+
+    .media-status-indicator-icon {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+      flex-shrink: 0;
+      display: none;
+    }
+
+    @scope (.media-status-indicator) {
+      &[data-status="pip"] .media-status-indicator-pip-enter-icon,
+      &[data-status="exit-pip"] .media-status-indicator-pip-exit-icon {
+        display: block;
+      }
+    }
+
+    .media-volume-indicator {
+      margin-top: calc(var(--media-spacing) * 3.5);
+      grid-row-start: 1;
+      grid-column-start: 2;
+      align-self: flex-start;
+    }
+
+    .media-volume-indicator-fill {
+      align-items: center;
+      gap: calc(var(--media-spacing) * 2);
+      display: flex;
+    }
+
+    .media-volume-indicator-fill:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      flex-direction: row-reverse;
+    }
+
+    @scope (.media-volume-indicator) {
+      &[data-level="high"] .media-volume-indicator-high-icon {
+        display: block;
+      }
+    }
+
+    .media-volume-indicator-icon {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+      flex-shrink: 0;
+      display: none;
+    }
+
+    @scope (.media-volume-indicator) {
+      &[data-level="low"] .media-volume-indicator-low-icon,
+      &[data-level="off"] .media-volume-indicator-off-icon {
+        display: block;
+      }
+    }
+
+    .media-volume-indicator-value {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    @media (forced-colors: active) {
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    }
+
+    .media-seek-indicator {
+      margin-inline: calc(var(--media-spacing) * 3);
+      flex-direction: column;
+      grid-row-start: 1;
+      grid-column-start: 2;
+      justify-content: center;
+      gap: var(--media-spacing) !important;
+    }
+
+    .media-seek-indicator[data-direction="backward"] {
+      grid-column-start: 1;
+      justify-self: flex-start;
+    }
+
+    .media-seek-indicator[data-direction="forward"],
+    .media-seek-indicator:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *)[data-direction="backward"] {
+      grid-column-start: 3;
+      justify-self: flex-end;
+    }
+
+    .media-seek-indicator:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *)[data-direction="forward"] {
+      grid-column-start: 1;
+      justify-self: flex-start;
+    }
+
+    .media-seek-indicator-icon {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+    }
+
+    @scope (.media-seek-indicator) {
+      &[data-direction="backward"] .media-seek-indicator-icon {
+        transform: scaleX(-1);
+      }
+    }
+
+    .media-seek-indicator-value {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-status-announcer {
+      white-space: nowrap;
+      clip: rect(0, 0, 0, 0);
+      width: 1px;
+      height: 1px;
+      position: absolute;
+      overflow: hidden;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-poster {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+
+    .media-poster:not([data-visible]) {
+      display: none;
+    }
+
+    .media-poster-image {
+      object-fit: var(--media-object-fit, contain);
+      object-position: var(--media-object-position, center);
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  :where(.media-skin[data-theme="scaffold"][data-preset="video"]) .media-poster {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+  }
+
+  :where(.media-skin[data-theme="scaffold"][data-preset="video"]) .media-poster:not([data-visible]) {
+    display: none;
+  }
+
+  :where(.media-skin[data-theme="scaffold"][data-preset="video"]) .media-poster-image {
+    object-fit: var(--media-object-fit, contain);
+    object-position: var(--media-object-position, center);
+    width: 100%;
+    height: 100%;
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-buffering-indicator {
+      pointer-events: none;
+      place-items: center;
+      display: grid;
+      position: absolute;
+      inset: 0;
+    }
+
+    .media-buffering-indicator:not([data-visible]) {
+      --media-spinner-animation: none;
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .media-buffering-indicator {
+        --media-spinner-animation: none;
+      }
+    }
+
+    .media-buffering-indicator-backdrop {
+      z-index: 40;
+    }
+
+    @scope (.media-buffering-indicator-controls) {
+      &:not([data-visible]) .media-buffering-indicator-backdrop {
+        background-color: #0006;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .media-buffering-indicator-backdrop {
+        background-color: #0000 !important;
+      }
+    }
+
+    .media-buffering-indicator-controls {
+      display: contents;
+    }
+
+    .media-buffering-indicator-spinner-icon {
+      width: calc(var(--media-spacing) * 7);
+      height: calc(var(--media-spacing) * 7);
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-popup {
+      color: inherit;
+      border-style: solid;
+      border-width: 0;
+      margin: 0;
+      overflow: visible;
+    }
+
+    .media-popup[data-ending-style] {
+      transform: none;
+    }
+
+    .media-popup[data-starting-style] {
+      transform: translate(var(--media-popup-translate-x-distance, 0), var(--media-popup-translate-y-distance, 0));
+    }
+
+    .media-popup[data-side="bottom"] {
+      transform-origin: top;
+      --media-popup-translate-y-distance: calc(var(--media-popup-translate-distance) * -1);
+    }
+
+    .media-popup[data-side="left"] {
+      transform-origin: 100%;
+      --media-popup-translate-x-distance: var(--media-popup-translate-distance);
+    }
+
+    .media-popup[data-side="right"] {
+      transform-origin: 0;
+      --media-popup-translate-x-distance: calc(var(--media-popup-translate-distance) * -1);
+    }
+
+    .media-popup[data-side="top"] {
+      transform-origin: bottom;
+      --media-popup-translate-y-distance: var(--media-popup-translate-distance);
+    }
+
+    .media-popup:is([data-starting-style], [data-ending-style]) {
+      scale: var(--media-hidden-popup-scale) var(--media-hidden-popup-scale);
+      opacity: 0;
+      filter: blur(var(--media-hidden-popup-blur));
+    }
+
+    .media-popup-safe-area:before {
+      pointer-events: auto;
+      content: "";
+      position: absolute;
+    }
+
+    .media-popup-safe-area[data-side="bottom"]:before {
+      content: "";
+      height: var(--media-popup-side-offset);
+      inset-inline: 0;
+      bottom: 100%;
+    }
+
+    .media-popup-safe-area[data-side="left"]:before {
+      content: "";
+      width: var(--media-popup-side-offset);
+      inset-block: 0;
+      left: 100%;
+    }
+
+    .media-popup-safe-area[data-side="right"]:before {
+      content: "";
+      width: var(--media-popup-side-offset);
+      inset-block: 0;
+      right: 100%;
+    }
+
+    .media-popup-safe-area[data-side="top"]:before {
+      content: "";
+      height: var(--media-popup-side-offset);
+      inset-inline: 0;
+      top: 100%;
+    }
+
+    .media-tooltip-popup {
+      pointer-events: none;
+      z-index: 20;
+      background-color: var(--media-popover);
+      padding-inline: calc(var(--media-spacing) * 1.5);
+      padding-block: calc(var(--media-spacing) * 0.5);
+      white-space: nowrap;
+      color: var(--media-popover-foreground);
+      --media-popup-side-offset: var(--media-tooltip-side-offset);
+      --media-tooltip-side-offset: calc(var(--media-spacing) * 9);
+      border-radius: 0;
+      box-shadow:
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000;
+    }
+
+    .media-tooltip-popup[data-open] {
+      align-items: center;
+      gap: var(--media-spacing);
+      display: flex;
+    }
+
+    @media (forced-colors: active) {
+      .media-tooltip-popup {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-tooltip-popup {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+
+    .media-tooltip-shortcut {
+      text-align: center;
+      min-width: 1.5em;
+      font-family: inherit;
+      font-size: calc(var(--media-spacing) * 2.75);
+      background-color: oklab(100% 0 5.96046e-8 / 0.1);
+      padding: 0.1em;
+      line-height: 1.25;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-button-icon {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+      grid-row-start: 1;
+      grid-column-start: 1;
+    }
+
+    .media-seek-button-backward-icon {
+      transform: scaleX(-1);
+    }
+
+    .media-seek-button-backward-label {
+      left: -1px;
+    }
+
+    .media-seek-button-content {
+      display: grid;
+      position: relative;
+    }
+
+    .media-seek-button-forward-label {
+      right: -1px;
+    }
+
+    .media-seek-button-label {
+      bottom: calc(var(--media-spacing) * -0.75);
+      font-size: calc(var(--media-spacing) * 2.25);
+      font-variant-numeric: tabular-nums;
+      position: absolute;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-menu-indicator {
+      opacity: 0;
+      flex-shrink: 0;
+      margin-inline-start: auto;
+      margin-inline-end: calc(var(--media-spacing) * -1);
+    }
+
+    @scope (.media-menu-radio-item) {
+      &[aria-checked="true"] .media-menu-indicator {
+        opacity: 1;
+      }
+    }
+
+    .media-menu-radio-icon {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .media-menu-radio-item {
+      min-height: calc(var(--media-spacing) * 8);
+      cursor: pointer;
+      justify-content: space-between;
+      align-items: center;
+      gap: calc(var(--media-spacing) * 3);
+      background-color: var(--media-background);
+      width: 100%;
+      padding-inline: calc(var(--media-spacing) * 2);
+      background-clip: padding-box;
+      border-radius: 0;
+      flex-shrink: 0;
+      padding-block: 0;
+      display: flex;
+    }
+
+    .media-menu-radio-item:focus-visible {
+      outline-offset: -2px;
+      outline: 2px solid;
+    }
+
+    .media-menu-radio-item[data-custom] {
+      font-style: italic;
+    }
+
+    .media-menu-radio-item[data-highlighted] {
+      background-color: var(--media-button-highlight);
+    }
+
+    @media (forced-colors: active) {
+      .media-menu-radio-item[data-highlighted] {
+        background-color: var(--media-accent);
+        color: var(--media-accent-foreground);
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-menu-radio-item[data-highlighted] {
+        background-color: var(--media-accent);
+        color: var(--media-accent-foreground);
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-menu-back-chevron {
+      width: calc(var(--media-spacing) * 4);
+      height: calc(var(--media-spacing) * 4);
+      opacity: 0.7;
+      flex-shrink: 0;
+      transform: rotate(180deg);
+    }
+
+    .media-menu-back-chevron:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      transform: none;
+    }
+
+    .media-menu-back-item {
+      min-height: calc(var(--media-spacing) * 8);
+      cursor: pointer;
+      align-items: center;
+      gap: calc(var(--media-spacing) * 1.5);
+      background-color: var(--media-background);
+      width: 100%;
+      padding-inline: calc(var(--media-spacing) * 2);
+      text-align: start;
+      white-space: nowrap;
+      background-clip: padding-box;
+      border-radius: 0;
+      flex-shrink: 0;
+      padding-block: 0;
+      display: flex;
+    }
+
+    .media-menu-back-item:focus-visible {
+      outline-offset: -2px;
+      outline: 2px solid;
+    }
+
+    .media-menu-back-item[data-highlighted] {
+      background-color: var(--media-button-highlight);
+    }
+
+    @media (forced-colors: active) {
+      .media-menu-back-item[data-highlighted] {
+        background-color: var(--media-accent);
+        color: var(--media-accent-foreground);
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-menu-back-item[data-highlighted] {
+        background-color: var(--media-accent);
+        color: var(--media-accent-foreground);
+      }
+    }
+
+    .media-menu-badge {
+      background-color: var(--media-muted);
+      padding-inline: calc(var(--media-spacing) * 1.5);
+      font-size: calc(var(--media-spacing) * 2.75);
+      border-radius: 0;
+    }
+
+    .media-menu-content {
+      overscroll-behavior: none;
+      max-height: 100%;
+      padding: calc(var(--media-spacing) * 2);
+      clip-path: inset(0);
+      outline-style: none;
+      flex-direction: column;
+      display: flex;
+      position: absolute;
+      overflow: auto;
+      gap: calc(var(--media-spacing) * 2) !important;
+    }
+
+    @media (forced-colors: active) {
+      .media-menu-content {
+        outline-offset: 2px;
+        outline: 2px solid #0000;
+      }
+    }
+
+    .media-menu-content:not([data-submenu]) {
+      inset-inline: 0;
+      top: 0;
+    }
+
+    .media-menu-content:not([data-submenu])[data-child-open] {
+      clip-path: inset(0 0 0 100%);
+      transform: translateX(-100%);
+    }
+
+    .media-menu-content[data-submenu] {
+      z-index: 10;
+      inset-inline: 0;
+      top: 0;
+    }
+
+    .media-menu-content:not([data-submenu])[data-child-open]:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      clip-path: inset(0 100% 0 0);
+      transform: translateX(100%);
+    }
+
+    .media-menu-forward-chevron {
+      width: calc(var(--media-spacing) * 4);
+      height: calc(var(--media-spacing) * 4);
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .media-menu-forward-chevron:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      transform: scaleX(-1);
+    }
+
+    .media-menu-hint {
+      align-items: center;
+      gap: var(--media-spacing);
+      opacity: 0.7;
+      min-width: 0;
+      margin-inline-start: auto;
+      padding-inline-start: calc(var(--media-spacing) * 2);
+      display: inline-flex;
+    }
+
+    .media-menu-hint-label {
+      max-width: calc(var(--media-spacing) * 24);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .media-menu-item {
+      min-height: calc(var(--media-spacing) * 8);
+      cursor: pointer;
+      align-items: center;
+      gap: calc(var(--media-spacing) * 1.5);
+      background-color: var(--media-background);
+      width: 100%;
+      padding-inline: calc(var(--media-spacing) * 2);
+      text-align: start;
+      white-space: nowrap;
+      background-clip: padding-box;
+      border-radius: 0;
+      flex-shrink: 0;
+      padding-block: 0;
+      display: flex;
+    }
+
+    .media-menu-item:focus-visible {
+      outline-offset: -2px;
+      outline: 2px solid;
+    }
+
+    .media-menu-item[data-highlighted] {
+      background-color: var(--media-button-highlight);
+    }
+
+    .media-menu-item[data-availability="unavailable"],
+    .media-menu-item[data-availability="unsupported"] {
+      display: none;
+    }
+
+    @media (forced-colors: active) {
+      .media-menu-item[data-highlighted] {
+        background-color: var(--media-accent);
+        color: var(--media-accent-foreground);
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-menu-item[data-highlighted] {
+        background-color: var(--media-accent);
+        color: var(--media-accent-foreground);
+      }
+    }
+
+    .media-menu-popup {
+      z-index: 20;
+      height: var(--media-menu-height);
+      max-height: min(
+        var(--media-menu-available-height, calc(var(--media-spacing) * 56)),
+        calc(var(--media-spacing) * 56)
+      );
+      width: var(--media-menu-width);
+      max-width: var(--media-menu-available-width);
+      min-width: calc(var(--media-spacing) * 44);
+      overscroll-behavior: none;
+      background-color: var(--media-popover);
+      color: var(--media-popover-foreground);
+      --media-popover-side-offset: calc(var(--media-spacing) * 9);
+      --media-popup-side-offset: var(--media-popover-side-offset);
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+      box-shadow:
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000;
+      overflow: hidden !important;
+    }
+
+    @media (forced-colors: active) {
+      .media-menu-popup {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-menu-popup {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+
+    .media-menu-radio-group {
+      gap: calc(var(--media-spacing) * 2);
+      flex-direction: column;
+      display: flex;
+    }
+
+    .media-menu-separator {
+      display: none;
+    }
+
+    .media-menu-tier {
+      font-size: calc(var(--media-spacing) * 2.75);
+      opacity: 0.7;
+      padding-inline-start: calc(var(--media-spacing) * 0.5);
+      padding-top: 1px;
+      line-height: 1;
+    }
+
+    .media-menu-trigger-icon {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-settings-button-label {
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border-width: 0;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      position: absolute;
+      overflow: hidden;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .video-controls-slider-row {
+      width: 100%;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-slider-thumbnail {
+      max-width: calc(var(--media-spacing) * 39);
+      background-color: var(--media-background);
+      border-radius: 0;
+      display: block;
+      overflow: hidden;
+    }
+
+    .media-slider-thumbnail-image {
+      display: block;
+    }
+
+    .media-time-slider {
+      height: calc(var(--media-spacing) * 4);
+      min-width: calc(var(--media-spacing) * 12);
+      cursor: pointer;
+      flex: 1;
+      align-items: center;
+      display: flex;
+      position: relative;
+    }
+
+    .media-time-slider[data-disabled] {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    @media (forced-colors: active) {
+      .media-time-slider[data-disabled] {
+        color: graytext;
+        opacity: 1;
+      }
+    }
+
+    .media-time-slider-audio-buffer {
+      background-color: #b3b3b3 !important;
+    }
+
+    .media-time-slider-audio-preview-meta {
+      padding-block: calc(var(--media-spacing) * 0.5);
+      color: var(--media-foreground);
+      border-radius: 0;
+      width: auto !important;
+      padding-inline: calc(var(--media-spacing) * 1.5) !important;
+    }
+
+    @media (forced-colors: active) {
+      .media-time-slider-audio-preview-meta {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-time-slider-audio-preview-meta {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+
+    .media-time-slider-audio-track:before {
+      content: "";
+      background-color: var(--media-muted) !important;
+    }
+
+    @media (forced-colors: active) {
+      .media-time-slider-audio-track:before {
+        content: "";
+        background-color: canvas !important;
+      }
+    }
+
+    .media-time-slider-buffer {
+      inset-block: 0;
+      left: calc(var(--media-slider-chapter-start, 0%) + var(--media-spacing) * var(--media-chapter-inset-start, 0));
+      right: max(
+        calc(100% - var(--media-slider-buffer, 0%)),
+        calc(100% - var(--media-slider-chapter-end, 100%) + var(--media-spacing) * var(--media-chapter-inset-end, 0))
+      );
+      clip-path: inset(-1px 0);
+      background-color: oklab(100% 0 5.96046e-8 / 0.1);
+      border-radius: 0;
+      position: absolute;
+    }
+
+    @media (forced-colors: active) {
+      .media-time-slider-buffer {
+        forced-color-adjust: none;
+        background-image: repeating-linear-gradient(135deg, canvastext 0 1px, canvas 1px 3px);
+        opacity: 1 !important;
+      }
+    }
+
+    .media-time-slider-chapter {
+      --media-chapter-inset-end: 0.5;
+      --media-chapter-inset-start: 0.5;
+      clip-path: inset(0 calc(100% - var(--media-slider-chapter-end)) 0 var(--media-slider-chapter-start));
+      align-items: center;
+      display: flex;
+      position: absolute;
+      inset: 0;
+    }
+
+    .media-time-slider-chapter:first-of-type {
+      --media-chapter-inset-start: 0;
+    }
+
+    .media-time-slider-chapter:last-of-type {
+      --media-chapter-inset-end: 0;
+    }
+
+    .media-time-slider-chapter-title {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      opacity: 0.7;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .media-time-slider-chapter-title:empty {
+      display: none;
+    }
+
+    .media-time-slider-chapters {
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      position: relative;
+    }
+
+    .media-time-slider-fill {
+      inset-block: 0;
+      left: calc(var(--media-slider-chapter-start, 0%) + var(--media-spacing) * var(--media-chapter-inset-start, 0));
+      right: max(
+        calc(100% - var(--media-slider-fill, 0%)),
+        calc(100% - var(--media-slider-chapter-end, 100%) + var(--media-spacing) * var(--media-chapter-inset-end, 0))
+      );
+      clip-path: inset(-1px 0);
+      background-color: var(--media-accent);
+      border-radius: 0;
+      position: absolute;
+    }
+
+    @scope (.media-time-slider) {
+      &[data-dragging] .media-time-slider-fill {
+        left: calc(var(--media-slider-chapter-start, 0%) + var(--media-spacing) * var(--media-chapter-inset-start, 0));
+        right: max(
+          calc(100% - var(--media-slider-pointer, 0%)),
+          calc(100% - var(--media-slider-chapter-end, 100%) + var(--media-spacing) * var(--media-chapter-inset-end, 0))
+        );
+        clip-path: inset(-1px 0);
+      }
+    }
+
+    @media (forced-colors: active) {
+      .media-time-slider-fill {
+        forced-color-adjust: none;
+        background-color: canvas;
+        background-image: linear-gradient(highlight, highlight);
+      }
+    }
+
+    .media-time-slider-preview {
+      pointer-events: none;
+      bottom: calc(100% + var(--media-spacing) * 3);
+      max-width: calc(var(--media-spacing) * 39);
+      transform-origin: bottom;
+      justify-items: center;
+      gap: var(--media-spacing);
+      opacity: 0;
+      display: grid;
+    }
+
+    @scope (.media-time-slider) {
+      &[data-disabled] .media-time-slider-preview {
+        display: none;
+      }
+    }
+
+    @scope (.media-time-slider) {
+      &[data-dragging] .media-time-slider-preview,
+      &[data-pointing] .media-time-slider-preview {
+        opacity: 1;
+      }
+    }
+
+    .media-time-slider-preview-label {
+      align-items: center;
+      gap: calc(var(--media-spacing) * 2);
+      min-width: 0;
+      max-width: 100%;
+      display: flex;
+    }
+
+    .media-time-slider-preview-meta {
+      width: 100%;
+      min-width: 0;
+      padding-inline: calc(var(--media-spacing) * 2);
+      padding-block: var(--media-spacing);
+      justify-content: center;
+      display: flex;
+    }
+
+    .media-time-slider-thumb {
+      left: var(--media-slider-fill, 0%);
+      width: calc(var(--media-spacing) * 3);
+      height: calc(var(--media-spacing) * 3);
+      border-style: solid;
+      border-width: 1px;
+      border-color: var(--media-foreground);
+      background-color: var(--media-foreground);
+      border-radius: 0;
+      outline-style: none;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+
+    @scope (.media-time-slider) {
+      &[data-dragging] .media-time-slider-thumb {
+        left: var(--media-slider-pointer);
+      }
+    }
+
+    .media-time-slider-thumb:focus-visible {
+      outline-offset: 2px;
+      outline: 2px solid;
+    }
+
+    @media (forced-colors: active) {
+      .media-time-slider-thumb {
+        forced-color-adjust: none;
+        background-color: highlight;
+        border: 1px solid canvastext;
+      }
+    }
+
+    .media-time-slider-track {
+      isolation: isolate;
+      height: calc(var(--media-spacing) * 1.5);
+      border-radius: 0;
+      position: absolute;
+      inset-inline: 0;
+    }
+
+    .media-time-slider-track:before {
+      inset-block: 0;
+      left: calc(var(--media-slider-chapter-start) + var(--media-spacing) * var(--media-chapter-inset-start));
+      right: calc(100% - var(--media-slider-chapter-end) + var(--media-spacing) * var(--media-chapter-inset-end));
+      clip-path: inset(-1px);
+      content: "";
+      background-color: oklab(100% 0 5.96046e-8 / 0.1);
+      border-radius: 0;
+      position: absolute;
+    }
+
+    @media (forced-colors: active) {
+      .media-time-slider-track {
+        height: calc(var(--media-spacing) * 1.5);
+      }
+
+      .media-time-slider-track:before {
+        content: "";
+        forced-color-adjust: none;
+        background-color: canvas;
+        border: 1px solid canvastext;
+        opacity: 1 !important;
+      }
+    }
+
+    .media-time-slider-value {
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+  }
+
+  :where(.media-skin[data-theme="scaffold"][data-preset="video"]) .media-slider-thumbnail {
+    max-width: calc(var(--media-spacing) * 39);
+    background-color: var(--media-background);
+    border-radius: 0;
+    display: block;
+    overflow: hidden;
+  }
+
+  :where(.media-skin[data-theme="scaffold"][data-preset="video"]) .media-slider-thumbnail-image {
+    display: block;
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    :where(.media-captions-button)[data-active] .media-captions-button-off-icon,
+    .media-captions-button-on-icon {
+      display: none;
+    }
+
+    @scope (.media-captions-button) {
+      &[data-active] .media-captions-button-on-icon {
+        display: block;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-live-button {
+      align-items: center;
+      gap: calc(var(--media-spacing) * 1.5);
+      font-size: calc(var(--media-spacing) * 2.75);
+      grid-auto-flow: column;
+      width: auto !important;
+      padding-inline: calc(var(--media-spacing) * 2.5) !important;
+    }
+
+    .media-live-button-dot {
+      width: calc(var(--media-spacing) * 2);
+      height: calc(var(--media-spacing) * 2);
+      opacity: 0.4;
+      background-color: currentColor;
+      border-radius: 0;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    @scope (.media-live-button) {
+      &[data-live-edge] .media-live-button-dot {
+        opacity: 1;
+        background-color: #f43f5e;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-button-icon-base {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+      grid-row-start: 1;
+      grid-column-start: 1;
+      display: none;
+    }
+
+    .media-play-button-audio {
+      display: inline-flex;
+      position: relative;
+    }
+
+    .media-play-button-buffering {
+      z-index: 20;
+      background-color: var(--media-background);
+    }
+
+    @scope (.media-play-button) {
+      &[data-started]:not([data-paused]):not([data-ended]) .media-play-button-pause-icon,
+      &:not([data-ended]):not([data-started]) .media-play-button-play-icon,
+      &:not([data-ended])[data-paused] .media-play-button-play-icon,
+      &[data-ended] .media-play-button-restart-icon {
+        display: block;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-mute-button-high-icon {
+      display: none;
+    }
+
+    @scope (.media-mute-button) {
+      &:not([data-muted]) .media-mute-button-high-icon {
+        display: block;
+      }
+    }
+
+    .media-mute-button-off-icon {
+      display: none;
+    }
+
+    @scope (.media-mute-button) {
+      &[data-muted] .media-mute-button-off-icon {
+        display: block;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-volume-popover-popup {
+      z-index: 20;
+      height: calc(var(--media-spacing) * 24);
+      width: calc(var(--media-spacing) * 7);
+      background-color: var(--media-popover);
+      padding-inline: calc(var(--media-spacing) * 3.5);
+      padding-block: calc(var(--media-spacing) * 2.5);
+      color: var(--media-popover-foreground);
+      --media-popover-side-offset: calc(var(--media-spacing) * 9);
+      --media-popup-side-offset: var(--media-popover-side-offset);
+      border-radius: 0;
+      box-shadow:
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000,
+        0 0 #0000;
+    }
+
+    @media (forced-colors: active) {
+      .media-volume-popover-popup {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-volume-popover-popup {
+        outline-width: 1px;
+        outline-style: solid;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-volume-slider {
+      cursor: pointer;
+      --media-accent: var(--media-accent-color, var(--media-popover-foreground));
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      position: relative;
+    }
+
+    .media-volume-slider[data-disabled] {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .media-volume-slider-fill {
+      height: var(--media-slider-fill, 0%);
+      background-color: var(--media-accent);
+      border-radius: 0;
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    @media (forced-colors: active) {
+      .media-volume-slider-fill {
+        forced-color-adjust: none;
+        background-color: highlight;
+      }
+    }
+
+    .media-volume-slider-thumb {
+      bottom: var(--media-slider-fill, 0%);
+      width: calc(var(--media-spacing) * 3);
+      height: calc(var(--media-spacing) * 3);
+      background-color: var(--media-popover-foreground);
+      border-radius: 0;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
+
+    .media-volume-slider-thumb:focus-visible {
+      outline-offset: 2px;
+      outline: 2px solid;
+    }
+
+    @media (forced-colors: active) {
+      .media-volume-slider-thumb {
+        forced-color-adjust: none;
+        background-color: highlight;
+        border: 1px solid canvastext;
+      }
+    }
+
+    .media-volume-slider-track {
+      height: 100%;
+      width: var(--media-spacing);
+      background-color: gray;
+      border-radius: 0;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      overflow: hidden;
+      transform: translateX(-50%);
+    }
+
+    @media (forced-colors: active) {
+      .media-volume-slider-track {
+        width: calc(var(--media-spacing) * 1.5);
+        forced-color-adjust: none;
+        background-color: canvas;
+        border: 1px solid canvastext;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .video-controls-bottom {
+      pointer-events: auto;
+      gap: calc(var(--media-spacing) * 2);
+      background-color: var(--media-background);
+      padding: calc(var(--media-spacing) * 3);
+      inset-inline: 0;
+      flex-direction: column;
+      display: flex;
+      position: absolute;
+      bottom: 0;
+    }
+
+    @scope (.video-controls-content) {
+      &:not([data-visible]) .video-controls-bottom {
+        pointer-events: none;
+        opacity: 0;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .video-controls-bottom {
+        background-color: canvas;
+        border-radius: 0;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .video-controls-bottom {
+        background-color: var(--media-background);
+        border-radius: 0;
+      }
+    }
+
+    .video-controls-buffering {
+      display: contents;
+    }
+
+    .video-controls-center {
+      pointer-events: auto;
+      align-items: center;
+      gap: calc(var(--media-spacing) * 2);
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @scope (.video-controls-content) {
+      &:not([data-visible]) .video-controls-center {
+        pointer-events: none;
+        opacity: 0;
+      }
+    }
+
+    @scope (.video-controls-buffering) {
+      &[data-visible] .video-controls-center {
+        display: none !important;
+      }
+    }
+
+    .video-controls-center:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      flex-direction: row-reverse;
+    }
+
+    @media (forced-colors: active) {
+      .video-controls-center {
+        background-color: #0000 !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .video-controls-center {
+        background-color: var(--media-background);
+        padding-inline: calc(var(--media-spacing) * 2);
+        border-radius: 0;
+      }
+    }
+
+    @container media-root (width >= 22.5rem) {
+      .video-controls-center {
+        display: flex;
+      }
+    }
+
+    .video-controls-center-button {
+      background-color: var(--media-background) !important;
+      margin: 0 !important;
+    }
+
+    @media (hover: hover) {
+      .video-controls-center-button:hover {
+        background-color: var(--media-button-highlight) !important;
+      }
+    }
+
+    .video-controls-center-button:focus-visible,
+    .video-controls-center-button[aria-expanded="true"] {
+      background-color: var(--media-button-highlight) !important;
+    }
+
+    @media (forced-colors: active) {
+      .video-controls-center-button {
+        background-color: buttonface !important;
+      }
+
+      @media (hover: hover) {
+        .video-controls-center-button:hover {
+          background-color: highlight !important;
+        }
+      }
+
+      .video-controls-center-button:focus-visible,
+      .video-controls-center-button[aria-expanded="true"] {
+        background-color: highlight !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .video-controls-center-button {
+        background-color: var(--media-background) !important;
+      }
+
+      @media (hover: hover) {
+        .video-controls-center-button:hover {
+          background-color: var(--media-foreground) !important;
+        }
+      }
+
+      .video-controls-center-button:focus-visible,
+      .video-controls-center-button[aria-expanded="true"] {
+        background-color: var(--media-foreground) !important;
+      }
+    }
+
+    .video-controls-center-play {
+      width: calc(var(--media-spacing) * 14.5) !important;
+      height: calc(var(--media-spacing) * 14.5) !important;
+    }
+
+    .video-controls-center-play-icon {
+      width: calc(var(--media-spacing) * 7) !important;
+      height: calc(var(--media-spacing) * 7) !important;
+    }
+
+    .video-controls-content {
+      pointer-events: none;
+      z-index: 30;
+      position: absolute;
+      inset: 0;
+    }
+
+    .video-controls-group {
+      align-items: center;
+      gap: calc(var(--media-spacing) * 2);
+      display: flex;
+    }
+
+    .video-controls-group:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      flex-direction: row-reverse;
+    }
+
+    .video-controls-row {
+      justify-content: space-between;
+      align-items: center;
+      gap: calc(var(--media-spacing) * 2);
+      display: flex;
+    }
+
+    .video-controls-row:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      flex-direction: row-reverse;
+    }
+
+    .video-controls-start {
+      min-width: 0;
+    }
+
+    .video-controls-top {
+      pointer-events: auto;
+      justify-content: flex-end;
+      align-items: center;
+      gap: calc(var(--media-spacing) * 2);
+      padding: calc(var(--media-spacing) * 3);
+      inset-inline: 0;
+      display: flex;
+      position: absolute;
+      top: 0;
+    }
+
+    @scope (.video-controls-content) {
+      &:not([data-visible]) .video-controls-top {
+        pointer-events: none;
+        opacity: 0;
+      }
+    }
+
+    .video-controls-top:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      flex-direction: row-reverse;
+    }
+
+    @media (forced-colors: active) {
+      .video-controls-top {
+        inset-inline: 0;
+        background-color: canvas;
+        border-radius: 0;
+        justify-content: flex-end;
+        top: 0;
+        border-radius: 0 !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .video-controls-top {
+        background-color: var(--media-background);
+        border-radius: 0;
+      }
+    }
+
+    @media (forced-colors: active) {
+      .video-controls-video-bottom {
+        inset-inline: 0;
+        bottom: 0;
+        border-radius: 0 !important;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-time-current-value {
+      display: none;
+    }
+
+    .media-time-current-value[data-unavailable] {
+      opacity: 0.5;
+    }
+
+    @container media-root (width >= 20rem) {
+      .media-time-current-value {
+        display: inline;
+      }
+    }
+
+    .media-time-duration-value {
+      opacity: 0.7;
+      display: none;
+    }
+
+    .media-time-duration-value[data-unavailable] {
+      opacity: 0.5;
+    }
+
+    @container media-root (width >= 20rem) {
+      .media-time-duration-value {
+        display: inline;
+      }
+    }
+
+    .media-time-group {
+      height: calc(var(--media-spacing) * 4);
+      align-items: center;
+      gap: var(--media-spacing);
+      padding-inline: var(--media-spacing);
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+      line-height: 1;
+      display: flex;
+    }
+
+    .media-time-group:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
+      flex-direction: row-reverse;
+    }
+
+    .media-time-separator {
+      opacity: 0.7;
+      display: none;
+    }
+
+    .media-time-separator[data-unavailable] {
+      opacity: 0.5;
+    }
+
+    @container media-root (width >= 20rem) {
+      .media-time-separator {
+        display: inline;
+      }
+    }
+
+    .media-time-toggle {
+      cursor: pointer;
+      border-radius: 0;
+      outline-style: none;
+    }
+
+    .media-time-toggle:focus-visible {
+      outline-offset: 2px;
+      outline-width: 2px;
+      outline-style: solid;
+      outline-color: var(--media-ring);
+    }
+
+    .media-time-toggle[data-disabled] {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    @media (forced-colors: active) {
+      .media-time-toggle[data-disabled] {
+        color: graytext;
+        opacity: 1;
+      }
+    }
+
+    @container media-root (width >= 20rem) {
+      .media-time-toggle {
+        display: none;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .audio-controls-bottom {
+      padding: calc(var(--media-spacing) * 3);
+      position: static !important;
+    }
+
+    .audio-controls-content {
+      position: relative !important;
+      inset: auto !important;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    :where(.media-airplay-button)[data-airplay-state="connected"] .media-airplay-button-enter-icon,
+    .media-airplay-button-exit-icon {
+      display: none;
+    }
+
+    @scope (.media-airplay-button) {
+      &[data-airplay-state="connected"] .media-airplay-button-exit-icon {
+        display: block;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-tooltip-screen-popup {
+      --media-tooltip-side-offset: calc(var(--media-spacing) * 3) !important;
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    :where(.media-cast-button)[data-cast-state="connected"] .media-cast-button-enter-icon,
+    .media-cast-button-exit-icon {
+      display: none;
+    }
+
+    @scope (.media-cast-button) {
+      &[data-cast-state="connected"] .media-cast-button-exit-icon {
+        display: block;
+      }
+    }
+
+    .media-fullscreen-button-enter-icon {
+      display: none;
+    }
+
+    @scope (.media-fullscreen-button) {
+      &:not([data-fullscreen]) .media-fullscreen-button-enter-icon {
+        display: block;
+      }
+    }
+
+    .media-fullscreen-button-exit-icon {
+      display: none;
+    }
+
+    @scope (.media-fullscreen-button) {
+      &[data-fullscreen] .media-fullscreen-button-exit-icon {
+        display: block;
+      }
+    }
+
+    :where(.media-pip-button)[data-pip] .media-pip-button-enter-icon,
+    .media-pip-button-exit-icon {
+      display: none;
+    }
+
+    @scope (.media-pip-button) {
+      &[data-pip] .media-pip-button-exit-icon {
+        display: block;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-title {
+      pointer-events: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      background-color: var(--media-background);
+      min-width: 0;
+      padding-inline: calc(var(--media-spacing) * 2);
+      font-size: calc(var(--media-spacing) * 4);
+      color: var(--media-foreground);
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .media-title:not([data-visible]) {
+      opacity: 0;
+    }
+
+    @media (forced-colors: active) {
+      .media-title {
+        z-index: 40;
+        color: canvastext;
+        background-color: #0000 !important;
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      .media-title {
+        background-color: var(--media-background);
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .video-controls-backdrop {
+      pointer-events: none;
+      background-image: linear-gradient(to top, #00000080, #0000 40% 60%, #0006);
+      position: absolute;
+      inset: 0;
+    }
+
+    .video-controls-backdrop:not([data-visible]) {
+      display: none;
+    }
+
+    @media (forced-colors: active) {
+      .video-controls-backdrop {
+        background-image: none;
+      }
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    @media (hover: hover) {
+    }
+
+    @media (forced-colors: active) {
+      @media (hover: hover) {
+      }
+    }
+
+    @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+      @media (hover: hover) {
+      }
+    }
+
+    .video-controls-center-seek {
+      display: none;
+      width: calc(var(--media-spacing) * 8) !important;
+      height: calc(var(--media-spacing) * 8) !important;
+    }
+
+    @media (pointer: fine) {
+      .video-controls-center-seek {
+        display: grid;
+      }
+    }
+
+    .video-controls-center-seek-icon {
+      width: calc(var(--media-spacing) * 4.5);
+      height: calc(var(--media-spacing) * 4.5);
+    }
+  }
+
+  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
+    .media-container,
+    :scope.media-container {
+      border-radius: var(--media-video-border-radius);
+      width: 100%;
+      height: 100%;
+      font-family: var(--media-font-family, inherit);
+      font-size: calc(var(--media-spacing) * 3.25);
+      color: var(--media-foreground);
+      --spacing: var(--media-spacing);
+      outline-style: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      container: media-root / inline-size;
+    }
+
+    .media-container:focus-visible,
+    :scope.media-container:focus-visible {
+      outline-offset: -2px;
+      outline-width: 2px;
+      outline-style: solid;
+      outline-color: var(--media-ring);
+    }
+
+    .media-video,
+    :scope.media-video {
+      background-color: #000;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Blood — dark, intimate, a pipe filling with blood. */
+/* The real slider underneath is untouched: keyboard, focus, menus    */
+/* and screen-reader behaviour all stay exactly as Scaffold built    */
+/* them. These rules only change how it looks.                        */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .blood-skin {
+    --media-accent: #8b0000;
+    --media-ring: #8b0000;
+    --media-video-border-radius: 20px;
+  }
+
+  /* Floating pill control bar, readable over bright and dark video. */
+  .blood-skin .video-controls-bottom {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    inset-inline: 12px;
+    bottom: 12px;
+    padding: 4px 12px 8px;
+  }
+
+  .blood-skin .video-controls-backdrop {
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent 45%);
+  }
+
+  /* Every button is a round 44px thumb target. */
+  .blood-skin .media-button {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+  }
+
+  .blood-skin .media-button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  /* Play is a white ball. */
+  .blood-skin .media-play-button {
+    background: #fff;
+    color: #111;
+  }
+
+  @media (hover: hover) {
+    .blood-skin .media-play-button:hover {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .blood-skin .media-play-button:hover svg,
+    .blood-skin .media-play-button:hover .media-icon {
+      opacity: 1;
+    }
+  }
+
+  /* Big centre play: a big blue ball. */
+  .blood-skin .video-controls-center-play {
+    width: 76px !important;
+    height: 76px !important;
+    background: #8b0000;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .blood-skin .video-controls-center-play-icon {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* YouTube-style centre flash: a blue ball pops in the middle
+     of the video on play/pause and fades away. It never eats
+     clicks (pointer-events none) and it unmounts when the
+     animation ends. */
+  .blood-skin .hop-play-flash {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    z-index: 40;
+  }
+
+  .blood-skin .hop-play-flash-ball {
+    width: 76px;
+    height: 76px;
+    background: #8b0000;
+    color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    display: grid;
+    place-items: center;
+    animation: hop-play-flash 0.7s ease-out forwards;
+  }
+
+  @keyframes hop-play-flash {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.2);
+    }
+  }
+
+  /* YouTube-style skip effect: a dark circle with chevrons and
+     the seconds, on the side the skip went towards. It never
+     eats clicks (pointer-events none). */
+  .blood-skin .hop-skip-flash {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 33%;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    z-index: 40;
+  }
+
+  .blood-skin .hop-skip-flash-back {
+    left: 0;
+  }
+
+  .blood-skin .hop-skip-flash-forward {
+    right: 0;
+  }
+
+  .blood-skin .hop-skip-flash-circle {
+    width: 96px;
+    height: 96px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    animation: hop-skip-flash-pop 0.25s ease-out;
+  }
+
+  .blood-skin .hop-skip-flash-chevrons {
+    display: flex;
+    align-items: center;
+  }
+
+  .blood-skin .hop-skip-flash-back .hop-skip-flash-chevrons {
+    transform: scaleX(-1);
+  }
+
+  .blood-skin .hop-skip-flash-chevron {
+    width: 28px;
+    height: 28px;
+  }
+
+  .blood-skin .hop-skip-flash-seconds {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  @keyframes hop-skip-flash-pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* The buffering spinner is a Lucide arc now, so it needs its
+     own spin — the old scaffold spinner spun itself. */
+  .blood-skin .media-buffering-indicator-spinner-icon {
+    animation: hop-spin 1s linear infinite;
+  }
+
+  @keyframes hop-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .blood-skin .media-time-group {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .blood-skin .media-title {
+    background: transparent;
+    color: #fff;
+  }
+
+  .blood-skin .media-menu-popup,
+  .blood-skin .media-volume-popover-popup,
+  .blood-skin .media-dialog-popup {
+    border-radius: 16px;
+  }
+
+  .blood-skin .media-tooltip-popup {
+    border-radius: 999px;
+    background: #111;
+  }
+
+  /* --- The staircase seek bar --- */
+  .blood-skin .media-time-slider {
+    height: 56px;
+  }
+
+  /* Hide the flat track / fill / buffer — the steps draw progress. */
+  .blood-skin .media-time-slider-track {
+    background: transparent;
+  }
+
+  .blood-skin .media-time-slider-track:before {
+    background: transparent;
+  }
+
+  .blood-skin .media-time-slider-fill,
+  .blood-skin .media-time-slider-buffer {
+    background: transparent;
+  }
+
+  /* The real thumb becomes a white ring around the ball. */
+  .blood-skin .media-time-slider-thumb {
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(35, 145, 255, 0.35);
+  }
+
+  .blood-skin .media-time-slider-thumb:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+
+  .hop-steps {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 56px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    padding-inline: 2px;
+    pointer-events: none;
+  }
+
+  .hop-step {
+    flex: 1;
+    min-width: 0;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 6px 6px 2px 2px;
+    transition: background 120ms linear;
+  }
+
+  .hop-step[data-filled] {
+    background: #ff1a1a;
+  }
+
+  .hop-ball {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    transform: translateX(-50%);
+    transition:
+      left 120ms linear,
+      bottom 180ms ease;
+    pointer-events: none;
+  }
+
+  .hop-ball-inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #8ec9ff, #111 55%, #1668c2);
+    border: 2px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+    animation: hop-ball-bounce 480ms ease-in-out infinite alternate;
+  }
+
+  /* Paused: the ball squashes flat on its step. */
+  .hop-ball[data-paused] .hop-ball-inner {
+    animation: none;
+    transform: scale(1.28, 0.68);
+  }
+
+  @keyframes hop-ball-bounce {
+    from {
+      transform: translateY(0) scale(1, 1);
+    }
+    to {
+      transform: translateY(-7px) scale(0.94, 1.06);
+    }
+  }
+
+  /* Small player: shorter stairs, smaller ball. */
+  @container media-root (width < 30rem) {
+    .blood-skin .media-time-slider {
+      height: 42px;
+    }
+
+    .hop-steps {
+      height: 42px;
+    }
+
+    .hop-ball {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* Calm on request: no hopping, no squash, ball just moves. */
+  @media (prefers-reduced-motion: reduce) {
+    .hop-ball-inner {
+      animation: none;
+    }
+
+    .hop-ball[data-paused] .hop-ball-inner {
+      transform: none;
+    }
+
+    .hop-ball {
+      transition: left 120ms linear, bottom 120ms linear;
+    }
+  }
+}
+
+/* Hop Steps clean mode: by default the video shows nothing at all,
+   not even on hover. Move the cursor to the bottom part and the
+   seekbar, the time and all the buttons show in the bottom bar.
+   Play/pause is also a click on the video, double-click is
+   fullscreen, keyboard still works (Space, arrows, F, M). */
+@layer components {
+  /* Big centre buttons and the old bottom bar stay hidden — the
+     Dynamic Island is the only control area. */
+  .blood-skin .video-controls-center,
+  .blood-skin .video-controls-bottom {
+    display: none !important;
+  }
+
+  .blood-skin .blood-glass-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Dynamic Island: a Teenage Engineering K.O. II style panel. */
+  .blood-skin .video-controls-top {
+    display: flex !important;
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    width: auto;
+    max-width: calc(100% - 24px);
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 6px;
+    border-radius: 22px;
+    width: 620px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.04) 38%,
+      rgba(0, 0, 0, 0.26) 100%
+    );
+    -webkit-backdrop-filter: blur(14px) saturate(1.9) brightness(1.12);
+    backdrop-filter: blur(14px) saturate(1.9) brightness(1.12);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.9),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.35),
+      inset 1px 0 1px rgba(255, 255, 255, 0.3),
+      inset -1px 0 1px rgba(255, 255, 255, 0.3),
+      0 18px 44px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    z-index: 30;
+  }
+
+  /* Specular rim and a soft diagonal shine, like Apple's glass. */
+  .blood-skin .video-controls-top::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+      radial-gradient(
+        120% 90% at 20% -20%,
+        rgba(255, 255, 255, 0.55) 0%,
+        rgba(255, 255, 255, 0.12) 28%,
+        transparent 60%
+      ),
+      linear-gradient(
+        115deg,
+        rgba(255, 255, 255, 0.18) 0%,
+        transparent 36%,
+        transparent 64%,
+        rgba(255, 255, 255, 0.1) 100%
+      );
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .blood-skin .video-controls-top::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+  }
+
+  /* Every button in the panel is a chunky K.O. II key. */
+  .blood-skin .video-controls-top .media-button {
+    width: 36px;
+    height: 30px;
+    border-radius: 12px;
+    background-color: #c7c3c0;
+    color: #111;
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 4px 4px 5px,
+      #ffffff 1px 1px 1px 0 inset,
+      #c7c3c0 -2px -2px 4px 0 inset;
+    transition: 0.1s ease-in-out;
+  }
+
+  .blood-skin .video-controls-top .media-button:active {
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 0 0 0,
+      inset 0.5px 0.5px 4px #000,
+      #c7c3c0 -2px -2px 4px 0 inset;
+  }
+
+  .blood-skin .video-controls-top .media-play-button {
+    background-color: #d42a02;
+    color: #fff;
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 4px 4px 5px,
+      #fb702c 2px 2px 6px 0 inset,
+      #d42a02 -3px -3px 1px 0 inset;
+  }
+
+  .blood-skin .video-controls-top .media-play-button:active {
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 0 0 0,
+      inset 0.5px 0.5px 4px #000,
+      #d42a02 -3px -3px 1px 0 inset;
+  }
+
+  .blood-skin .video-controls-top .media-button-icon {
+    width: 19px;
+    height: 19px;
+  }
+
+  .blood-skin .video-controls-top .media-time-slider {
+    flex: 1 1 auto;
+    min-width: 180px;
+  }
+
+  /* Keep the compact look, but give touch users a 44px target. */
+  @media (pointer: coarse) {
+    .blood-skin .video-controls-top .media-button::before,
+    .blood-skin .hop-volume::before {
+      content: "";
+      position: absolute;
+      inset: -8px;
+    }
+  }
+
+  /* No dark gradient over the video either. */
+  .blood-skin .video-controls-backdrop {
+    display: none !important;
+  }
+
+  /* Settings menu styled to match the liquid-glass island. */
+  .blood-skin .media-menu-popup,
+  .blood-skin .media-menu-content {
+    --media-popup-side-offset: 10px !important;
+    --media-popover-side-offset: 10px !important;
+    --media-popup-translate-distance: 10px !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-radius: 14px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(0, 0, 0, 0.32) 55%
+    );
+    -webkit-backdrop-filter: blur(14px) saturate(1.8) brightness(1.1);
+    backdrop-filter: blur(14px) saturate(1.8) brightness(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.7),
+      0 14px 32px rgba(0, 0, 0, 0.45);
+    color: #fff;
+  }
+
+  .blood-skin .media-menu-popup::-webkit-scrollbar,
+  .blood-skin .media-menu-content::-webkit-scrollbar {
+    display: none;
+  }
+
+  .blood-skin .media-menu-item {
+    border-radius: 8px;
+    transition: 0.1s ease-in-out;
+  }
+
+  .blood-skin .media-menu-item:hover,
+  .blood-skin .media-menu-item[data-highlighted] {
+    background-color: #d42a02;
+    color: #fff;
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 4px 4px 5px,
+      #fb702c 1px 1px 4px 0 inset,
+      #d42a02 -2px -2px 3px 0 inset;
+  }
+
+  .blood-skin .media-menu-item:active {
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 0 0 0,
+      inset 0.5px 0.5px 4px #000,
+      #c7c3c0 -2px -2px 4px 0 inset;
+  }
+
+  .blood-skin .media-menu-radio-item {
+    border-radius: 8px;
+    transition: 0.1s ease-in-out;
+  }
+
+  .blood-skin .media-menu-radio-item:hover,
+  .blood-skin .media-menu-radio-item[data-highlighted] {
+    background-color: #d42a02;
+    color: #fff;
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 4px 4px 5px,
+      #fb702c 1px 1px 4px 0 inset,
+      #d42a02 -2px -2px 3px 0 inset;
+  }
+
+  .blood-skin .media-menu-radio-item:active {
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 0 0 0,
+      inset 0.5px 0.5px 4px #000,
+      #d42a02 -2px -2px 3px 0 inset;
+  }
+
+  /* Bottom row: every button lives here — play, back/forward 10s,
+     volume, time, captions, settings, AirPlay, Cast, PiP,
+     fullscreen — spread left and right. */
+  .blood-skin .video-controls-row {
+    justify-content: space-between;
+  }
+
+  /* The buttons float straight on the video, so their icons get a
+     soft shadow to stay readable over bright scenes, like the
+     time does. */
+  .blood-skin .video-controls-bottom .media-button-icon {
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.65));
+  }
+
+  /* The time floats straight on the video now, so it gets a soft
+     shadow to stay readable over bright scenes. */
+  .blood-skin .media-time-group {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  .blood-skin .video-controls-top .media-time-group {
+    font-size: 13px;
+  }
+
+  /* Fill browser window: while data-hop-window-fullscreen is set
+     (the fill-window button), the player is exactly the size of
+     the browser window — fixed to the viewport, no rounded
+     corners, black behind the video. This is not display
+     fullscreen: the browser chrome stays, and Esc exits. */
+  .blood-skin[data-hop-window-fullscreen] {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 9999;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    background: #000;
+    --media-video-border-radius: 0;
+  }
+
+  /* Hidden by default. VideoIdleHide runs a 100ms loop and sets
+     data-hop-bar-visible on the skin only while the cursor is over
+     this bar and has really moved in the last 1.5s — so it shows
+     and hides correctly no matter how the mouse is moved, every
+     time. pointer-events is forced too, so the hidden bar never
+     eats clicks meant for the video, and the shown bar is always
+     usable. There is deliberately no :focus-within rule here:
+     clicking the seekbar focuses its thumb, and :focus-within
+     would pin the bar open until something else is clicked.
+     Keyboard focus is handled by the loop instead (idle-hide.tsx
+     only counts a Tab focus, never a click focus). */
+  .blood-skin .video-controls-bottom {
+    opacity: 0;
+    pointer-events: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    transition: opacity 0.18s ease-out;
+  }
+
+  .blood-skin[data-hop-bar-visible] .video-controls-bottom {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: opacity 0.25s ease-out;
+  }
+}
+
+/* Clean seek bar: YouTube red (#ff0000), no track background —
+   only the red fill shows, straight on the video. */
+@layer components {
+  .blood-skin .media-time-slider {
+    height: 20px;
+  }
+
+  .blood-skin .media-time-slider-track {
+    height: 4px;
+    background: transparent;
+    border-radius: 999px;
+  }
+
+  .blood-skin .media-time-slider-track:before {
+    background: transparent;
+    border-radius: 999px;
+  }
+
+  .blood-skin .media-time-slider-fill {
+    background: #ff0000;
+    border-radius: 999px;
+  }
+
+  .blood-skin .media-time-slider-buffer {
+    background: transparent;
+    border-radius: 999px;
+  }
+
+  .blood-skin .media-time-slider-thumb {
+    width: 12px;
+    height: 12px;
+    background: #ff0000;
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .blood-skin .media-time-slider-thumb:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+}
+
+/* Filmstrip timeline: a thin strip of real frames that is the
+   seekbar, the way an editor shows a timeline. Every cell is a frame
+   captured from the file itself (see shared/filmstrip.tsx). Nothing
+   is dimmed — a thick red playhead slides across the full-brightness
+   strip as the video plays. Click or drag the strip to seek. It
+   lives inside the bottom bar, so it fades in and out with it and
+   never shows in clean mode. */
+@layer components {
+  /* The filmstrip is the seekbar now: the real slider still owns
+     keyboard, focus and accessibility, but its visible track, fill
+     and thumb are hidden, and the strip fills the slider's row. */
+  .blood-skin .media-time-slider {
+    height: 26px;
+  }
+
+  .blood-skin .media-time-slider-track,
+  .blood-skin .media-time-slider-thumb {
+    opacity: 0;
+  }
+
+  .blood-skin .media-time-slider-thumb {
+    pointer-events: none;
+  }
+
+  /* If the frames cannot be captured (broken file, CORS, a seek that
+     never finished), bring the red bar back instead of leaving the
+     slider row empty. */
+  .blood-skin .media-time-slider:has(.hop-filmstrip[data-state='failed']) .media-time-slider-track,
+  .blood-skin .media-time-slider:has(.hop-filmstrip[data-state='failed']) .media-time-slider-thumb {
+    opacity: 1;
+  }
+
+  .blood-skin .media-time-slider:has(.hop-filmstrip[data-state='failed']) .media-time-slider-thumb {
+    pointer-events: auto;
+  }
+
+  .blood-skin .hop-filmstrip {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    gap: 1px;
+    border-radius: 5px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.42);
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    isolation: isolate;
+  }
+
+  /* Tab focus lands on the invisible thumb; show it on the strip. */
+  .blood-skin .media-time-slider:has(.media-time-slider-thumb:focus-visible) .hop-filmstrip {
+    box-shadow:
+      0 0 0 2px #fff,
+      0 8px 28px rgba(0, 0, 0, 0.42);
+  }
+
+  .blood-skin .hop-filmstrip[data-state='failed'] {
+    display: none;
+  }
+
+  .blood-skin .hop-filmstrip-cell {
+    flex: 1 1 0;
+    min-width: 0;
+    background-color: rgba(255, 255, 255, 0.05);
+    background-position: center;
+    background-size: cover;
+    /* A hairline seam between frames reads as film. */
+    box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.5);
+  }
+
+  /* The playhead is a sibling of the strip (see filmstrip.tsx) so it
+     can stand proud of the strip's clipped frames: it keeps its full
+     34px height even though the strip itself is shorter. */
+  .blood-skin .hop-filmstrip-playhead {
+    position: absolute;
+    top: 50%;
+    left: var(--media-slider-fill, 0%);
+    z-index: 3;
+    width: 4px;
+    height: 34px;
+    margin-left: -2px;
+    border-radius: 2px;
+    background: #ff1a1a;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  /* The hover preview (frame + time) sits above the strip. */
+  .blood-skin .media-time-slider-preview {
+    bottom: calc(100% + 12px);
+  }
+}
+
+/* Inline volume control: a thick speaker button that unfolds into a
+   horizontal volume bar the moment the cursor touches it — no popup
+   and no delay. The icon swaps for the bar instantly; only the width
+   animates. Moving the mouse left and right scrubs the volume from
+   where the pointer entered, so reaching the button never jumps the
+   level. A still click toggles mute. */
+@layer components {
+  .blood-skin .hop-volume {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 30px;
+    color: #5f5f5f;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* The one volume button. */
+  .blood-skin .hop-volume-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background-color: #c7c3c0;
+    color: #111;
+    cursor: pointer;
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 4px 4px 5px,
+      #ffffff 1px 1px 1px 0 inset,
+      #c7c3c0 -2px -2px 4px 0 inset;
+    transition: 0.1s ease-in-out;
+  }
+
+  .blood-skin .hop-volume-button:active {
+    box-shadow:
+      rgba(0, 0, 0, 0.377) 0 0 0,
+      inset 0.5px 0.5px 4px #000,
+      #c7c3c0 -2px -2px 4px 0 inset;
+  }
+
+  .blood-skin .hop-volume:focus-visible .hop-volume-button {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  .blood-skin .hop-volume-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+  }
+
+  .blood-skin .hop-volume-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Vertical slider that opens upwards. */
+  .blood-skin .hop-volume-panel {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.92);
+    transform-origin: bottom center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 12px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.16),
+      rgba(0, 0, 0, 0.42) 55%
+    );
+    -webkit-backdrop-filter: blur(13px) saturate(1.8) brightness(1.1);
+    backdrop-filter: blur(13px) saturate(1.8) brightness(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.9),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.35),
+      0 12px 28px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    filter: blur(6px);
+    pointer-events: none;
+    transition:
+      transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1),
+      opacity 0.16s ease-out,
+      filter 0.16s ease-out;
+  }
+
+  .blood-skin .hop-volume[data-open] .hop-volume-panel {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+  }
+
+  /* Invisible bridge so the cursor can travel into the panel. */
+  .blood-skin .hop-volume-panel::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 8px;
+  }
+
+  .blood-skin .hop-volume-track {
+    position: relative;
+    width: 8px;
+    height: 90px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .blood-skin .hop-volume-fill {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-radius: 999px;
+    background: #d42a02;
+    box-shadow: 0 0 8px rgba(212, 42, 2, 0.7);
+  }
+
+  .blood-skin .hop-volume-thumb {
+    position: absolute;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-left: -10px;
+    margin-bottom: -10px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+  }
+
+
+}
