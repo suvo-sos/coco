@@ -2035,7 +2035,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    padding: 0 12px 0 0;
+    padding: 0;
     border-radius: 12px;
     color: var(--ko-ink);
     background: linear-gradient(180deg, #d3cfcc 0%, #c7c3c0 52%, #bcb8b5 100%);
@@ -2239,8 +2239,8 @@
 
   .ko-skin .ko-keys .media-button-icon,
   .ko-skin .ko-keys .media-button-icon-base {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     flex: 0 0 auto;
     animation: ko-icon-swap 0.14s ease-out;
   }
@@ -2292,20 +2292,23 @@
 
   /* The transport key: the only orange thing on the deck. */
   .ko-skin .ko-keys .media-play-button {
-    width: 58px;
-    height: 60px;
+    width: 72px;
+    height: 68px;
+    align-self: center;
     gap: 2px;
     color: #ffffff;
-    background-color: var(--ko-orange);
+    background: linear-gradient(to bottom, #333333, rgb(36, 35, 35));
+    background-color: #333333;
+    border-top: 1px solid #4e4d4d;
     box-shadow:
-      rgba(0, 0, 0, 0.4) 4px 5px 6px,
-      var(--ko-orange-light) 2px 2px 10px 0 inset,
-      var(--ko-orange) -4px -4px 1px 0 inset;
+      rgba(0, 0, 0, 0.5) 3px 4px 4px,
+      rgba(255, 255, 255, 0.08) 1.5px 1.5px 2px 0 inset,
+      rgba(0, 0, 0, 0.6) -3px -3px 6px 0 inset;
   }
 
   .ko-skin .ko-keys .media-play-button .media-button-icon-base {
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
   }
 
   @media (hover: hover) {
@@ -2538,8 +2541,8 @@
 
   .ko-skin .ko-volume-icon,
   .ko-skin .ko-volume-icon svg {
-    width: 17px;
-    height: 17px;
+    width: 20px;
+    height: 20px;
     color: #ffffff;
   }
 
@@ -3305,4 +3308,119 @@
       height: 38px;
     }
   }
+}
+
+/* Fullscreen button is the orange accent among the right-hand keys. */
+.ko-skin .ko-cluster-right .media-fullscreen-button {
+  background: linear-gradient(to bottom, #fb702c, #d42a02) !important;
+  background-color: #d42a02 !important;
+  border-top: 1px solid #fb702c !important;
+}
+
+.ko-skin .ko-cluster-right .media-fullscreen-button:hover {
+  background: linear-gradient(to bottom, #ff8a5c, #e03a12) !important;
+  background-color: #e03a12 !important;
+}
+.ko-skin .ko-cluster-right {
+  background-color: #000;
+  padding: 4px;
+  border-radius: 10px;
+  gap: 2px;
+  position: relative;
+  z-index: 0;
+}
+
+.ko-skin .ko-cluster-right .media-button,
+.ko-skin .ko-cluster-right .ko-volume-button {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(to bottom, #333333, rgb(36, 35, 35));
+  background-color: #333333;
+  border-top: 1px solid #4e4d4d;
+  border-radius: 0;
+  box-shadow: 0px 17px 5px 1px rgba(0, 0, 0, 0.2);
+  transition: all 0.1s linear;
+  position: relative;
+  overflow: visible;
+}
+
+.ko-skin .ko-cluster-right .media-button:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.ko-skin .ko-cluster-right .media-button:last-child,
+.ko-skin .ko-cluster-right .ko-volume:last-child .ko-volume-button {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.ko-skin .ko-cluster-right .ko-volume:first-child .ko-volume-button {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.ko-skin .ko-cluster-right .media-button::before,
+.ko-skin .ko-cluster-right .ko-volume-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 103%;
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, transparent 10%, transparent, transparent 90%);
+  transition: all 0.1s linear;
+  z-index: -1;
+}
+
+.ko-skin .ko-cluster-right .media-button:active,
+.ko-skin .ko-cluster-right .media-button[aria-expanded="true"],
+.ko-skin .ko-cluster-right .ko-volume[data-open] .ko-volume-button,
+.ko-skin .ko-cluster-right .ko-volume-button:active {
+  box-shadow: 0px 17px 5px 1px rgba(0, 0, 0, 0);
+  background: linear-gradient(to bottom, #1d1d1d, #1d1d1d);
+  border-top: none;
+}
+
+.ko-skin .ko-cluster-right .media-button:active::before,
+.ko-skin .ko-cluster-right .media-button[aria-expanded="true"]::before,
+.ko-skin .ko-cluster-right .ko-volume[data-open] .ko-volume-button::before,
+.ko-skin .ko-cluster-right .ko-volume-button:active::before {
+  background: linear-gradient(to bottom, transparent 10%, #cae2fd63, transparent 90%);
+}
+
+.ko-skin .ko-cluster-right .media-button-icon,
+.ko-skin .ko-cluster-right .media-button-icon-base,
+.ko-skin .ko-cluster-right .ko-volume-icon,
+.ko-skin .ko-cluster-right .ko-volume-icon svg {
+  color: #ffffff;
+  text-shadow:
+    -1px -1px 1px rgb(224, 224, 224, 0.1),
+    0px 2px 3px rgb(0, 0, 0, 0.3);
+  transition: all 0.1s linear;
+}
+
+.ko-skin .ko-cluster-right .media-button:active .media-button-icon,
+.ko-skin .ko-cluster-right .media-button[aria-expanded="true"] .media-button-icon,
+.ko-skin .ko-cluster-right .ko-volume[data-open] .ko-volume-icon,
+.ko-skin .ko-cluster-right .ko-volume-button:active .ko-volume-icon {
+  color: rgb(202, 226, 253);
+  text-shadow: 0px 0px 12px #cae2fd;
+}
+
+/* When fullscreen is active, the other right-hand keys go orange too. */
+.ko-skin .ko-cluster-right:has(.media-fullscreen-button[aria-expanded="true"]) .media-button:not(.media-fullscreen-button),
+.ko-skin .ko-cluster-right:has(.media-fullscreen-button[aria-expanded="true"]) .ko-volume-button {
+  background: linear-gradient(to bottom, #fb702c, #d42a02) !important;
+  background-color: #d42a02 !important;
+  border-top: 1px solid #fb702c !important;
+}
+
+/* Play button: orange while playing, black while paused. */
+.ko-skin .media-play-button[data-started]:not([data-paused]):not([data-ended]) {
+  background: linear-gradient(to bottom, #fb702c, #d42a02) !important;
+  background-color: #d42a02 !important;
+  border-top: 1px solid #fb702c !important;
 }
