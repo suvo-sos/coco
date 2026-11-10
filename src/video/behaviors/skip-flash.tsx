@@ -11,7 +11,7 @@ const SHOW_MS = 900;
 const ACCUMULATE_MS = 1000;
 
 /** The event right-drag-seek.tsx dispatches on a right-click skip. */
-export const SKIP_EVENT = 'hop:skip';
+export const SKIP_EVENT = 'ko:skip';
 
 export type SkipDirection = 'forward' | 'back';
 
@@ -26,7 +26,7 @@ export interface SkipEventDetail {
  * direction add up — 10s, then 20s, then 30s — just like
  * YouTube's double-tap. The seek itself happens in
  * right-drag-seek.tsx; this only shows the effect, driven by the
- * `hop:skip` event it dispatches.
+ * `ko:skip` event it dispatches.
  */
 export function VideoSkipFlash() {
   const [flash, setFlash] = useState<{ direction: SkipDirection; total: number; key: number } | null>(null);
@@ -61,17 +61,17 @@ export function VideoSkipFlash() {
   return (
     <div
       className={cn(
-        'hop-skip-flash',
-        flash.direction === 'back' ? 'hop-skip-flash-back' : 'hop-skip-flash-forward'
+        'ko-skip-flash',
+        flash.direction === 'back' ? 'ko-skip-flash-back' : 'ko-skip-flash-forward'
       )}
       aria-hidden="true"
     >
-      <div className="hop-skip-flash-circle" key={flash.key}>
-        <span className="hop-skip-flash-chevrons">
-          <ChevronRight className={'hop-skip-flash-chevron'} />
-          <ChevronRight className={'hop-skip-flash-chevron'} />
+      <div className="ko-skip-flash-circle" key={flash.key}>
+        <span className="ko-skip-flash-chevrons">
+          <ChevronRight className={'ko-skip-flash-chevron'} />
+          <ChevronRight className={'ko-skip-flash-chevron'} />
         </span>
-        <span className="hop-skip-flash-seconds">{flash.total}s</span>
+        <span className="ko-skip-flash-seconds">{flash.total}s</span>
       </div>
     </div>
   );

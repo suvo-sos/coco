@@ -21,7 +21,7 @@ const VOLUME_PER_DELTA = 0.0006;
  */
 export function VideoWheelVolume() {
   useEffect(() => {
-    const root = document.querySelector('.blood-skin');
+    const root = document.querySelector('.ko-skin');
     const video = root?.querySelector('video');
     if (!root || !video) return;
 
@@ -29,7 +29,7 @@ export function VideoWheelVolume() {
       const wheel = event as WheelEvent;
       // Never fight a scrub, and never steal scrolling from an open
       // settings menu or dialog.
-      if (root.hasAttribute('data-hop-scrubbing')) return;
+      if (root.hasAttribute('data-ko-scrubbing')) return;
       const target = wheel.target as Element | null;
       if (target?.closest?.('.media-menu-popup, .media-dialog-popup')) return;
 

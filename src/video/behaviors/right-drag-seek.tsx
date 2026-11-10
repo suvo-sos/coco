@@ -6,7 +6,7 @@ import { useEffect } from 'react';
  * Right-click drag to seek: hold the right mouse button anywhere
  * on the player and drag left to go back, right to go forward.
  * Dragging across the full width of the player covers the whole
- * video. While scrubbing, `data-hop-scrubbing` is set on the skin
+ * video. While scrubbing, `data-ko-scrubbing` is set on the skin
  * so the idle-hide loop keeps the bottom bar (and the time) visible.
  * The browser's right-click menu is suppressed on the player,
  * since the right button is now the scrub button. The listener
@@ -17,7 +17,7 @@ import { useEffect } from 'react';
  * click the right half of the player to go forward 10 seconds,
  * the left half to go back 10 seconds. A press counts as a click
  * when the pointer barely moved; any real drag seeks instead.
- * Each skip dispatches a `hop:skip` event so the skip flash
+ * Each skip dispatches a `ko:skip` event so the skip flash
  * (skip-flash.tsx) can show the YouTube-style side effect.
  *
  * Seeks are throttled to one per animation frame: pointermove can
@@ -28,7 +28,7 @@ import { useEffect } from 'react';
  */
 export function VideoRightDragSeek() {
   useEffect(() => {
-    const root = document.querySelector('.blood-skin');
+    const root = document.querySelector('.ko-skin');
     const video = root?.querySelector('video');
     if (!root || !video) return;
 
@@ -64,7 +64,7 @@ export function VideoRightDragSeek() {
       if (!scrubbing) return;
       // The right button was released outside the window, so no
       // pointerup reached us: the drag is over. Without this,
-      // data-hop-scrubbing can stick and pin the bar open.
+      // data-ko-scrubbing can stick and pin the bar open.
       if ((event.buttons & 2) === 0) {
         stop();
         return;
@@ -86,7 +86,7 @@ export function VideoRightDragSeek() {
         cancelAnimationFrame(rafId);
         rafId = 0;
       }
-      root.removeAttribute('data-hop-scrubbing');
+      root.removeAttribute('data-ko-scrubbing');
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('pointercancel', stop);
@@ -100,7 +100,7 @@ export function VideoRightDragSeek() {
       const next = video.currentTime + (back ? -SKIP_SECONDS : SKIP_SECONDS);
       video.currentTime = Math.min(Math.max(next, 0), duration);
       window.dispatchEvent(
-        new CustomEvent<{ direction: 'forward' | 'back' }>('hop:skip', {
+        new CustomEvent<{ direction: 'forward' | 'back' }>('ko:skip', {
           detail: { direction: back ? 'back' : 'forward' },
         })
       );
@@ -120,7 +120,7 @@ export function VideoRightDragSeek() {
     const onDown = (event: Event) => {
       const pointer = event as PointerEvent;
       // A new press ends any drag whose release we missed (released
-      // outside the window): without this, data-hop-scrubbing can
+      // outside the window): without this, data-ko-scrubbing can
       // stick and pin the bar open.
       if (scrubbing) stop();
       if (pointer.button !== 2) return;
@@ -130,7 +130,7 @@ export function VideoRightDragSeek() {
       scrubbing = true;
       startX = pointer.clientX;
       startTime = video.currentTime;
-      root.setAttribute('data-hop-scrubbing', '');
+      root.setAttribute('data-ko-scrubbing', '');
       window.addEventListener('pointermove', onMove);
       window.addEventListener('pointerup', onUp);
       window.addEventListener('pointercancel', stop);

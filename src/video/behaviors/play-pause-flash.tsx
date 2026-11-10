@@ -20,7 +20,7 @@ export function VideoPlayPauseFlash() {
   const keyRef = useRef(0);
 
   useEffect(() => {
-    const root = document.querySelector('.blood-skin');
+    const root = document.querySelector('.ko-skin');
     const video = root?.querySelector('video');
     if (!root || !video) return;
 
@@ -50,8 +50,8 @@ export function VideoPlayPauseFlash() {
   if (!flash) return null;
 
   return (
-    <div className="hop-play-flash" key={flash.key} onAnimationEnd={() => setFlash(null)}>
-      <div className="hop-play-flash-ball">
+    <div className="ko-play-flash" key={flash.key} onAnimationEnd={() => setFlash(null)}>
+      <div className="ko-play-flash-ball">
         {flash.type === 'play' ? (
           <Play fill="currentColor" className={'video-controls-center-play-icon'} />
         ) : (

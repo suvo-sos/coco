@@ -26,18 +26,18 @@ const TICK_MS = 100;
  *   1. Is the cursor over the control bar right now?
  *   2. Has the cursor really moved in the last 1.5s?
  * The bar shows only when both are true. It sets
- * `data-hop-bar-visible` on the skin root; the CSS in skin.css
+ * `data-ko-bar-visible` on the skin root; the CSS in skin.css
  * shows the bar while it is set. Keyboard focus inside the bar
  * also shows it, so tabbing to the seekbar still works.
  */
 export function VideoIdleHide() {
   useEffect(() => {
-    const root = document.querySelector('.blood-skin');
+    const root = document.querySelector('.ko-skin');
     // The visible bar is the top panel; the bottom one is hidden in
     // this skin, but fall back to it if a skin ever swaps them.
     const bar =
-      document.querySelector('.blood-skin .video-controls-top') ??
-      document.querySelector('.blood-skin .video-controls-bottom');
+      document.querySelector('.ko-skin .video-controls-top') ??
+      document.querySelector('.ko-skin .video-controls-bottom');
     if (!root || !bar) return;
 
     let lastRealMove = 0;
@@ -67,11 +67,12 @@ export function VideoIdleHide() {
       // distinction: it matches for Tab focus, not for click focus.
       const active = document.activeElement;
       const focused = !!active && bar.contains(active) && active.matches(':focus-visible');
-      const scrubbing = root.hasAttribute('data-hop-scrubbing');
-      if (scrubbing || overBar || awake || focused) {
-        root.setAttribute('data-hop-bar-visible', '');
+      const scrubbing = root.hasAttribute('data-ko-scrubbing');
+      const volumeOpen = !!root.querySelector('.ko-volume[data-open]');
+      if (scrubbing || overBar || awake || focused || volumeOpen) {
+        root.setAttribute('data-ko-bar-visible', '');
       } else {
-        root.removeAttribute('data-hop-bar-visible');
+        root.removeAttribute('data-ko-bar-visible');
       }
     };
 
@@ -130,7 +131,7 @@ export function VideoIdleHide() {
       root.removeEventListener('mouseleave', onLeave);
       document.removeEventListener('focusin', tick);
       document.removeEventListener('focusout', tick);
-      root.removeAttribute('data-hop-bar-visible');
+      root.removeAttribute('data-ko-bar-visible');
     };
   }, []);
 

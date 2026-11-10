@@ -27,7 +27,7 @@ export function VideoVolumeFlash() {
   const hideRef = useRef(0);
 
   useEffect(() => {
-    const root = document.querySelector('.blood-skin');
+    const root = document.querySelector('.ko-skin');
     const video = root?.querySelector('video');
     if (!root || !video) return;
 
@@ -61,19 +61,19 @@ export function VideoVolumeFlash() {
   const off = flash.muted || flash.volume === 0;
 
   return (
-    <div className="hop-volume-flash" aria-hidden="true">
-      <div className="hop-volume-flash-pill" key={flash.key}>
+    <div className="ko-volume-flash" aria-hidden="true">
+      <div className="ko-volume-flash-pill" key={flash.key}>
         {off ? (
-          <VolumeX className={'hop-volume-flash-icon'} />
+          <VolumeX className={'ko-volume-flash-icon'} />
         ) : flash.volume < 0.5 ? (
-          <Volume1 className={'hop-volume-flash-icon'} />
+          <Volume1 className={'ko-volume-flash-icon'} />
         ) : (
-          <Volume2 className={'hop-volume-flash-icon'} />
+          <Volume2 className={'ko-volume-flash-icon'} />
         )}
-        <span className="hop-volume-flash-track">
-          <span className="hop-volume-flash-fill" style={{ width: `${percent}%` }} />
+        <span className="ko-volume-flash-track">
+          <span className="ko-volume-flash-fill" style={{ width: `${percent}%` }} />
         </span>
-        <span className="hop-volume-flash-value">{percent}%</span>
+        <span className="ko-volume-flash-value">{percent}%</span>
       </div>
     </div>
   );

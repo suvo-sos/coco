@@ -39,34 +39,12 @@ export function VideoSkin({
 }: VideoSkinProps = {}) {
   return (
     <ContainerPrimitive
-      className={cn('media-skin', 'media-container', 'media-video', 'blood-skin', className)}
+      className={cn('media-skin', 'media-container', 'media-video', 'ko-skin', className)}
       data-theme="scaffold"
       data-preset="video"
       {...props}
     >
       {children}
-      {/* SVG refraction map for the liquid-glass control bar. */}
-      <svg className="blood-glass-defs" aria-hidden="true" width="0" height="0">
-        <defs>
-          <filter id="blood-glass" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.012 0.02"
-              numOctaves="2"
-              seed="7"
-              result="noise"
-            />
-            <feGaussianBlur in="noise" stdDeviation="1.4" result="soft" />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="soft"
-              scale="16"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
       <Poster renderImage={renderPoster} />
       <ErrorDialog />
       <VideoControls renderThumbnail={renderThumbnail} />
