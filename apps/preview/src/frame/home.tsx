@@ -7,9 +7,10 @@ export interface ChosenVideo {
   kind: 'mux' | 'mp4';
 }
 
+/** Hosted on Mux, so the deployed page streams a real video with no file bundled. */
 export const SINGLE_VIDEO: ChosenVideo = {
-  id: 'video-4k60',
-  title: 'Video 4K60',
-  src: './video-4k60.mp4',
-  kind: 'mp4',
+  id: 'kanwar-mux',
+  title: 'Kanwar',
+  src: 'https://stream.mux.com/pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE.m3u8',
+  kind: 'mux',
 };

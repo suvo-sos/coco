@@ -18,12 +18,12 @@ const MOVE_THRESHOLD_PX = 20;
 const TICK_MS = 100;
 
 /**
- * The bottom bar (seekbar + time) is driven by one loop, not by a
+ * The control bar (seekbar + keys) is driven by one loop, not by a
  * chain of hover events — so it keeps working no matter how weird
  * the user is with the mouse, and as many times as they repeat it.
  *
  * Every 100ms the loop asks two questions:
- *   1. Is the cursor over the bottom bar right now?
+ *   1. Is the cursor over the control bar right now?
  *   2. Has the cursor really moved in the last 1.5s?
  * The bar shows only when both are true. It sets
  * `data-hop-bar-visible` on the skin root; the CSS in skin.css
@@ -33,7 +33,11 @@ const TICK_MS = 100;
 export function VideoIdleHide() {
   useEffect(() => {
     const root = document.querySelector('.blood-skin');
-    const bar = document.querySelector('.blood-skin .video-controls-bottom');
+    // The visible bar is the top panel; the bottom one is hidden in
+    // this skin, but fall back to it if a skin ever swaps them.
+    const bar =
+      document.querySelector('.blood-skin .video-controls-top') ??
+      document.querySelector('.blood-skin .video-controls-bottom');
     if (!root || !bar) return;
 
     let lastRealMove = 0;
@@ -52,6 +56,10 @@ export function VideoIdleHide() {
         pointerY >= rect.top &&
         pointerY <= rect.bottom;
       const idle = Date.now() - lastRealMove > IDLE_MS;
+      // Moving anywhere in the player wakes the bar for 1.5s; resting
+      // on the bar itself keeps it awake, so hovering it never fights
+      // the timer.
+      const awake = insidePlayer && !idle;
       // Only a keyboard (Tab) focus keeps the bar open. Clicking the
       // seekbar focuses its thumb too, and that click focus must not
       // pin the bar open — otherwise the bar never hides until
@@ -60,7 +68,7 @@ export function VideoIdleHide() {
       const active = document.activeElement;
       const focused = !!active && bar.contains(active) && active.matches(':focus-visible');
       const scrubbing = root.hasAttribute('data-hop-scrubbing');
-      if (scrubbing || (overBar && !idle) || focused) {
+      if (scrubbing || overBar || awake || focused) {
         root.setAttribute('data-hop-bar-visible', '');
       } else {
         root.removeAttribute('data-hop-bar-visible');

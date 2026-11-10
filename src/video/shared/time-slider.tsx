@@ -5,13 +5,10 @@ import { TimeSlider as TimeSliderPrimitive } from '@videojs/react';
 
 import { cn } from '@/lib/resolve-class-name';
 
-import { FilmStrip } from './filmstrip';
-
 export function TimeSlider({ audio = false, renderThumbnail }: ThumbnailSlot & { audio?: boolean } = {}) {
   return (
     <div className={'video-controls-slider-row'}>
       <TimeSliderPrimitive.Root className={'media-time-slider'} thumbAlignment="edge">
-        <FilmStrip />
         <TimeSliderPrimitive.Chapters
           className={'media-time-slider-chapters'}
           renderChapter={(props) => (

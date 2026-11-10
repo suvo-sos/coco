@@ -6,11 +6,11 @@ A Video.js v10 video skin for React, styled with CSS. It started from the Scaffo
 
 Kanwar throws away the flat seek bar. The timeline is a staircase of 12 steps rising left to right, and a squashy blue ball hops up the steps as the video plays — and squashes flat when you pause. Play is the ball itself: a big blue ball in the centre, and a blue ball in the bar. Everything else stays honest: round 44px buttons, a floating dark pill bar that stays readable over bright and dark video, visible focus, full keyboard control, and no hopping at all when reduced motion is on. Crazy to look at, still a real player to use.
 
-Mux playback ID (bonus): the preview plays Mux asset `83EzHOvVzVN01AsrD01BCpiH02Pj3S8mfzBOu101w2nHC5s` (NASA Cosmic Dawn trailer, HLS).
+Mux playback ID (bonus): the preview plays Mux asset `pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE` (`https://stream.mux.com/pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE.m3u8`, HLS). Keep the asset live through judging.
 
 ## One minimal page
 
-White page, nothing on top — just the player, playing one video: `export-1794107467997.mp4` (478 MB, the user's own video from his Mac Mini, bundled in `apps/preview/public/`). No header, no icons, no picker, no upload.
+White page, nothing on top — just the player, streaming that Mux asset. No header, no icons, no picker, no upload, and no video file bundled with the site.
 
 ## Develop
 

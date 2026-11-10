@@ -10,6 +10,24 @@ import { Button } from './button';
 import { ButtonTooltip } from './tooltip';
 import { BufferingIndicator } from './video-feedback';
 
+/** How many orbs float inside the play key's lava lamp. */
+const LAVA_ORBS = 12;
+
+/**
+ * The play key is a lava lamp: a yellow glass rectangle with blurred
+ * orbs of colour drifting behind the icon. Decorative only — the
+ * button's own label still says what it does.
+ */
+function PlayLava() {
+  return (
+    <span className="hop-play-lava" aria-hidden="true">
+      {Array.from({ length: LAVA_ORBS }, (_, i) => (
+        <span key={i} className={`hop-play-lava-orb hop-play-lava-orb-${i + 1}`} />
+      ))}
+    </span>
+  );
+}
+
 export function PlayButton({
   className,
   iconClassName,
@@ -23,6 +41,7 @@ export function PlayButton({
         className={(state) => cn('media-play-button', resolveClassName(className, state))}
         {...props}
       >
+        <PlayLava />
         <RotateCcw className={cn('media-button-icon-base', 'media-play-button-restart-icon', iconClassName)} />
         <Play
           fill="currentColor"
