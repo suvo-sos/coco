@@ -6,7 +6,7 @@ import { VideoSkin } from '@/video/skin';
 import type { PlaybackProps } from '../shell/params';
 import type { ChosenVideo } from './home';
 
-/** Page 2: plays the chosen video with the Kanwar K.O. II deck skin. */
+/** Page 2: plays the chosen video with the Docomo K.O. II deck skin. */
 export function Player({ media, video }: { media?: PlaybackProps; video: ChosenVideo }) {
   return (
     <VideoPlayer poster={video.poster}>

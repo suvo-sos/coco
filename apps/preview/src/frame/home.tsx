@@ -9,8 +9,8 @@ export interface ChosenVideo {
 
 /** Hosted on Mux, so the deployed page streams a real video with no file bundled. */
 export const SINGLE_VIDEO: ChosenVideo = {
-  id: 'kanwar-mux',
-  title: 'Kanwar',
+  id: 'docomo-mux',
+  title: 'Docomo',
   src: 'https://stream.mux.com/pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE.m3u8',
   kind: 'mux',
 };

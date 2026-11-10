@@ -1,10 +1,10 @@
-# Kanwar
+# Docomo
 
 A Video.js v10 video skin for React, styled with CSS. It started from the Scaffold skin.
 
 ## Design thinking
 
-Kanwar turns the player into a pocket-operator video deck. The controls are a pale, moulded plastic panel bolted over the footage — a dark chassis lip, an olive LCD for the time — rather than a translucent bar floating on it. An olive LCD holds the time in the deck's right corner, the timeline is a tape groove with an orange tape and a ridged fader cap, volume is a speaker key that opens a volume bar on click, and every function is a chunky key with a printed legend — except the transport, which is icon-only. One key is orange: the transport, like RECORD on a sampler. Depth comes from hard neumorphic shadow instead of glass or glow, so the deck reads the same over bright and dark video, and it stays honest underneath: real Video.js controls, keyboard focus visible on every key and slider, thumb-sized targets on phones, a reduced-motion mode that stops every animation, and no text hardcoded into the interface.
+Docomo turns the player into a pocket-operator video deck. The controls are a pale, moulded plastic panel bolted over the footage — a dark chassis lip, an olive LCD for the time — rather than a translucent bar floating on it. An olive LCD holds the time in the deck's right corner, the timeline is a tape groove with an orange tape and a ridged fader cap, volume is a speaker key that opens a volume bar on click, and every function is a chunky key with a printed legend — except the transport, which is icon-only. One key is orange: the transport, like RECORD on a sampler. Depth comes from hard neumorphic shadow instead of glass or glow, so the deck reads the same over bright and dark video, and it stays honest underneath: real Video.js controls, keyboard focus visible on every key and slider, thumb-sized targets on phones, a reduced-motion mode that stops every animation, and no text hardcoded into the interface.
 
 Mux playback ID (bonus): the preview plays Mux asset `pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE` (`https://stream.mux.com/pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE.m3u8`, HLS). Keep the asset live through judging.
 

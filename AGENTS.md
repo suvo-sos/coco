@@ -10,8 +10,8 @@ We are building this for the Video.js hackathon, where we have to build the next
 
 ## The player right now
 
-- **The preview renders the Kanwar K.O. II skin**: `apps/preview/src/frame/player.tsx` imports `VideoSkin` from `@/video/skin`. Nothing uses the stock Video.js skin or `@videojs/react/video/skin.css`.
-- `src/skins/kanwar/` is an older saved snapshot and is unused.
+- **The preview renders the Docomo K.O. II skin**: `apps/preview/src/frame/player.tsx` imports `VideoSkin` from `@/video/skin`. Nothing uses the stock Video.js skin or `@videojs/react/video/skin.css`.
+- `src/skins/docomo/` is an older saved snapshot and is unused.
 - One page, white background, just the player — no header, no picker, no upload.
 - It plays one video: the Mux HLS asset in `apps/preview/src/frame/home.tsx`.
 - **The concept**: the controls are a pale, moulded plastic deck bolted over the video, built from the Teenage Engineering EP-133 K.O. II reference — a dark chassis lip, an olive LCD for the time, and chunky keys with printed legends. The palette is the reference's: pale plastic `#c7c3c0`, ink `#4a4846`, orange `#d42a02` with highlight `#fb702c`, and the dark PLAY key `#545251`. Depth is hard neumorphic shadow (off-white inset top-left, grey inset bottom-right, cast shadow below), never glass or glow, so the deck reads the same over bright and dark footage.
