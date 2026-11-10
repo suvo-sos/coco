@@ -53,8 +53,8 @@ body {
   transform: none;
 }
 
-/* The screen sits at the bottom of the well. Inset shadows live on the screen
-   itself, so they line up exactly with the inner edge of the walls. */
+/* The screen sits at the bottom of the well. No shadow is cast onto the
+   footage itself: the walls carry their own edge shading. */
 .preview-screen {
   position: relative;
   z-index: 12;
@@ -73,19 +73,6 @@ body {
   overflow: hidden;
 }
 
-.preview-screen::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  border-radius: inherit;
-  pointer-events: none;
-  box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.4),
-    inset 0 calc(var(--well-wall) * 0.45) calc(var(--well-wall) * 0.9) calc(var(--well-wall) * -0.35) rgba(0, 0, 0, 0.5),
-    inset 0 0 calc(var(--well-wall) * 1.2) rgba(0, 0, 0, 0.22);
-}
-
 /* A second layer of physical parts: four equal wall faces that recede from
    the page surface down to the video. The screen is inset by the same
    thickness, so the walls surround it cleanly and the page edge stays flush. */
@@ -98,9 +85,56 @@ body {
   pointer-events: none;
 }
 
+/* The grid lives on a plane tilted into the well: a child layer of each wall
+   is rotated around the wall's inner (footage) rim with a real perspective
+   transform, so the mesh foreshortens with the wall's own 45° story — cells
+   at the page rim stand tall, cells at the footage compress. The material
+   ramp stays painted on the wall underneath, so the depth shading survives. */
 .preview-well-wall {
   position: absolute;
   display: block;
+  --preview-grid-color: rgba(114, 114, 114, 0.28);
+  --preview-grid-size: min(55px, calc(var(--well-wall) * 0.55));
+  --preview-grid-h: linear-gradient(
+    0deg,
+    transparent 24%,
+    var(--preview-grid-color) 25%,
+    var(--preview-grid-color) 26%,
+    transparent 27%,
+    transparent 74%,
+    var(--preview-grid-color) 75%,
+    var(--preview-grid-color) 76%,
+    transparent 77%,
+    transparent
+  );
+  --preview-grid-v: linear-gradient(
+    90deg,
+    transparent 24%,
+    var(--preview-grid-color) 25%,
+    var(--preview-grid-color) 26%,
+    transparent 27%,
+    transparent 74%,
+    var(--preview-grid-color) 75%,
+    var(--preview-grid-color) 76%,
+    transparent 77%,
+    transparent
+  );
+  --preview-grid-perspective: calc(var(--well-wall) * 8);
+  --preview-grid-turn: 50deg;
+}
+
+.preview-well-wall::before {
+  content: '';
+  position: absolute;
+  /* Much longer than the wall so the tilted plane covers the whole face
+     after the rotation; the wall's clip-path trims what spills past. */
+  background: var(--preview-grid-h), var(--preview-grid-v);
+  background-size: var(--preview-grid-size) var(--preview-grid-size),
+    var(--preview-grid-size) var(--preview-grid-size);
+  transform: perspective(var(--preview-grid-perspective))
+    rotateX(var(--preview-grid-tilt-x, 0deg)) rotateY(var(--preview-grid-tilt-y, 0deg));
+  transform-origin: var(--preview-grid-origin);
+  pointer-events: none;
 }
 
 .preview-well-wall--top {
@@ -110,9 +144,15 @@ body {
   height: var(--well-wall);
   clip-path: polygon(0 0, 100% 0, calc(100% - var(--well-wall)) 100%, var(--well-wall) 100%);
   background: linear-gradient(to bottom, #767473 0%, #676564 30%, #535150 58%, #403e3d 82%, #302e2d 100%);
-  box-shadow:
-    inset 0 -14px 18px -12px rgba(0, 0, 0, 0.7),
-    inset 0 2px 0 rgba(255, 255, 255, 0.18);
+  --preview-grid-tilt-x: calc(var(--preview-grid-turn) * -1);
+  --preview-grid-origin: 50% 100%;
+}
+
+.preview-well-wall--top::before {
+  bottom: 0;
+  width: 100%;
+  height: 250%;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.18);
 }
 
 .preview-well-wall--bottom {
@@ -122,9 +162,15 @@ body {
   height: var(--well-wall);
   clip-path: polygon(var(--well-wall) 0, calc(100% - var(--well-wall)) 0, 100% 100%, 0 100%);
   background: linear-gradient(to top, #767473 0%, #676564 30%, #535150 58%, #403e3d 82%, #302e2d 100%);
-  box-shadow:
-    inset 0 14px 18px -12px rgba(0, 0, 0, 0.7),
-    inset 0 -2px 0 rgba(255, 255, 255, 0.14);
+  --preview-grid-tilt-x: var(--preview-grid-turn);
+  --preview-grid-origin: 50% 0%;
+}
+
+.preview-well-wall--bottom::before {
+  top: 0;
+  width: 100%;
+  height: 250%;
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.14);
 }
 
 .preview-well-wall--left {
@@ -134,9 +180,15 @@ body {
   width: var(--well-wall);
   clip-path: polygon(0 0, 100% var(--well-wall), 100% calc(100% - var(--well-wall)), 0 100%);
   background: linear-gradient(to right, #767473 0%, #676564 30%, #535150 58%, #403e3d 82%, #302e2d 100%);
-  box-shadow:
-    inset -14px 0 18px -12px rgba(0, 0, 0, 0.7),
-    inset 2px 0 0 rgba(255, 255, 255, 0.16);
+  --preview-grid-tilt-y: var(--preview-grid-turn);
+  --preview-grid-origin: 100% 50%;
+}
+
+.preview-well-wall--left::before {
+  right: 0;
+  width: 250%;
+  height: 100%;
+  box-shadow: inset 2px 0 0 rgba(255, 255, 255, 0.16);
 }
 
 .preview-well-wall--right {
@@ -146,12 +198,17 @@ body {
   width: var(--well-wall);
   clip-path: polygon(0 var(--well-wall), 100% 0, 100% 100%, 0 calc(100% - var(--well-wall)));
   background: linear-gradient(to left, #767473 0%, #676564 30%, #535150 58%, #403e3d 82%, #302e2d 100%);
-  box-shadow:
-    inset 14px 0 18px -12px rgba(0, 0, 0, 0.7),
-    inset -2px 0 0 rgba(255, 255, 255, 0.14);
+  --preview-grid-tilt-y: calc(var(--preview-grid-turn) * -1);
+  --preview-grid-origin: 0% 50%;
 }
 
-/* The aspect ratio option overrides the skin's own; `auto` lets the media's intrinsic size decide. */
+.preview-well-wall--right::before {
+  left: 0;
+  width: 250%;
+  height: 100%;
+  box-shadow: inset -2px 0 0 rgba(255, 255, 255, 0.14);
+}
+
 .preview-player[style*="--preview-player-ratio"] .media-skin {
   aspect-ratio: var(--preview-player-ratio);
 }

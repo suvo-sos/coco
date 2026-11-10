@@ -19,7 +19,6 @@ export function VideoControlsContent({
 }: ControlsSlots & { center?: boolean; live?: boolean; menu?: ReactNode } = {}) {
   return (
     <>
-      <Controls.Backdrop className={'video-controls-backdrop'} />
       <VideoBufferingIndicator />
       <ControlsContent
         captions={!live && <CaptionsToggle />}

@@ -17,7 +17,6 @@ export function WallSeek() {
         <TimeSliderPrimitive.Buffer className={'wall-seek-buffer'} />
         <TimeSliderPrimitive.Fill className={'wall-seek-fill'} />
       </TimeSliderPrimitive.Track>
-      <TimeSliderPrimitive.Thumb className={'wall-seek-thumb'} />
     </TimeSliderPrimitive.Root>
   );
 }

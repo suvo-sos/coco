@@ -12,8 +12,9 @@
 ## What is on the page right now
 
 - One page, no header and no picker. Background `#A2A09F`.
-- **The playback is the stock Video.js v10 skin**: `apps/preview/src/frame/player.tsx` imports `@videojs/react/video/skin.css` and the stock `VideoSkin` from `@videojs/react/video`. The custom skin in `src/video/` is currently **not** used by the preview.
+- **The playback is the custom skin in `src/video/`**: `apps/preview/src/frame/player.tsx` imports `VideoSkin` from `@/video/skin`. The stock `@videojs/react/video/skin.css` is **not** imported — do not add it back.
 - It plays one video: the Mux HLS asset in `apps/preview/src/frame/home.tsx`.
+- The skin is a **fresh Scaffold base** (React + CSS, from `npx @videojs/cli skin create --base scaffold`). The earlier Docomo K.O. II deck skin and its `src/skins/docomo/` snapshot have been **deleted** — do not restore them.
 
 ## The frame around the video
 
@@ -23,21 +24,36 @@ The video sits in a 3D recessed well, built entirely in `apps/preview/src/frame/
 - `.preview-player`: `--well-wall: clamp(3rem, 8vw, 8rem)` (115.2px at a 1440px window), `padding: var(--well-wall)`, `max-width: calc(var(--preview-player-width) + var(--well-wall) * 2)`, `overflow: hidden`, **sharp corners** (`border-radius: 0`).
 - Video size: `--preview-player-width` defaults to **960px** at 16:9 → **960 × 540**; the frame totals **1190.4 × 770.4** at a 1440px window. It only shrinks below a ~1297px window.
 - `.preview-screen`: the video box, `z-index: 12`, radius `--preview-screen-radius` (currently `0`, sharp), plus a `::after` vignette that darkens the edges into the walls.
-- `.preview-well`: four wall strips (`.preview-well-wall--top/right/bottom/left`) that recede at 45° into the video. Each is cut with a `clip-path` polygon so the outer rim is long and the edge at the footage is short — that chamfer is the whole 3D read, there is no perspective transform.
+- `.preview-well`: four wall strips (`.preview-well-wall--top/right/bottom/left`) that recede at 45° into the video. Each is cut with a `clip-path` polygon so the outer rim is long and the edge at the footage is short — that chamfer is the whole 3D read, there is no perspective transform on the room.
 - Wall material: gradient `#767473 → #676564 → #535150 → #403e3d → #302e2d`, plus inset shadows on the inner edge and a highlight on the outer edge of each face.
+
+## Working on the 3D view box
+
+The skin's parts live **in the room**, not in a bar over the video. Read this before adding or moving anything mounted on a wall.
+
+- **Only two wall parts exist so far.** The transport key on the left wall (`src/video/shared/wall-play.tsx`, `.wall-play*` in `src/video/skin.css`) and the progress bar on the bottom wall (`src/video/shared/wall-seek.tsx`, `.wall-seek*`). The top and right walls are empty; the scaffold control bar still holds volume, captions, settings and fullscreen.
+- **Everything is measured in wall thickness.** Skin parts read `var(--well-wall, 7rem)` — never hardcode pixels. That single number keeps a part flush with its wall at every player size, including phone width (48px) and desktop (115.2px).
+- **Match the wall's chamfer.** A wall strip is `--well-wall` thick, and its `clip-path` insets the inner rim by exactly one wall thickness at each end, so the taper is 45°:
+  - left wall: `polygon(0 0, 100% wall, 100% calc(100% - wall), 0 100%)`
+  - bottom wall: `polygon(wall 0, calc(100% - wall) 0, 100% 100%, 0 100%)`
+  Derive the top and right walls the same way. The rim at the page surface is the **long** one; the rim at the footage is **short**.
+- **Position wall parts with negative offsets.** A part on a wall is a child of the player container, which is the video box, so it is placed with `left/top/right/bottom: calc(var(--well-wall) * -1)` and a matching size. Painting outside the video box works because `skin.css` sets `.media-skin.media-container.media-video { overflow: visible }` **outside** `@layer components` — the frame's own unclipped rules in `preview.css` are unlayered, so unlayered skin rules and a 3-class selector are what beat them. Do not move that override into a layer.
+- **Shade along the depth axis, never along the length.** Each wall is lit from its outer rim to its inner rim: side-to-side on the left/right walls, bottom-to-top on the top/bottom walls. Gradients, fills, buffers and playheads all run on that axis. A gradient running along a bar's length flattens the face and kills the depth read.
+- **The perspective is one-way.** Near edges are taller/larger, far edges shorter/smaller, and the top and bottom edges of a face tilt. Small parts get this with a single `perspective(...) rotateY(...)` (see `--wall-play-perspective` and `--wall-play-turn` on `.wall-play`), which is what makes the key's left edge stand taller than its right. Big parts use the `clip-path` chamfer above. Nothing on a wall is a plain rectangle.
+- **Walls are not pads.** A part never lies flat on the page or over the video: it sits on a face and recedes with it. Presses travel **into the well**, toward the footage, never toward the page edge (the frame clips at `overflow: hidden`).
+- **Rounded corners need room.** The wall face is a trapezoid, so a rounded part is inset into the face's widest part instead of being clipped by it.
+- **Keep the Video.js behaviour.** Every part is a real v10 primitive (`PlayButton`, `TimeSlider`) rendered with a class and styled by CSS. State comes from the primitive's data attributes and CSS variables (`data-paused`, `data-started`, `data-ended`, `--media-slider-fill`, `--media-slider-buffer`), never from React state.
+- **Focus and motion.** Focus rings are drawn inside the part or just around it (never clipped away), and every transition rides `--media-duration-*` so `prefers-reduced-motion: reduce` switches it off.
+- **Design decisions are recorded in `design/spec.md`.** Update it with the section when you add a wall part.
 
 ## Things that were built and then removed
 
-Do not bring these back unless asked: the three thin yellow tape strips, the wall-mounted trapezoid play/pause key on the left wall, the corner index marks (dot + number `01–04`), the deck slot in the bottom wall, and the `Enter Deck` button.
-
-## The old K.O. II skin (not in use)
-
-`src/video/` still contains the earlier Docomo K.O. II deck skin — pale moulded plastic deck, olive LCD, chunky keys, clean mode, right-drag seek, flash indicators — and `src/skins/docomo/` is an older saved snapshot. The preview no longer imports either. It is kept as reference work for the next skin.
+Do not bring these back unless asked: the three thin yellow tape strips, the corner index marks (dot + number `01–04`), the deck slot in the bottom wall, and the `Enter Deck` button.
 
 ## Commands
 
 - `npm install`, then `npm run dev` to run it.
-- `npm run typecheck` and `npm run build` must stay clean.
+- `npm run typecheck` and `npm run build` must stay clean — but only run them when asked. For fast visual edits, just make the change and reload the preview.
 
 ## The hackathon brief (pasted from the challenge page)
 #Video.js Skins Design Challenge

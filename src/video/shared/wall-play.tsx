@@ -15,6 +15,7 @@ import { PlayButton as PlayButtonPrimitive } from '@videojs/react';
 export function WallPlayKey() {
   return (
     <PlayButtonPrimitive className={'wall-play'}>
+      <span className={'wall-play-face'} aria-hidden={'true'} />
       <span className={'wall-play-icon wall-play-icon-play'} aria-hidden={'true'}>
         <svg className={'wall-play-glyph'} viewBox={'0 0 24 24'} focusable={'false'}>
           <path

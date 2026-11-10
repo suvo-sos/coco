@@ -13,7 +13,6 @@ export function VideoControls({ renderThumbnail }: ThumbnailSlot = {}) {
   return (
     <Controls.Root>
       <VideoControlsContent
-        center
         menu={<SettingsMenu />}
         renderThumbnail={renderThumbnail}
         seekBackward={

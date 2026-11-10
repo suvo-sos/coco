@@ -23,20 +23,37 @@ the wall thickness from it and match its chamfer.
 
 ### The transport key
 
-- **Shape** — the button's own box is cut to the left wall's trapezoid (full
-  frame height on the outer rim, inset by one wall thickness top and bottom on
-  the inner rim), so its hit area is the wall face and nothing else.
-- **Material** — none. The wall is left as it is: no plate, no background, no
-  border, no halo. Only the glyph is drawn on the wall.
-- **Press** — the glyph travels 3px into the well, along the wall's recession,
-  and returns. Pressing never moves it off the page edge.
-- **Glyph** — `rgb(38,37,42)` with a 1px white emboss, sized at 60% of the
-  wall thickness (69px at a 1440px window, 29px at phone width). Play
-  triangle, two pause bars, and a replay arc for an ended video.
-- **Focus** — a 3px white ring inset inside the chamfer, so the ring can never
-  spill into the video.
-- **Motion** — the press rides `--media-duration-fast` and is switched off
-  under `prefers-reduced-motion: reduce`.
+- **Shape** — the button's box is the left wall's whole face, edge to edge, so
+  the entire wall is the hit area. On it rests a rounded key, `0.7rem`
+  corners, **taller than it is wide**: 72% of the wall across and 150% down,
+  pushed against the footage so only 4% of wall separates the key from the
+  video and the open wall sits behind it. At a 1440px window that is
+  ~83 × 173px before the
+  turn, and it holds that proportion at every player size because both sides
+  come from the wall thickness. Inset 20% from each side so the rounded
+  corners are never cut off by the room.
+- **Perspective** — the key lies on the wall, so its near edge at the page
+  surface stands taller than its far edge at the footage. One transform does
+  it: `perspective(120px) rotateY(40deg)`, giving roughly a 65% taper (left
+  edge ≈230px, right ≈139px at a 1440px window) and the matching tilt of the
+  top and bottom edges. Both numbers are tokens on `.wall-play`
+  (`--wall-play-perspective`, `--wall-play-turn`); lower the perspective or
+  raise the turn to make the near edge taller still.
+- **Material** — violet gradient face, outer rim to footage
+  (`rgb(214,202,254)` → `rgb(158,129,254)`), a 2px `rgb(50,50,50)` border with
+  a **5px** edge facing the footage, and a violet `drop-shadow` halo.
+- **Press** — the key travels 3px into the well along the wall's recession,
+  the thick edge flattens from 5px to 2px, and the face dims slightly.
+- **Glyph** — white (`#fff`) with a 1px dark shadow so its edge holds against
+  the violet, sized at 50% of the wall thickness (58px at a 1440px window,
+  24px at phone width). Play triangle, two pause bars, and a replay arc for
+  an ended video. The glyph carries the **same** `perspective() rotateY()`
+  turn as the key, so its near edge stands taller than its far edge too
+  (≈69px against ≈51px at that size) instead of floating flat on a turned
+  face.
+- **Focus** — a 3px white ring around the rounded key, offset 2px.
+- **Motion** — key and face transitions ride `--media-duration-fast` and are
+  switched off under `prefers-reduced-motion: reduce`.
 
 ## Not yet designed
 

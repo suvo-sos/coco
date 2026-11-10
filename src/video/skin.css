@@ -1852,24 +1852,6 @@
     }
   }
 
-  @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
-    .video-controls-backdrop {
-      pointer-events: none;
-      background-image: linear-gradient(to top, #00000080, #0000 40% 60%, #0006);
-      position: absolute;
-      inset: 0;
-    }
-
-    .video-controls-backdrop:not([data-visible]) {
-      display: none;
-    }
-
-    @media (forced-colors: active) {
-      .video-controls-backdrop {
-        background-image: none;
-      }
-    }
-  }
 
   @scope (.media-skin[data-theme="scaffold"][data-preset="video"]) {
     @media (hover: hover) {
@@ -1938,13 +1920,14 @@
 /* ─────────────────────────────────────────────────────────────────────────
    The transport key on the left wall
 
-   The key owns the left wall of the well: same box, same chamfer, so its hit
-   area is that face edge to edge. It paints nothing on the wall — no plate,
-   no background — only its glyph, so the room's own material stays untouched
-   and the transport is marked on it rather than mounted over it.
+   The key owns the left wall of the well: its box is that wall face, edge to
+   edge, so the whole wall is the hit area. On it rests a rounded key — the
+   reference push button, turned onto the wall: violet face, dark border, a
+   thick edge facing the footage, a violet halo, and a press that sends the
+   key 3px into the well along the wall's own recession.
 
-   The button still moves: pressing sends the glyph 3px into the well, along
-   the wall's own recession, never off the page edge.
+   The rounded key is inset inside the wall's trapezoid, in the rectangle the
+   chamfer leaves, so its corners have room and are never cut off.
 
    It paints outside the video box, so the container stops clipping — these
    rules sit outside `@layer components` on purpose, because the preview
@@ -1959,11 +1942,19 @@
   /* Wall thickness, read from the frame that owns the well. */
   --wall-play-thickness: var(--well-wall, 7rem);
   /* Glyph size, as a share of the wall. */
-  --wall-play-glyph: calc(var(--wall-play-thickness) * 0.6);
-  /* The glyph's ink, the key's only marking: no plate, no background. */
-  --wall-play-ink: rgb(38 37 42);
+  --wall-play-glyph: calc(var(--wall-play-thickness) * 0.5);
+  /* The glyph reads white on the violet face. */
+  --wall-play-glyph-ink: #fff;
+  /* The key's ink and face. */
+  --wall-play-ink: rgb(50 50 50);
+  --wall-play-face-top: rgb(214 202 254);
+  --wall-play-face-bottom: rgb(158 129 254);
   /* How far the key travels into the well when pressed. */
   --wall-play-travel: 3px;
+  /* The key's own perspective: how strongly its near edge stands over its
+     far edge, and how much of it is turned to the room. */
+  --wall-play-perspective: 120px;
+  --wall-play-turn: 40deg;
 
   position: absolute;
   z-index: 3;
@@ -1981,15 +1972,37 @@
   color: var(--wall-play-ink);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  /* Cut to the wall face, so the hit area is the wall and nothing else. */
-  clip-path: polygon(
-    0 0,
-    100% var(--wall-play-thickness),
-    100% calc(100% - var(--wall-play-thickness)),
-    0 100%
-  );
   transform: translateX(0);
   transition: transform var(--media-duration-fast, 120ms) linear;
+}
+
+/* The key: a rounded key resting on the wall face, centered on it, square
+   with its own width — inset inside the wall's trapezoid, so its rounded
+   corners have room and are never cut off by the room. */
+.wall-play-face {
+  position: absolute;
+  top: 50%;
+  /* Set against the footage: the key runs right up to the video edge, with
+     the rest of the wall open toward the page surface. 70% of the wall across
+     and 150% down, so it holds that proportion at every player size because
+     both sides come from the wall thickness. */
+  left: calc(var(--wall-play-thickness) * 0.3);
+  right: 0;
+  height: calc(var(--wall-play-thickness) * 1.5);
+  /* The key lies on the wall, so it follows the room: the near edge, at the
+     page surface, is turned toward the viewer and stands taller than the far
+     edge at the footage. One transform gives the taper, the tilt of the top
+     and bottom edges, and the foreshortening of the border as one piece. */
+  transform: translateY(-50%) perspective(var(--wall-play-perspective, 120px)) rotateY(var(--wall-play-turn, 40deg));
+  background-image: linear-gradient(to right, var(--wall-play-face-top), var(--wall-play-face-bottom));
+  border: 2px solid var(--wall-play-ink);
+  border-right-width: 5px;
+  border-radius: 0.7rem;
+  box-shadow: 0 1px 6px rgb(158 129 254 / 0.5);
+  transition:
+    background-image var(--media-duration-fast, 120ms) linear,
+    border-right-width var(--media-duration-fast, 120ms) linear,
+    filter var(--media-duration-fast, 120ms) linear;
 }
 
 .wall-play-icon {
@@ -1997,8 +2010,14 @@
   display: none;
   width: var(--wall-play-glyph);
   height: var(--wall-play-glyph);
-  color: var(--wall-play-ink);
-  filter: drop-shadow(0 1px 0 rgb(255 255 255 / 0.45));
+  color: var(--wall-play-glyph-ink);
+  filter: drop-shadow(0 1px 1px rgb(50 50 50 / 0.5));
+  /* The glyph lies on the same face as the key, so it takes the same turn:
+     its near edge stands taller than its far edge, exactly like the key
+     around it. It is also carried in off the wall's centre to sit on the key,
+     which itself is pushed toward the footage. */
+  transform: translateX(calc(var(--wall-play-thickness) * 0.15))
+    perspective(var(--wall-play-perspective)) rotateY(var(--wall-play-turn));
   transition: color var(--media-duration-fast, 120ms) linear;
 }
 
@@ -2026,14 +2045,23 @@
   display: none;
 }
 
-/* Press: the glyph travels into the well. */
+/* Press: the key travels into the well and its thick edge flattens. */
 .wall-play:active {
   transform: translateX(var(--wall-play-travel));
 }
 
+.wall-play:active .wall-play-face {
+  border-right-width: 2px;
+  filter: brightness(0.96);
+}
+
 @media (hover: hover) {
+  .wall-play:hover .wall-play-face {
+    background-image: linear-gradient(to right, rgb(226 216 255), rgb(172 147 255));
+  }
+
   .wall-play:hover .wall-play-icon {
-    color: #17161a;
+    color: #fff;
   }
 }
 
@@ -2045,14 +2073,19 @@
   opacity: 0.45;
 }
 
-/* Focus stays inside the chamfer: the ring is drawn on the wall face. */
+/* Focus: a light ring around the rounded key. */
 .wall-play:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 3px #fff;
+}
+
+.wall-play:focus-visible .wall-play-face {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wall-play {
+  .wall-play,
+  .wall-play-face {
     transition: none;
   }
 }
@@ -2060,17 +2093,24 @@
 /* ─────────────────────────────────────────────────────────────────────────
    The progress bar on the bottom wall
 
-   Same rule as the transport key: the plate is cut to the wall's own
-   trapezoid and covers that face, so the bar is the wall. The played share
-   sweeps from the outer rim toward the footage in the key's violet, the
-   buffer sits one step above the plate, and the whole face is the slider.
+   The plate is the wall: cut to the bottom wall's own trapezoid, so the
+   band's ends follow the room — at the footage the edge is short, at the page
+   surface it runs long. No borders, no halo: a slim groove with the violet
+   played share and a white cap.
+
+   The played share's leading edge leans the same way the wall does: at the
+   inner (high) rim it sits on the true position, and at the outer (front) rim
+   it stands one wall thickness further out, so the front is longer while the
+   inner edge stays shorter. That lean is why the head is offset by half a
+   wall: it rides the middle of the diagonal.
    ───────────────────────────────────────────────────────────────────────── */
 
 .wall-seek {
   --wall-seek-thickness: var(--well-wall, 7rem);
-  /* Plate, groove and fill, in the transport key's family. */
-  --wall-seek-ink: rgb(28 27 32);
-  --wall-seek-buffer: rgb(88 86 96);
+  --wall-seek-depth: var(--wall-seek-thickness);
+  --wall-seek-groove-near: rgb(74 72 80);
+  --wall-seek-groove-far: rgb(40 39 44);
+  --wall-seek-buffer: rgb(96 94 104);
   --wall-seek-fill-near: rgb(226 216 255);
   --wall-seek-fill-far: rgb(150 120 248);
 
@@ -2082,23 +2122,13 @@
   height: var(--wall-seek-thickness);
   cursor: pointer;
   touch-action: none;
-  filter: drop-shadow(0 1px 6px rgb(158 129 254 / 0.45));
 }
 
 .wall-seek-track {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  /* The plate is shaded down its depth, not along its length: the long rim at
-     the page surface catches the light and the short rim at the footage falls
-     into shadow, exactly as the wall itself is lit. */
-  background-image: linear-gradient(to top, rgb(62 60 68), rgb(34 33 38));
-  /* 2px ink on the rect rims, 5px on the rim that meets the footage. */
-  box-shadow:
-    inset 0 5px 0 var(--wall-seek-ink),
-    inset 0 -2px 0 var(--wall-seek-ink),
-    inset 2px 0 0 var(--wall-seek-ink),
-    inset -2px 0 0 var(--wall-seek-ink);
+  background-image: linear-gradient(to top, var(--wall-seek-groove-near), var(--wall-seek-groove-far));
   clip-path: polygon(
     var(--wall-seek-thickness) 0,
     calc(100% - var(--wall-seek-thickness)) 0,
@@ -2111,79 +2141,42 @@
 .wall-seek-fill {
   position: absolute;
   inset-block: 0;
+  /* The leading edge leans: the front of the bar reaches one wall thickness
+     beyond the position the inner rim shows. */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--wall-seek-depth)) 100%,
+    0 100%
+  );
 }
 
 .wall-seek-buffer {
   left: 0;
-  right: calc(100% - var(--media-slider-buffer, 0%));
+  right: calc(100% - var(--media-slider-buffer, 0%) - var(--wall-seek-depth));
   background-color: var(--wall-seek-buffer);
 }
 
 .wall-seek-fill {
   left: 0;
-  right: calc(100% - var(--media-slider-fill, 0%));
-  /* Same depth as the plate: bright along the near rim, deepening toward the
-     footage, so the played share lies on the receding face instead of on it. */
+  right: calc(100% - var(--media-slider-fill, 0%) - var(--wall-seek-depth));
   background-image: linear-gradient(to top, var(--wall-seek-fill-near), var(--wall-seek-fill-far));
-  box-shadow: inset 0 8px 12px -8px rgb(0 0 0 / 0.55);
 }
 
 .wall-seek[data-dragging] .wall-seek-fill {
-  right: calc(100% - var(--media-slider-pointer, 0%));
+  right: calc(100% - var(--media-slider-pointer, 0%) - var(--wall-seek-depth));
 }
 
-/* The playhead: a cap that sits in the groove like a fader, lit from the near
-   rim like everything else on the wall. */
-.wall-seek-thumb {
-  position: absolute;
-  top: 50%;
-  left: var(--media-slider-fill, 0%);
-  width: calc(var(--wall-seek-thickness) * 0.16);
-  height: calc(var(--wall-seek-thickness) * 0.62);
-  transform: translate(-50%, -50%);
-  background-image: linear-gradient(to top, var(--wall-seek-fill-near), var(--wall-seek-fill-far));
-  border: 2px solid var(--wall-seek-ink);
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
-  outline: none;
-}
-
-.wall-seek[data-dragging] .wall-seek-thumb {
-  left: var(--media-slider-pointer);
-}
-
-.wall-seek-thumb:focus-visible {
-  border-color: #fff;
-}
-
-/* Keyboard focus: the plate takes the ring, inside the chamfer. */
+/* Keyboard focus: a violet ring around the track, never clipped. */
 .wall-seek:focus-visible {
   outline: none;
 }
 
 .wall-seek:focus-visible .wall-seek-track {
-  box-shadow:
-    inset 0 0 0 3px #fff,
-    inset 0 5px 0 var(--wall-seek-ink),
-    inset 0 -2px 0 var(--wall-seek-ink),
-    inset 2px 0 0 var(--wall-seek-ink),
-    inset -2px 0 0 var(--wall-seek-ink);
+  box-shadow: 0 0 0 calc(var(--wall-seek-thickness) * 0.06) rgb(158 129 254);
 }
 
 .wall-seek[data-disabled] {
   cursor: not-allowed;
   opacity: 0.55;
-}
-
-@media (hover: hover) {
-  .wall-seek:hover .wall-seek-fill {
-    background-image: linear-gradient(to top, rgb(238 230 255), rgb(166 140 252));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .wall-seek-fill,
-  .wall-seek-thumb {
-    transition: none;
-  }
 }
