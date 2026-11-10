@@ -1,7 +1,7 @@
 /** @jsxImportSource react */
 
 import { SeekIndicator as SeekIndicatorPrimitive } from '@videojs/react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronIcon as ChevronIconPrimitive } from '@videojs/react/icons/scaffold';
 
 import { cn } from '@/lib/resolve-class-name';
 
@@ -9,7 +9,7 @@ import { cn } from '@/lib/resolve-class-name';
 export function SeekIndicator() {
   return (
     <SeekIndicatorPrimitive.Root className={cn('media-indicator', 'media-seek-indicator')}>
-      <ChevronRight className={'media-seek-indicator-icon'} />
+      <ChevronIconPrimitive className={'media-seek-indicator-icon'} />
       <SeekIndicatorPrimitive.Value className={'media-seek-indicator-value'} />
     </SeekIndicatorPrimitive.Root>
   );

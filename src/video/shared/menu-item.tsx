@@ -1,14 +1,14 @@
 /** @jsxImportSource react */
 
 import { Menu as MenuPrimitive } from '@videojs/react';
-import { Check } from 'lucide-react';
+import { CheckIcon as CheckIconPrimitive } from '@videojs/react/icons/scaffold';
 
 export function RadioItem({ children, ...props }: MenuPrimitive.RadioItemProps) {
   return (
     <MenuPrimitive.RadioItem className={'media-menu-radio-item'} {...props}>
       {children}
       <MenuPrimitive.ItemIndicator forceMount className={'media-menu-indicator'}>
-        <Check className={'media-menu-radio-icon'} />
+        <CheckIconPrimitive className={'media-menu-radio-icon'} />
       </MenuPrimitive.ItemIndicator>
     </MenuPrimitive.RadioItem>
   );

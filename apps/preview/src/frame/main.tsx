@@ -2,7 +2,6 @@ import { I18nProvider } from '@videojs/react/i18n';
 import { type CSSProperties, StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import '@/skin.css';
 import './preview.css';
 import { playbackProps, playerStyles } from '../shell/params';
 import { initialParams, onParamsChange } from './frame';
@@ -19,7 +18,15 @@ function Preview() {
     <I18nProvider locale={params.locale}>
       <div className="hop-page">
         <div className="preview-player" style={playerStyles(params) as CSSProperties}>
-          <Player media={playbackProps(params)} video={SINGLE_VIDEO} />
+          <div className="preview-screen">
+            <Player media={playbackProps(params)} video={SINGLE_VIDEO} />
+          </div>
+          <div className="preview-well" aria-hidden="true">
+            <span className="preview-well-wall preview-well-wall--top" />
+            <span className="preview-well-wall preview-well-wall--right" />
+            <span className="preview-well-wall preview-well-wall--bottom" />
+            <span className="preview-well-wall preview-well-wall--left" />
+          </div>
         </div>
       </div>
     </I18nProvider>

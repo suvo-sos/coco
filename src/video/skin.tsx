@@ -11,18 +11,14 @@ import { cn } from '@/lib/resolve-class-name';
 
 import { VideoGestures } from './behaviors/gestures';
 import { VideoHotkeys } from './behaviors/hotkeys';
-import { VideoIdleHide } from './behaviors/idle-hide';
-import { VideoPlayPauseFlash } from './behaviors/play-pause-flash';
-import { VideoRightDragSeek } from './behaviors/right-drag-seek';
-import { VideoSkipFlash } from './behaviors/skip-flash';
-import { VideoVolumeFlash } from './behaviors/volume-flash';
-import { VideoWheelVolume } from './behaviors/wheel-volume';
 import { VideoControls } from './controls';
 import { ErrorDialog } from './shared/error-dialog';
 import { Indicators } from './shared/indicators';
 import { SeekIndicator } from './shared/seek-indicator';
 import { StatusAnnouncer } from './shared/status-announcer';
 import { Poster } from './shared/video-feedback';
+import { WallPlayKey } from './shared/wall-play';
+import { WallSeek } from './shared/wall-seek';
 
 export interface VideoSkinProps extends Omit<ContainerPrimitive.Props, 'children'> {
   children?: ReactNode;
@@ -30,33 +26,23 @@ export interface VideoSkinProps extends Omit<ContainerPrimitive.Props, 'children
   renderThumbnail?: SliderPrimitive.Thumbnail.ImageProps['render'];
 }
 
-export function VideoSkin({
-  children,
-  className,
-  renderPoster,
-  renderThumbnail,
-  ...props
-}: VideoSkinProps = {}) {
+export function VideoSkin({ children, className, renderPoster, renderThumbnail, ...props }: VideoSkinProps = {}) {
   return (
     <ContainerPrimitive
-      className={cn('media-skin', 'media-container', 'media-video', 'ko-skin', className)}
+      className={cn('media-skin', 'media-container', 'media-video', className)}
       data-theme="scaffold"
       data-preset="video"
       {...props}
     >
       {children}
       <Poster renderImage={renderPoster} />
+      <WallPlayKey />
+      <WallSeek />
       <ErrorDialog />
       <VideoControls renderThumbnail={renderThumbnail} />
 
       <VideoHotkeys />
       <VideoGestures />
-      <VideoIdleHide />
-      <VideoPlayPauseFlash />
-      <VideoSkipFlash />
-      <VideoVolumeFlash />
-      <VideoRightDragSeek />
-      <VideoWheelVolume />
       <StatusAnnouncer />
       <Indicators>
         <SeekIndicator />

@@ -1,7 +1,10 @@
 /** @jsxImportSource react */
 
 import { CaptionsButton as CaptionsButtonPrimitive } from '@videojs/react';
-import { Captions } from 'lucide-react';
+import {
+  CaptionsOffIcon as CaptionsOffIconPrimitive,
+  CaptionsOnIcon as CaptionsOnIconPrimitive,
+} from '@videojs/react/icons/scaffold';
 
 import { cn, resolveClassName } from '@/lib/resolve-class-name';
 
@@ -25,8 +28,8 @@ export function CaptionsButton({ className, ...props }: CaptionsButtonProps = {}
       className={(state) => cn('media-captions-button', resolveClassName(className, state))}
       {...props}
     >
-      <Captions className={cn('media-button-icon', 'media-captions-button-off-icon')} />
-      <Captions className={cn('media-button-icon', 'media-captions-button-on-icon')} />
+      <CaptionsOffIconPrimitive className={cn('media-button-icon', 'media-captions-button-off-icon')} />
+      <CaptionsOnIconPrimitive className={cn('media-button-icon', 'media-captions-button-on-icon')} />
     </CaptionsButtonPrimitive>
   );
 }
