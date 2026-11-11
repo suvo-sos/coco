@@ -68,11 +68,12 @@
   --foreground: #ffffff;
   /* The roundness scale. Each level is one number, so every nested corner is
      parallel to the one around it instead of being an unrelated value:
-     plate 43 → panel 33 (bar, menu card) → panel inner 27 (33 − 6 padding)
-     → row 12 → circles 50%. */
+     plate 43 → control 33 → settings card 18 → row 12 → circles 50%.
+     The card is deliberately the softest-cornered of the panels: it is small,
+     so the bar's 33px reads as a stadium at that size. */
   --vo-radius-plate: 43px;
   --vo-radius-panel: 33px;
-  --vo-radius-panel-inner: calc(var(--vo-radius-panel) - 6px);
+  --vo-radius-card: 18px;
   --vo-radius-row: 12px;
   --vo-ease: cubic-bezier(0.22, 0.78, 0.2, 1);
 
@@ -167,7 +168,9 @@
 .ko-skin .vo-bar {
   pointer-events: auto;
   width: 100%;
-  max-width: 36rem;
+  /* Full width of the dock: the panel reaches the picture's edges instead of
+     stopping at a 36rem pill. */
+  max-width: none;
   padding: 12px 14px;
   border: 0;
   border-radius: var(--vo-radius-panel);
@@ -437,8 +440,9 @@
   --media-popup-side-offset: var(--media-popover-side-offset);
   isolation: isolate;
   border: 0;
-  border-radius: var(--vo-radius-panel);
-  /* The same liquid glass as the bar, so the card and the keys are one pane. */
+  border-radius: var(--vo-radius-card);
+  /* The same liquid glass as the control, so the card and the keys are one
+     pane — just a smaller corner, because the card is a smaller box. */
   background: var(--vo-dark);
   --vo-liquid: blur(0px) url(#glass-distortion) blur(0px) saturate(1.5) brightness(1.1);
   backdrop-filter: var(--vo-liquid);
@@ -476,7 +480,7 @@
   padding: 6px;
   gap: 4px !important;
   border-radius: inherit;
-  clip-path: inset(0 round var(--vo-radius-panel));
+  clip-path: inset(0 round var(--vo-radius-card));
   background-color: transparent;
   overflow: hidden;
   scrollbar-width: none;
