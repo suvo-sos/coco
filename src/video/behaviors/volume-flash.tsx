@@ -1,7 +1,8 @@
 /** @jsxImportSource react */
 
-import { Volume1, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+
+import { Volume1, Volume2, VolumeX } from '../shared/icons';
 
 /** How long the volume level stays after the last change, in milliseconds. */
 const SHOW_MS = 1000;
@@ -65,7 +66,7 @@ export function VideoVolumeFlash() {
       <div className="ko-volume-flash-pill" key={flash.key}>
         {off ? (
           <VolumeX className={'ko-volume-flash-icon'} />
-        ) : flash.volume < 0.5 ? (
+        ) : flash.volume <= 0.7 ? (
           <Volume1 className={'ko-volume-flash-icon'} />
         ) : (
           <Volume2 className={'ko-volume-flash-icon'} />

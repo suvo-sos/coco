@@ -1,50 +1,20 @@
 /** @jsxImportSource react */
 
-import { Time, Controls, BufferingIndicator, Tooltip } from '@videojs/react';
+import { Controls, type Slider as SliderPrimitive, Time, Tooltip } from '@videojs/react';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/resolve-class-name';
 
 import { LiveButton } from './live-button';
+import { MuteButton } from './mute-button';
 import { AudioPlayButton, PlayButton } from './play-button';
-import { TimeSlider } from './time-slider';
-import { type ThumbnailSlot } from './time-slider';
-import { VolumeControl } from './volume-control';
+import { ProgressSlider } from './progress-slider';
+import { SpeedChips } from './speed-chips';
+import { VolumeSlider } from './volume-slider';
 
-export function ControlsRow({
-  audio = false,
-  captions,
-  live = false,
-  menu,
-  rate,
-  seekBackward,
-  seekForward,
-}: ControlsSlots & { audio?: boolean; live?: boolean; menu?: ReactNode } = {}) {
-  return (
-    <Controls.Group className={'video-controls-row'}>
-      <Controls.Group className={cn('video-controls-group', 'video-controls-start')}>
-        {audio ? <AudioPlayButton /> : <PlayButton />}
-        {seekBackward}
-        {seekForward}
-        {live && <LiveButton />}
-        {!audio && <VolumeControl />}
-        {!live && (
-          <Time.Group className={'media-time-group'}>
-            <Time.Value className={'media-time-toggle'} type="current" toggle />
-            <Time.Value className={'media-time-current-value'} type="current" />
-            <Time.Separator className={'media-time-separator'} />
-            <Time.Value className={'media-time-duration-value'} type="duration" />
-          </Time.Group>
-        )}
-      </Controls.Group>
-
-      <Controls.Group className={'video-controls-group'}>
-        {captions}
-        {rate}
-        {menu ?? (audio && <VolumeControl />)}
-      </Controls.Group>
-    </Controls.Group>
-  );
+export interface ThumbnailSlot {
+  /** Kept for the skin's API: the custom slider draws its own bubble, so no storyboard frame is rendered. */
+  renderThumbnail?: SliderPrimitive.Thumbnail.ImageProps['render'];
 }
 
 export interface ControlsSlots extends ThumbnailSlot {
@@ -58,6 +28,12 @@ export interface ControlsSlots extends ThumbnailSlot {
   seekForward?: ReactNode;
 }
 
+/**
+ * The bar: a floating frosted panel at the bottom of the picture, not a
+ * full-width strip. One row carries the time, the timeline and the duration;
+ * the row under it carries the transport, the volume fader, the speed chips
+ * and the right-hand keys.
+ */
 export function ControlsContent({
   audio = false,
   captions,
@@ -69,41 +45,57 @@ export function ControlsContent({
   seekBackward,
   seekForward,
   top,
-}: ControlsSlots & { audio?: boolean; center?: boolean; live?: boolean; menu?: ReactNode; top?: ReactNode } = {}) {
+}: ControlsSlots & {
+  audio?: boolean;
+  center?: boolean;
+  live?: boolean;
+  menu?: ReactNode;
+  top?: ReactNode;
+} = {}) {
   return (
-    <Controls.Content className={cn('video-controls-content', audio && 'audio-controls-content')}>
+    <Controls.Content className={cn('video-controls-content', 'vo-content', audio && 'audio-controls-content')}>
       <Tooltip.Provider>
-        {top && <Controls.Group className={'video-controls-top'}>{top}</Controls.Group>}
+        {top && <Controls.Group className={'vo-top'}>{top}</Controls.Group>}
+
         {center && (
-          <BufferingIndicator className={'video-controls-buffering'}>
-            <Controls.Group className={'video-controls-center'}>
-              {seekBackward}
-              <PlayButton
-                className={cn('video-controls-center-button', 'video-controls-center-play')}
-                iconClassName={'video-controls-center-play-icon'}
-                tooltip={false}
-              />
-              {seekForward}
-            </Controls.Group>
-          </BufferingIndicator>
+          <Controls.Group className={'vo-center'}>
+            {seekBackward}
+            <PlayButton
+              className={'vo-center-play'}
+              iconClassName={'vo-center-play-icon'}
+              tooltip={false}
+            />
+            {seekForward}
+          </Controls.Group>
         )}
-        <div
-          className={cn(
-            'video-controls-bottom',
-            audio && 'audio-controls-bottom',
-            !audio && 'video-controls-video-bottom'
-          )}
-        >
-          {!live && <TimeSlider audio={audio} renderThumbnail={renderThumbnail} />}
-          <ControlsRow
-            audio={audio}
-            captions={captions}
-            live={live}
-            menu={menu}
-            rate={rate}
-            seekBackward={center ? undefined : seekBackward}
-            seekForward={center ? undefined : seekForward}
-          />
+
+        <div className={cn('vo-dock', !audio && 'vo-dock-video')}>
+          <div className={'vo-bar'}>
+            <span className={'vo-glass'} aria-hidden="true" />
+            <div className={'vo-progress'}>
+              <Time.Value className={'vo-time'} type="current" />
+              {!live && <ProgressSlider />}
+              {!live && <Time.Value className={'vo-time'} type="duration" />}
+            </div>
+
+            <div className={'vo-keys'}>
+              <div className={'vo-keys-start'}>
+                {audio ? <AudioPlayButton /> : <PlayButton />}
+                {seekBackward}
+                {seekForward}
+                {live && <LiveButton />}
+                {!audio && <MuteButton />}
+                {!audio && <VolumeSlider />}
+              </div>
+
+              <div className={'vo-keys-end'}>
+                {captions}
+                {!audio && !live && <SpeedChips />}
+                {rate}
+                {menu}
+              </div>
+            </div>
+          </div>
         </div>
       </Tooltip.Provider>
     </Controls.Content>

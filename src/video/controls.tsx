@@ -4,7 +4,7 @@ import { Controls } from '@videojs/react';
 
 import { ScreenControls } from './shared/screen-controls';
 import { SettingsMenu } from './shared/settings-menu';
-import type { ThumbnailSlot } from './shared/time-slider';
+import type { ThumbnailSlot } from './shared/controls';
 import { VideoControlsContent } from './shared/video-controls';
 
 /**

@@ -1,0 +1,622 @@
+/* ------------------------------------------------------------------ */
+/* THE GLASS BAR                                                      */
+/*                                                                    */
+/* A floating frosted panel, not a full-width strip: dark translucent  */
+/* glass, rounded, inset a little from the picture, carrying the time  */
+/* on both sides of a thin white rail, then one row of keys — play,    */
+/* mute, volume fader, and on the right the speed chips and the        */
+/* screen keys. It slides up and un-blurs as it appears.               */
+/* ------------------------------------------------------------------ */
+
+/* The player itself is a clean dark plate; the glass is in the controls. */
+.ko-skin {
+  --vo-glass: rgb(14 17 22 / 0.18);
+  --vo-glass-strong: rgb(15 17 21 / 0.72);
+  --vo-gloss: rgb(255 255 255 / 0.18);
+  --vo-water: rgb(186 226 255 / 0.22);
+
+  /* The custom slider, read through the tokens its module falls back on. */
+  --control-track: rgb(255 255 255 / 0.24);
+  --control-fill: #ffffff;
+  --control-thumb: #ffffff;
+  --control-thumb-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.18),
+    0 2px 6px rgb(0 0 0 / 0.35);
+  --control-tick: rgb(255 255 255 / 0.6);
+  --focus-ring: #ffffff;
+  --bubble-bg: rgb(10 10 12 / 0.92);
+  --bubble-fg: #ffffff;
+  --bubble-shadow: 0 6px 18px rgb(0 0 0 / 0.45);
+  --text-secondary: rgb(255 255 255 / 0.72);
+  --foreground: #ffffff;
+  --vo-radius: 16px;
+  --vo-ease: cubic-bezier(0.22, 0.78, 0.2, 1);
+
+  position: relative;
+  isolation: isolate;
+  border-radius: 16px;
+  background-color: #0b0b0c;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.06),
+    0 20px 50px -24px rgb(0 0 0 / 0.45);
+}
+
+/* The picture runs to the edge of the glass, so nothing shows below it. */
+.ko-skin video,
+.ko-skin .media-poster,
+.ko-skin .media-poster-image {
+  border-radius: inherit;
+}
+
+.ko-skin .vo-content {
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------
+   The dock and the panel.
+   ------------------------------------------------------------------ */
+
+.ko-skin .vo-dock {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  pointer-events: none;
+}
+
+.ko-skin .vo-bar {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 36rem;
+  padding: 12px 14px;
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: var(--vo-radius);
+  background-color: var(--vo-glass);
+  /* Wet gloss: a bright bead along the ceiling, a clear middle where the
+     picture shows straight through, a cold bounce off the floor. */
+  background-image:
+    linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.34),
+      rgb(255 255 255 / 0.08) 30%,
+      rgb(255 255 255 / 0) 56%,
+      rgb(214 238 255 / 0.14)
+    ),
+    radial-gradient(110% 160% at 12% 0%, rgb(255 255 255 / 0.26), transparent 58%),
+    radial-gradient(90% 140% at 88% 108%, var(--vo-water), transparent 62%);
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+  font-size: 13px;
+  line-height: 1;
+  box-shadow:
+    0 12px 32px rgb(0 0 0 / 0.22),
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    inset 0 -1px 0 rgb(255 255 255 / 0.14),
+    inset 0 -14px 22px -16px rgb(255 255 255 / 0.35);
+  transition:
+    opacity 480ms var(--vo-ease),
+    transform 480ms var(--vo-ease),
+    filter 480ms var(--vo-ease);
+}
+
+/* The glass layer: the backdrop behind the panel, gently frosted, rippled by the SVG filter. */
+.ko-skin .vo-bar {
+  position: relative;
+  isolation: isolate;
+}
+
+.ko-skin .vo-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
+  -webkit-backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
+  filter: url(#glass-distortion);
+  -webkit-filter: url(#glass-distortion);
+  pointer-events: none;
+}
+
+/* Water, not just frost: two slow highlights drifting across the pane. They
+   sit inside the distorted layer, so the SVG filter bends their edges too. */
+.ko-skin .vo-glass::after {
+  content: '';
+  position: absolute;
+  inset: -30%;
+  border-radius: inherit;
+  background-image:
+    radial-gradient(42% 42% at 26% 20%, rgb(255 255 255 / 0.55), transparent 62%),
+    radial-gradient(36% 36% at 74% 76%, var(--vo-water), transparent 66%),
+    radial-gradient(26% 26% at 88% 30%, rgb(255 255 255 / 0.3), transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  animation: vo-water-drift 18s ease-in-out infinite alternate;
+}
+
+@keyframes vo-water-drift {
+  from {
+    transform: translate3d(-4%, -2%, 0) scale(1.04) rotate(-2deg);
+  }
+
+  50% {
+    transform: translate3d(3%, 2%, 0) scale(1.12) rotate(1deg);
+  }
+
+  to {
+    transform: translate3d(-2%, 4%, 0) scale(1.07) rotate(3deg);
+  }
+}
+
+.ko-skin .vo-progress,
+.ko-skin .vo-keys {
+  position: relative;
+  z-index: 1;
+}
+
+.ko-skin .vo-content:not([data-visible]) .vo-bar {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(8px);
+}
+
+.ko-skin .vo-content:not([data-visible]) .vo-dock {
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------
+   Progress: current time, the rail, the duration.
+   ------------------------------------------------------------------ */
+
+.ko-skin .vo-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ko-skin .vo-time {
+  flex: 0 0 auto;
+  min-width: 32px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgb(255 255 255 / 0.92);
+}
+
+.ko-skin .vo-time:first-child {
+  text-align: start;
+}
+
+.ko-skin .vo-time:last-child {
+  text-align: end;
+}
+
+/* The timeline is the custom slider: a plain rail, a white fill and a thumb
+   that carries the rolling time bubble. */
+.ko-skin .vo-seek {
+  flex: 1 1 auto;
+  min-width: 0;
+  --control-pad: 7px;
+  --thumb-size: 12px;
+  --track-height: 4px;
+  --bubble-lift: 0px;
+}
+
+/* ------------------------------------------------------------------
+   Keys: transport, mute, fader on the left; speed and screen keys right.
+   ------------------------------------------------------------------ */
+
+.ko-skin .vo-keys {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.ko-skin .vo-keys-start,
+.ko-skin .vo-keys-end {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ko-skin .vo-keys-end {
+  flex: 0 0 auto;
+}
+
+.ko-skin .vo-bar .media-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: transparent;
+  color: #ffffff;
+  transition:
+    background-color 150ms ease-out,
+    transform 150ms ease-out;
+}
+
+.ko-skin .vo-bar .media-button-icon,
+.ko-skin .vo-bar .media-button-icon-base {
+  width: 22px;
+  height: 22px;
+}
+
+/* The icon set is drawn on a 1.5 stroke in a 24 box, which reads a touch
+   light at key size, so the bar's glyphs get a slightly heavier line. */
+.ko-skin .vo-bar svg path {
+  stroke-width: 1.7;
+}
+
+@media (hover: hover) {
+  .ko-skin .vo-bar .media-button:hover {
+    background-color: var(--vo-gloss);
+  }
+}
+
+.ko-skin .vo-bar .media-button:active {
+  transform: scale(0.92);
+}
+
+.ko-skin .vo-bar .media-button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------
+   The transport is the one big circle in the bar: a solid white key,
+   much larger than the ghost icon buttons around it, so play/pause is
+   the first thing the eye finds and the easiest thing to hit. It keeps
+   the ghost buttons' focus ring and press feel.
+   ------------------------------------------------------------------ */
+
+.ko-skin .vo-bar .media-play-button {
+  width: 44px;
+  height: 44px;
+  margin-inline-end: 4px;
+  background-color: #ffffff;
+  color: #0b0b0b;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.16),
+    0 4px 12px rgb(0 0 0 / 0.35),
+    0 10px 20px rgb(0 0 0 / 0.18);
+}
+
+.ko-skin .vo-bar .media-play-button .media-button-icon-base {
+  width: 20px;
+  height: 20px;
+}
+
+/* Play, pause and the end-of-video replay arrow all sit on the white key, so
+   they carry a slightly heavier line than the ghost keys' glyphs (1.7). */
+.ko-skin .vo-bar .media-play-button svg path {
+  stroke-width: 2;
+}
+
+/* ------------------------------------------------------------------
+   Speed chips: the four rates sit beside the settings key, pills on the
+   glass, the active one lit.
+   ------------------------------------------------------------------ */
+
+.ko-skin .vo-speeds {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-inline-end: 4px;
+}
+
+.ko-skin .vo-speed {
+  min-width: 34px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 999px;
+  background-color: transparent;
+  color: rgb(255 255 255 / 0.82);
+  font: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-shadow: inherit;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out;
+}
+
+@media (hover: hover) {
+  .ko-skin .vo-speed:hover {
+    background-color: var(--vo-gloss);
+    color: #ffffff;
+  }
+}
+
+.ko-skin .vo-speed[aria-pressed='true'] {
+  background-color: var(--vo-gloss);
+  color: #ffffff;
+}
+
+.ko-skin .vo-speed:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .ko-skin .vo-bar .media-play-button:hover {
+    background-color: #ffffff;
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.16),
+      0 6px 16px rgb(0 0 0 / 0.4),
+      0 14px 26px rgb(0 0 0 / 0.22);
+    transform: scale(1.05);
+  }
+}
+
+.ko-skin .vo-bar .media-play-button:active {
+  transform: scale(0.95);
+}
+
+.ko-skin .vo-bar .media-play-button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+  box-shadow:
+    0 0 0 6px rgb(0 0 0 / 0.55),
+    0 4px 12px rgb(0 0 0 / 0.35);
+}
+
+/* The volume fader: the same slider, short enough to sit beside the keys. */
+.ko-skin .vo-fader {
+  flex: 0 0 auto;
+  width: 96px;
+  margin-inline: 4px 6px;
+  --control-pad: 6px;
+  --thumb-size: 11px;
+  --track-height: 4px;
+  /* The short fader's bubble sits over the thumb, not above it. */
+  --bubble-lift: -7px;
+}
+
+/* ------------------------------------------------------------------
+   The menus: the settings card, the option panels inside it, and every
+   row in both. Same glass as the bar it comes out of — the same tint,
+   gloss, rim and displacement layer — so a submenu reads as another pane
+   of the same material, with each row a pill on top of it.
+   ------------------------------------------------------------------ */
+
+.ko-skin .media-menu-popup {
+  isolation: isolate;
+  border: 1px solid rgb(255 255 255 / 0.26);
+  border-radius: var(--vo-radius);
+  background-color: var(--vo-glass);
+  background-image:
+    linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.3),
+      rgb(255 255 255 / 0.07) 32%,
+      rgb(255 255 255 / 0) 58%,
+      rgb(214 238 255 / 0.12)
+    ),
+    radial-gradient(120% 150% at 16% 0%, rgb(255 255 255 / 0.22), transparent 60%);
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 0.26),
+    inset 0 1px 0 rgb(255 255 255 / 0.55),
+    inset 0 -1px 0 rgb(255 255 255 / 0.14),
+    inset 0 -14px 22px -16px rgb(255 255 255 / 0.3);
+}
+
+/* The same displacement layer the bar wears: the picture under the card is
+   gently frosted and rippled, and the tint and gloss are part of what it
+   distorts, so the panel still reads dark enough for white type. */
+.ko-skin .media-menu-popup::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
+  -webkit-backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
+  filter: url(#glass-distortion);
+  -webkit-filter: url(#glass-distortion);
+}
+
+/* The rows sit above the glass; the incoming submenu still rides over the
+   panel it replaces (the base skin uses z-index 10 for that panel). */
+.ko-skin .media-menu-popup > .media-menu-content {
+  z-index: 1;
+}
+
+.ko-skin .media-menu-popup > .media-menu-content[data-submenu] {
+  z-index: 2;
+}
+
+/* The content is the panel that slides when a submenu opens, so its own
+   clip has to keep the radius instead of squaring the corners. Tight gaps so
+   the first panel shows all its rows without a scrollbar. It stays clear:
+   the glass lives on the popup, so every panel shares one refraction. */
+.ko-skin .media-menu-content {
+  padding: 6px;
+  gap: 4px !important;
+  border-radius: var(--vo-radius);
+  clip-path: inset(0 round var(--vo-radius));
+  background-color: transparent;
+  overflow: hidden;
+  scrollbar-width: none;
+}
+
+.ko-skin .media-menu-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* The rows are lifted over the highlight pill, which is what actually moves;
+   their own background stays clear so only the pill lights a row. */
+.ko-skin .media-menu-item,
+.ko-skin .media-menu-back-item,
+.ko-skin .media-menu-radio-item {
+  position: relative;
+  z-index: 1;
+  min-height: 30px;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.ko-skin .media-menu-item[data-highlighted],
+.ko-skin .media-menu-back-item[data-highlighted],
+.ko-skin .media-menu-radio-item[data-highlighted] {
+  background-color: transparent;
+}
+
+/* One pill for the whole panel: it glides from row to row instead of every
+   row fading its own background, so moving down the list reads as a single
+   smooth flow (pointer and keyboard alike, since both set data-highlighted). */
+.ko-skin .vo-menu-glow {
+  position: absolute;
+  z-index: 0;
+  border-radius: 10px;
+  background-color: var(--vo-gloss);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    top 220ms var(--vo-ease),
+    left 220ms var(--vo-ease),
+    width 220ms var(--vo-ease),
+    height 220ms var(--vo-ease),
+    opacity 140ms ease-out;
+}
+
+.ko-skin .vo-menu-glow[data-on] {
+  opacity: 1;
+}
+
+.ko-skin .media-menu-back-item {
+  margin-block-end: 2px;
+}
+
+/* ------------------------------------------------------------------
+   Smaller players: the max width keeps the panel clear of the edges,
+   the fader goes before the chips do.
+   ------------------------------------------------------------------ */
+
+@media (max-width: 34rem) {
+  .ko-skin .vo-speeds {
+    display: none;
+  }
+}
+
+@media (max-width: 26rem) {
+  .ko-skin .vo-fader {
+    display: none;
+  }
+
+  .ko-skin .vo-bar {
+    padding: 10px 12px;
+  }
+
+  .ko-skin .vo-bar .media-button {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ko-skin .vo-bar .media-play-button {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (pointer: coarse) {
+  .ko-skin .vo-bar .media-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .ko-skin .vo-bar .media-play-button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .ko-skin .vo-seek,
+  .ko-skin .vo-fader {
+    --thumb-size: 15px;
+    --control-pad: 10px;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .ko-skin {
+    background-color: #000000;
+    backdrop-filter: none;
+  }
+
+
+  .ko-skin .vo-bar {
+    background-color: #000000;
+    backdrop-filter: none;
+  }
+
+  .ko-skin .vo-glass {
+    display: none;
+  }
+
+  .ko-skin .media-menu-popup,
+  .ko-skin .media-menu-content {
+    background-color: #000000;
+    background-image: none;
+    backdrop-filter: none;
+  }
+
+  .ko-skin .media-menu-popup::after {
+    display: none;
+  }
+}
+
+/* The glass layer: the backdrop behind the panel, gently frosted and rippled
+   by the SVG filter. It was sitting inside the reduced-motion query, so the
+   ripple only ever ran when motion was turned off; it belongs out here. */
+.ko-skin .vo-bar {
+  position: relative;
+  isolation: isolate;
+}
+
+.ko-skin .vo-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(3px) saturate(140%);
+  -webkit-backdrop-filter: blur(3px) saturate(140%);
+  filter: url(#glass-distortion);
+  -webkit-filter: url(#glass-distortion);
+  pointer-events: none;
+}
+
+.ko-skin .vo-progress,
+.ko-skin .vo-keys {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ko-skin .vo-bar,
+  .ko-skin .vo-menu-glow,
+  .ko-skin .vo-bar .media-button {
+    transition: none;
+  }
+
+  .ko-skin .vo-glass::after {
+    animation: none;
+  }
+
+  .ko-skin .vo-content:not([data-visible]) .vo-bar {
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .ko-skin .vo-bar {
+    border: 1px solid canvastext;
+  }
+
+}

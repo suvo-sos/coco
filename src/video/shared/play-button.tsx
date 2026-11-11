@@ -1,12 +1,12 @@
 /** @jsxImportSource react */
 
 import { PlayButton as PlayButtonPrimitive } from '@videojs/react';
-import { Pause, Play, RotateCcw } from 'lucide-react';
 import type { ClassValue } from 'cn';
 
 import { cn, resolveClassName } from '@/lib/resolve-class-name';
 
 import { Button } from './button';
+import { Pause, Play, RotateCcw } from './icons';
 import { ButtonTooltip } from './tooltip';
 import { BufferingIndicator } from './video-feedback';
 

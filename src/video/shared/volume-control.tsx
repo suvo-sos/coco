@@ -1,7 +1,8 @@
 /** @jsxImportSource react */
 
-import { Volume1, Volume2, VolumeX } from 'lucide-react';
 import { type KeyboardEvent, type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from 'react';
+
+import { Volume1, Volume2, VolumeX } from './icons';
 
 /**
  * The volume control: a speaker key that opens a volume bar (a
@@ -147,7 +148,7 @@ export function VolumeControl() {
   const icon =
     effective === 0 ? (
       <VolumeX strokeWidth={2.5} />
-    ) : effective < 0.5 ? (
+    ) : effective <= 0.7 ? (
       <Volume1 strokeWidth={2.5} />
     ) : (
       <Volume2 strokeWidth={2.5} />

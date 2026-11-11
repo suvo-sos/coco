@@ -1,11 +1,11 @@
 /** @jsxImportSource react */
 
 import { CaptionsButton as CaptionsButtonPrimitive } from '@videojs/react';
-import { Captions } from 'lucide-react';
 
 import { cn, resolveClassName } from '@/lib/resolve-class-name';
 
 import { Button } from './button';
+import { Captions, CaptionsOff } from './icons';
 import { ButtonTooltip } from './tooltip';
 
 export function CaptionsToggle() {
@@ -25,7 +25,7 @@ export function CaptionsButton({ className, ...props }: CaptionsButtonProps = {}
       className={(state) => cn('media-captions-button', resolveClassName(className, state))}
       {...props}
     >
-      <Captions className={cn('media-button-icon', 'media-captions-button-off-icon')} />
+      <CaptionsOff className={cn('media-button-icon', 'media-captions-button-off-icon')} />
       <Captions className={cn('media-button-icon', 'media-captions-button-on-icon')} />
     </CaptionsButtonPrimitive>
   );

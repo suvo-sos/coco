@@ -1,10 +1,11 @@
 /** @jsxImportSource react */
 
 import { StatusIndicator as StatusIndicatorPrimitive } from '@videojs/react';
-import { Captions, Maximize, Minimize, PictureInPicture2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/resolve-class-name';
+
+import { Captions, Maximize, Minimize, PictureInPicture2 } from './icons';
 
 const STATUS_ACTIONS = ['toggleSubtitles', 'toggleFullscreen', 'togglePictureInPicture'] as const;
 

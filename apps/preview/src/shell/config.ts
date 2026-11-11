@@ -14,8 +14,8 @@ export const skin = {
 /** Workbench settings, such as whether the options panel is open, are saved per skin under this prefix. */
 export const storageKey = 'videojs-skin-workbench:docomo';
 
-/** The player width the preview opens at, in pixels. */
-export const defaultWidth = 1600;
+/** The player width the preview opens at, in pixels. Wide enough for the full bar, no wider. */
+export const defaultWidth = 960;
 
 /** Languages Video.js ships translations for; the player loads the selected one itself. */
 export const locales = ["en","ar","az","bs","bg","bn","ca","cs","cy","da","de","el","es","et","eu","fa","fi","fr","gd","gl","he","hi","hr","hu","id","it","ja","ko","lt","lv","mr","nb","nl","nn","ne","oc","pl","pt-BR","pt-PT","ro","ru","sk","sl","sr","sv","te","th","tr","uk","vi","zh-CN","zh-TW"] as const;

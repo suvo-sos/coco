@@ -1,9 +1,10 @@
 /** @jsxImportSource react */
 
-import { ChevronRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/resolve-class-name';
+
+import { ChevronRight } from '../shared/icons';
 
 /** How long the skip effect stays after the last click, in milliseconds. */
 const SHOW_MS = 900;

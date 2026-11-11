@@ -1,7 +1,8 @@
 /** @jsxImportSource react */
 
 import { Menu as MenuPrimitive } from '@videojs/react';
-import { Check } from 'lucide-react';
+
+import { Check } from './icons';
 
 export function RadioItem({ children, ...props }: MenuPrimitive.RadioItemProps) {
   return (

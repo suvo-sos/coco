@@ -4,12 +4,12 @@ import {
   PiPButton as PiPButtonPrimitive,
   FullscreenButton as FullscreenButtonPrimitive,
 } from '@videojs/react';
-import { Maximize, Minimize, PictureInPicture2 } from 'lucide-react';
 
 import { cn } from '@/lib/resolve-class-name';
 
 import { AirPlayButton } from './airplay-button';
 import { Button } from './button';
+import { Maximize, Minimize, PictureInPicture2 } from './icons';
 import { ButtonTooltip } from './tooltip';
 
 function PiPButton() {

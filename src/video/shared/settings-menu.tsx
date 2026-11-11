@@ -2,7 +2,6 @@
 import { audioText, captionsText, qualityText, settingsText, speedText } from '@videojs/core/i18n/text/menu';
 import { Text as TextPrimitive } from '@videojs/react';
 import { Menu } from '@videojs/react';
-import { AudioLines, Captions, ChevronRight, Film, Gauge, Settings } from 'lucide-react';
 import { AudioTrackRadioGroup } from '@videojs/react/ui/audio-track-radio-group';
 import { CaptionsRadioGroup } from '@videojs/react/ui/captions-radio-group';
 import { PlaybackRateRadioGroup } from '@videojs/react/ui/playback-rate-radio-group';
@@ -11,7 +10,9 @@ import { QualityRadioGroup } from '@videojs/react/ui/quality-radio-group';
 import { cn } from '@/lib/resolve-class-name';
 
 import { Button } from './button';
+import { AudioLines, Captions, ChevronRight, Film, Gauge, Settings } from './icons';
 import { RadioItem } from './menu-item';
+import { MenuGlow } from './menu-glow';
 import { ButtonTooltip } from './tooltip';
 
 function MenuChevron({ back = false }: { back?: boolean } = {}) {
@@ -31,6 +32,7 @@ function AudioTrackMenu() {
           </span>
         </Menu.Trigger>
         <Menu.Content className={'media-menu-content'}>
+          <MenuGlow />
           <Menu.Item className={'media-menu-back-item'}>
             <MenuChevron back />
             <TextPrimitive token={audioText.key}>{audioText.text}</TextPrimitive>
@@ -63,6 +65,7 @@ function PlaybackRateMenu() {
           </span>
         </Menu.Trigger>
         <Menu.Content className={'media-menu-content'}>
+          <MenuGlow />
           <Menu.Item className={'media-menu-back-item'}>
             <MenuChevron back />
             <TextPrimitive token={speedText.key}>{speedText.text}</TextPrimitive>
@@ -95,6 +98,7 @@ function QualityMenu() {
           </span>
         </Menu.Trigger>
         <Menu.Content className={'media-menu-content'}>
+          <MenuGlow />
           <Menu.Item className={'media-menu-back-item'}>
             <MenuChevron back />
             <TextPrimitive token={qualityText.key}>{qualityText.text}</TextPrimitive>
@@ -130,6 +134,7 @@ function CaptionsMenu() {
           </span>
         </Menu.Trigger>
         <Menu.Content className={'media-menu-content'}>
+          <MenuGlow />
           <Menu.Item className={'media-menu-back-item'}>
             <MenuChevron back />
             <TextPrimitive token={captionsText.key}>{captionsText.text}</TextPrimitive>
@@ -162,10 +167,11 @@ export function SettingsMenu() {
       </ButtonTooltip>
       <Menu.Popup keepMounted className={cn('media-popup', 'media-popup-safe-area', 'media-menu-popup')}>
         <Menu.Content className={'media-menu-content'}>
+          <MenuGlow />
           <AudioTrackMenu />
           <QualityMenu />
-          <PlaybackRateMenu />
           <CaptionsMenu />
+          <PlaybackRateMenu />
         </Menu.Content>
       </Menu.Popup>
     </Menu.Root>

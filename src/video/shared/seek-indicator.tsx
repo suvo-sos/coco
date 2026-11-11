@@ -1,9 +1,10 @@
 /** @jsxImportSource react */
 
 import { SeekIndicator as SeekIndicatorPrimitive } from '@videojs/react';
-import { ChevronRight } from 'lucide-react';
 
 import { cn } from '@/lib/resolve-class-name';
+
+import { ChevronRight } from './icons';
 
 /** Feedback for the arrow-key and double-tap seeks, shown on the side it seeks towards. */
 export function SeekIndicator() {

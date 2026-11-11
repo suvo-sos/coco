@@ -1,7 +1,8 @@
 /** @jsxImportSource react */
 
-import { Pause, Play } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+
+import { Pause, Play } from '../shared/icons';
 
 /**
  * YouTube-style centre flash: when playback starts a play icon

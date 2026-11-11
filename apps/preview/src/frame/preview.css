@@ -5,14 +5,34 @@
 
 body {
   margin: 0;
-  background: #fff;
+  background-color: #f6f7fb;
+  /* Pastel light behind the player, so the glass sheet has something to bend. */
+  background-image:
+    radial-gradient(58% 52% at 16% 18%, #cfe0ff, transparent 70%),
+    radial-gradient(48% 48% at 86% 14%, #ffe0ef, transparent 70%),
+    radial-gradient(54% 54% at 72% 92%, #d9f4ea, transparent 70%),
+    radial-gradient(46% 46% at 22% 88%, #e6dcff, transparent 70%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* No scrollbar strip down the right edge of the page; wheel, trackpad and keys still scroll. */
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .hop-page {
+  position: relative;
   box-sizing: border-box;
   min-height: 100vh;
   padding: 0;
-  background: #fff;
   font-family: system-ui, -apple-system, sans-serif;
   color: #111;
   display: flex;
@@ -20,7 +40,27 @@ body {
   justify-content: center;
 }
 
+/* The liquid-glass sheet over the whole page: backdrop blur plus the SVG
+   distortion, so the pastel light behind it ripples instead of sitting flat. */
+.hop-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: rgb(255 255 255 / 0.14);
+  box-shadow:
+    inset 0 0 120px -60px rgb(255 255 255 / 0.95),
+    inset 0 0 0 1px rgb(255 255 255 / 0.35);
+  backdrop-filter: blur(0.4px);
+  -webkit-backdrop-filter: blur(0.4px);
+  filter: url(#glass-distortion);
+  -webkit-filter: url(#glass-distortion);
+}
+
 .preview-player {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: var(--preview-player-width, 56rem);
   margin: 0 auto;

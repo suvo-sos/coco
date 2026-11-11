@@ -24,11 +24,12 @@ export default defineConfig({
   build: {
     outDir: path('./dist'),
     emptyOutDir: true,
-    // The preview is a single route, so React and Video.js are most of its page weight:
-    // ~1.2 MB raw but ~356 kB gzipped, because the custom deck pulls in the whole
-    // Video.js controls set (menus, captions, PiP, fullscreen). 1300 kB keeps the
-    // chunk warning for a real regression instead of firing on the player's size.
-    chunkSizeWarningLimit: 1300,
+    // The preview is a single route, so React, Video.js and motion are most of its
+    // page weight: ~1.3 MB raw but ~406 kB gzipped, because the custom deck pulls in
+    // the whole Video.js controls set (menus, captions, PiP, fullscreen) plus the
+    // slider's spring library. 1400 kB keeps the chunk warning for a real regression
+    // instead of firing on the player's size.
+    chunkSizeWarningLimit: 1400,
     rolldownOptions: {
       // The workbench shell, and the preview page it frames.
       input: { main: path('./apps/preview/index.html') },

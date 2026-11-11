@@ -4,13 +4,13 @@ A Video.js v10 video skin for React, styled with CSS. It started from the Scaffo
 
 ## Design thinking
 
-Docomo turns the player into a pocket-operator video deck. The controls are a pale, moulded plastic panel bolted over the footage — a dark chassis lip, an olive LCD for the time — rather than a translucent bar floating on it. An olive LCD holds the time in the deck's right corner, the timeline is a tape groove with an orange tape and a ridged fader cap, volume is a speaker key that opens a volume bar on click, and every function is a chunky key with a printed legend — except the transport, which is icon-only. One key is orange: the transport, like RECORD on a sampler. Depth comes from hard neumorphic shadow instead of glass or glow, so the deck reads the same over bright and dark video, and it stays honest underneath: real Video.js controls, keyboard focus visible on every key and slider, thumb-sized targets on phones, a reduced-motion mode that stops every animation, and no text hardcoded into the interface.
+The player is a clean dark plate with a floating liquid-glass control panel inside — time either side of the timeline, then the transport, mute and a short volume fader. Both the timeline and the fader are the same custom slider (`src/components/ui/slider.tsx`): the thumb follows the pointer, rubber-bands past the ends, settles with the speed of the release, and carries a bubble of rolling digits while it is dragged or moved by keyboard. It slides up and un-blurs when it appears; the buttons are small ghost circles with white icons, apart from the transport, which is a solid white circle. Everything is real Video.js UI underneath — the timeline, volume, captions and menus all keep their keyboard, focus and screen-reader behaviour. Icons come from Hugeicons' free set, wrapped once in `src/video/shared/icons.tsx` so every key, menu and indicator reads as one family.
 
 Mux playback ID (bonus): the preview plays Mux asset `pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE` (`https://stream.mux.com/pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE.m3u8`, HLS). Keep the asset live through judging.
 
 ## One minimal page
 
-White page, nothing on top — just the player, streaming that Mux asset. No header, no icons, no picker, no upload, and no video file bundled with the site.
+One page with the player on it, nothing else: no header, no icons, no picker, no upload, and no video file bundled with the site. The page itself is pastel light under a full-screen sheet of liquid glass, so the colour behind the player ripples.
 
 ## Develop
 
