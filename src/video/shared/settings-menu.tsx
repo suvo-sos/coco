@@ -109,9 +109,6 @@ function QualityMenu() {
             renderItem={(props, item) => (
               <RadioItem {...props}>
                 <span>{item.label}</span>
-                {('badge' in item && item.badge) ? (
-                  <span className={'media-menu-badge'}>{item.badge as string}</span>
-                ) : null}
               </RadioItem>
             )}
           ></QualityRadioGroup.Options>

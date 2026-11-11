@@ -12,6 +12,7 @@ import { cn } from '@/lib/resolve-class-name';
 
 import { VideoGestures } from './behaviors/gestures';
 import { VideoHotkeys } from './behaviors/hotkeys';
+import { VideoPalette } from './behaviors/video-palette';
 import { VideoWheelVolume } from './behaviors/wheel-volume';
 import { VideoControls } from './controls';
 import { ErrorDialog } from './shared/error-dialog';
@@ -50,6 +51,7 @@ export function VideoSkin({
       <VideoHotkeys />
       <VideoGestures />
       <VideoWheelVolume />
+      <VideoPalette />
       <StatusAnnouncer />
       <Indicators>
         <SeekIndicator />

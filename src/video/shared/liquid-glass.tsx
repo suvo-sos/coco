@@ -1,10 +1,22 @@
 /** @jsxImportSource react */
 
 /**
- * The liquid-glass filter: fractal noise, softened into a height field, then
- * used to displace whatever is painted behind it. The panel puts this on a
- * backdrop-blurred layer, so the picture under the glass ripples instead of
- * just fogging up.
+ * The liquid-glass filter, taken from the `LiquidButton` glass:
+ *
+ *   feTurbulence (fractalNoise, 0.05, 1 octave, seed 1)
+ *   → feGaussianBlur 2  (noise becomes a soft height field)
+ *   → feDisplacementMap scale 70, R → X, B → Y
+ *   → feGaussianBlur 4  (the glass softens what it bends)
+ *   → feComposite over
+ *
+ * Two rules decide whether it reads as glass or turns to mush, both documented
+ * on MDN:
+ *
+ * - `colorInterpolationFilters="sRGB"`. SVG filters work in `linearRGB` by
+ *   default, which washes the picture out; `sRGB` keeps its colour and contrast.
+ * - The CSS has to reach this through `backdrop-filter`, never through `filter`.
+ *   An element with `filter` becomes its own backdrop root, so its backdrop is
+ *   cut off and the displacement runs on an empty box.
  *
  * Render it once (in the skin); the CSS refers to it by id.
  */
@@ -14,16 +26,26 @@ export function LiquidGlassFilter() {
   return (
     <svg aria-hidden="true" width="0" height="0" style={{ position: 'absolute' }}>
       <defs>
-        <filter id={GLASS_FILTER_ID} x="0%" y="0%" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.012" numOctaves={2} seed={92} result="noise" />
-          <feGaussianBlur in="noise" stdDeviation={2} result="blurred" />
+        <filter
+          id={GLASS_FILTER_ID}
+          x="0%"
+          y="0%"
+          width="100%"
+          height="100%"
+          colorInterpolationFilters="sRGB"
+        >
+          <feTurbulence type="fractalNoise" baseFrequency="0.05 0.05" numOctaves={1} seed={1} result="turbulence" />
+          <feGaussianBlur in="turbulence" stdDeviation={2} result="blurredNoise" />
           <feDisplacementMap
             in="SourceGraphic"
-            in2="blurred"
-            scale={85}
+            in2="blurredNoise"
+            scale={70}
             xChannelSelector="R"
-            yChannelSelector="G"
+            yChannelSelector="B"
+            result="displaced"
           />
+          <feGaussianBlur in="displaced" stdDeviation={4} result="finalBlur" />
+          <feComposite in="finalBlur" in2="finalBlur" operator="over" />
         </filter>
       </defs>
     </svg>

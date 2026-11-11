@@ -34,10 +34,16 @@ export function MenuGlow() {
       const box = row.getBoundingClientRect();
       if (!box.height || !area.height) return;
 
+      // The pill lives inside the panel, which scrolls: the rects are viewport
+      // coordinates, so the panel's own scroll offset has to go back in or the
+      // pill lands near the top instead of under the row that was hovered.
+      const offsetX = panel.scrollLeft;
+      const offsetY = panel.scrollTop;
+
       // The first appearance lands instantly; every move after it tweens.
       if (!placed) pill.style.transition = 'none';
-      pill.style.top = `${box.top - area.top}px`;
-      pill.style.left = `${box.left - area.left}px`;
+      pill.style.top = `${box.top - area.top + offsetY}px`;
+      pill.style.left = `${box.left - area.left + offsetX}px`;
       pill.style.width = `${box.width}px`;
       pill.style.height = `${box.height}px`;
       pill.setAttribute('data-on', '');

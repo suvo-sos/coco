@@ -1,3 +1,36 @@
+/* The picture decides the colour: `behaviors/video-palette.tsx` sets these on
+   the skin, and every tint below reads them. Registered so a change of scene
+   glides between hues instead of snapping. */
+@property --vo-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+@property --vo-tint {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgb(14 17 22 / 0.18);
+}
+
+@property --vo-rim {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgb(255 255 255 / 0.28);
+}
+
+@property --vo-water {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgb(186 226 255 / 0.22);
+}
+
+@property --vo-glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgb(255 255 255 / 0.18);
+}
+
 /* ------------------------------------------------------------------ */
 /* THE GLASS BAR                                                      */
 /*                                                                    */
@@ -8,12 +41,16 @@
 /* screen keys. It slides up and un-blurs as it appears.               */
 /* ------------------------------------------------------------------ */
 
-/* The player itself is a clean dark plate; the glass is in the controls. */
+/* The player itself is the same liquid glass as the card it was built from:
+   a transparent tint, `blur(0px)` plus the SVG displacement on the layer under
+   the picture, and an 8px glass rim the video sits inside. */
 .ko-skin {
-  --vo-glass: rgb(14 17 22 / 0.18);
-  --vo-glass-strong: rgb(15 17 21 / 0.72);
+  --vo-glass: rgb(43 46 51 / 0.62);
+  --vo-glass-strong: rgb(43 46 51 / 0.8);
+  /* The tint under every pane of liquid glass. Raise the alpha for a darker
+     panel over bright footage, lower it for a clearer one. */
+  --vo-dark: rgb(10 12 17 / 0.36);
   --vo-gloss: rgb(255 255 255 / 0.18);
-  --vo-water: rgb(186 226 255 / 0.22);
 
   /* The custom slider, read through the tokens its module falls back on. */
   --control-track: rgb(255 255 255 / 0.24);
@@ -29,19 +66,78 @@
   --bubble-shadow: 0 6px 18px rgb(0 0 0 / 0.45);
   --text-secondary: rgb(255 255 255 / 0.72);
   --foreground: #ffffff;
-  --vo-radius: 16px;
+  /* The roundness scale. Each level is one number, so every nested corner is
+     parallel to the one around it instead of being an unrelated value:
+     plate 43 → panel 33 (bar, menu card) → panel inner 27 (33 − 6 padding)
+     → row 12 → circles 50%. */
+  --vo-radius-plate: 43px;
+  --vo-radius-panel: 33px;
+  --vo-radius-panel-inner: calc(var(--vo-radius-panel) - 6px);
+  --vo-radius-row: 12px;
   --vo-ease: cubic-bezier(0.22, 0.78, 0.2, 1);
+
+  transition:
+    --vo-accent 900ms linear,
+    --vo-tint 900ms linear,
+    --vo-rim 900ms linear,
+    --vo-water 900ms linear,
+    --vo-glow 900ms linear;
 
   position: relative;
   isolation: isolate;
-  border-radius: 16px;
-  background-color: #0b0b0c;
-  box-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.06),
-    0 20px 50px -24px rgb(0 0 0 / 0.45);
+  /* Padding is the glass rim: the picture sits inside it, so the pane below
+     is actually visible instead of hidden under the video. */
+  padding: 0;
+  border-radius: var(--vo-radius-plate);
+  /* Transparent: everything you see is the backdrop, bent by the filter. */
+  background-color: rgb(255 255 255 / 0);
 }
 
-/* The picture runs to the edge of the glass, so nothing shows below it. */
+/* Card layer 1 — the tint and the inner shadow along the rim. */
+.ko-skin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  /* The edge, exactly as given: a 1px line, a bright bead along the top-left,
+     a soft inner bloom, and a deep shadow under the tile. */
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.15),
+    inset 1.5px 1.5px 0 rgb(255 255 255 / 0.5),
+    inset 0 0 12px rgb(255 255 255 / 0.2),
+    0 8px 32px rgb(0 0 0 / 0.2);
+  background-color: rgb(255 255 255 / 0.06);
+  pointer-events: none;
+}
+
+/* Card layer 2 — the backdrop blur and the distortion. `blur(0px)` is the
+   card's own setting: no frost at all, only the displacement, so the page
+   behind the player is bent into liquid rather than fogged. */
+.ko-skin::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  /* The recipe, exactly: the SVG filter sits inside backdrop-filter between two
+     blur(0) stops, so the picture is refracted and then saturated/lifted. The
+     -webkit- fallback is the plain frosted version for engines without SVG
+     filters in backdrop-filter. */
+  --vo-liquid: blur(0px) url(#glass-distortion) blur(0px) saturate(1.5) brightness(1.1);
+  backdrop-filter: var(--vo-liquid);
+  -webkit-backdrop-filter: var(--vo-liquid);
+  isolation: isolate;
+  pointer-events: none;
+}
+
+/* Fullscreen is the picture, not the tile: no rim, no rounding. */
+.ko-skin:fullscreen {
+  padding: 0;
+  border-radius: 0;
+}
+
+/* The picture is inset by the rim, so it rounds to the inner corner. */
 .ko-skin video,
 .ko-skin .media-poster,
 .ko-skin .media-poster-image {
@@ -62,6 +158,8 @@
   bottom: 0;
   display: flex;
   justify-content: center;
+  /* The plate's own rim holds the picture in, so the dock adds the rest of the
+     gap between the bar and the picture's edge. */
   padding: 8px;
   pointer-events: none;
 }
@@ -71,34 +169,24 @@
   width: 100%;
   max-width: 36rem;
   padding: 12px 14px;
-  border: 1px solid rgb(255 255 255 / 0.28);
-  border-radius: var(--vo-radius);
-  background-color: var(--vo-glass);
-  /* Wet gloss: a bright bead along the ceiling, a clear middle where the
-     picture shows straight through, a cold bounce off the floor. */
-  background-image:
-    linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.34),
-      rgb(255 255 255 / 0.08) 30%,
-      rgb(255 255 255 / 0) 56%,
-      rgb(214 238 255 / 0.14)
-    ),
-    radial-gradient(110% 160% at 12% 0%, rgb(255 255 255 / 0.26), transparent 58%),
-    radial-gradient(90% 140% at 88% 108%, var(--vo-water), transparent 62%);
+  border: 0;
+  border-radius: var(--vo-radius-panel);
+  /* The liquid glass: a dark tint under the SVG refraction, plus the edge
+     stack. This is the panel the keys live on. */
+  background: var(--vo-dark);
+  --vo-liquid: blur(0px) url(#glass-distortion) blur(0px) saturate(1.5) brightness(1.1);
+  backdrop-filter: var(--vo-liquid);
+  -webkit-backdrop-filter: var(--vo-liquid);
   color: #ffffff;
-  text-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
   font-size: 13px;
   line-height: 1;
   box-shadow:
-    0 12px 32px rgb(0 0 0 / 0.22),
-    inset 0 1px 0 rgb(255 255 255 / 0.6),
-    inset 0 -1px 0 rgb(255 255 255 / 0.14),
-    inset 0 -14px 22px -16px rgb(255 255 255 / 0.35);
-  transition:
-    opacity 480ms var(--vo-ease),
-    transform 480ms var(--vo-ease),
-    filter 480ms var(--vo-ease);
+    inset 0 0 0 1px rgb(255 255 255 / 0.15),
+    inset 1.5px 1.5px 0 rgb(255 255 255 / 0.5),
+    inset 0 0 12px rgb(255 255 255 / 0.2),
+    0 8px 32px rgb(0 0 0 / 0.2);
+  transition: opacity 260ms var(--vo-ease);
 }
 
 /* The glass layer: the backdrop behind the panel, gently frosted, rippled by the SVG filter. */
@@ -107,17 +195,19 @@
   isolation: isolate;
 }
 
+/* Layer 1 — frost. Only a `backdrop-filter`, no `filter`: an element carrying
+   `filter` becomes its own backdrop root, which cuts the picture off and is
+   the reason the refraction used to do nothing. */
 .ko-skin .vo-glass {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  border-radius: inherit;
-  backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
-  -webkit-backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
-  filter: url(#glass-distortion);
-  -webkit-filter: url(#glass-distortion);
-  pointer-events: none;
+  display: none;
+}
+
+/* Layer 2 — refraction. The same filter, applied as a *backdrop* filter on a
+   layer of its own, so it bends the picture behind the panel instead of an
+   empty box. The plain blur first is the fallback for engines without SVG
+   filters in backdrop-filter. */
+.ko-skin .vo-bar::after {
+  display: none;
 }
 
 /* Water, not just frost: two slow highlights drifting across the pane. They
@@ -132,7 +222,7 @@
     radial-gradient(36% 36% at 74% 76%, var(--vo-water), transparent 66%),
     radial-gradient(26% 26% at 88% 30%, rgb(255 255 255 / 0.3), transparent 70%);
   mix-blend-mode: screen;
-  opacity: 0.6;
+  opacity: 0.42;
   animation: vo-water-drift 18s ease-in-out infinite alternate;
 }
 
@@ -156,10 +246,12 @@
   z-index: 1;
 }
 
+/* Opacity only, and no `will-change`. Anything else on this element — a
+   `filter`, a transform it has to composite, a hint that promotes it to its
+   own layer — stops the backdrop-filter from capturing the live picture, so
+   the glass opens on a stale frame and reads as frozen for a moment. */
 .ko-skin .vo-content:not([data-visible]) .vo-bar {
   opacity: 0;
-  transform: translateY(16px);
-  filter: blur(8px);
 }
 
 .ko-skin .vo-content:not([data-visible]) .vo-dock {
@@ -339,46 +431,35 @@
    ------------------------------------------------------------------ */
 
 .ko-skin .media-menu-popup {
+  /* The card opens a little higher above the bar than the base 9 steps, so it
+     clears the panel instead of crowding it. */
+  --media-popover-side-offset: calc(var(--media-spacing) * 13);
+  --media-popup-side-offset: var(--media-popover-side-offset);
   isolation: isolate;
-  border: 1px solid rgb(255 255 255 / 0.26);
-  border-radius: var(--vo-radius);
-  background-color: var(--vo-glass);
-  background-image:
-    linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.3),
-      rgb(255 255 255 / 0.07) 32%,
-      rgb(255 255 255 / 0) 58%,
-      rgb(214 238 255 / 0.12)
-    ),
-    radial-gradient(120% 150% at 16% 0%, rgb(255 255 255 / 0.22), transparent 60%);
+  border: 0;
+  border-radius: var(--vo-radius-panel);
+  /* The same liquid glass as the bar, so the card and the keys are one pane. */
+  background: var(--vo-dark);
+  --vo-liquid: blur(0px) url(#glass-distortion) blur(0px) saturate(1.5) brightness(1.1);
+  backdrop-filter: var(--vo-liquid);
+  -webkit-backdrop-filter: var(--vo-liquid);
   color: #ffffff;
-  text-shadow: 0 1px 3px rgb(0 0 0 / 0.45);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
   box-shadow:
-    0 18px 40px rgb(0 0 0 / 0.26),
-    inset 0 1px 0 rgb(255 255 255 / 0.55),
-    inset 0 -1px 0 rgb(255 255 255 / 0.14),
-    inset 0 -14px 22px -16px rgb(255 255 255 / 0.3);
+    inset 0 0 0 1px rgb(255 255 255 / 0.15),
+    inset 1.5px 1.5px 0 rgb(255 255 255 / 0.5),
+    inset 0 0 12px rgb(255 255 255 / 0.2),
+    0 8px 32px rgb(0 0 0 / 0.2);
 }
 
 /* The same displacement layer the bar wears: the picture under the card is
    gently frosted and rippled, and the tint and gloss are part of what it
    distorts, so the panel still reads dark enough for white type. */
+.ko-skin .media-menu-popup::before,
 .ko-skin .media-menu-popup::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
-  -webkit-backdrop-filter: blur(2px) saturate(190%) brightness(1.06);
-  filter: url(#glass-distortion);
-  -webkit-filter: url(#glass-distortion);
+  display: none;
 }
 
-/* The rows sit above the glass; the incoming submenu still rides over the
-   panel it replaces (the base skin uses z-index 10 for that panel). */
 .ko-skin .media-menu-popup > .media-menu-content {
   z-index: 1;
 }
@@ -394,8 +475,8 @@
 .ko-skin .media-menu-content {
   padding: 6px;
   gap: 4px !important;
-  border-radius: var(--vo-radius);
-  clip-path: inset(0 round var(--vo-radius));
+  border-radius: inherit;
+  clip-path: inset(0 round var(--vo-radius-panel));
   background-color: transparent;
   overflow: hidden;
   scrollbar-width: none;
@@ -413,7 +494,7 @@
   position: relative;
   z-index: 1;
   min-height: 30px;
-  border-radius: 10px;
+  border-radius: var(--vo-radius-row);
   background-color: transparent;
 }
 
@@ -429,8 +510,8 @@
 .ko-skin .vo-menu-glow {
   position: absolute;
   z-index: 0;
-  border-radius: 10px;
-  background-color: var(--vo-gloss);
+  border-radius: var(--vo-radius-row);
+  background-color: var(--vo-glow);
   opacity: 0;
   pointer-events: none;
   transition:
@@ -447,6 +528,51 @@
 
 .ko-skin .media-menu-back-item {
   margin-block-end: 2px;
+}
+
+/* The option lists (Quality, Speed, Captions) get a little more room: taller
+   rows and a wider gap. A submenu can never outgrow the player though, so it
+   is capped and scrolls — with a visible slim rail, so a long list still reads
+   as scrollable and every row stays clickable at any player size. */
+.ko-skin .media-menu-popup > .media-menu-content[data-submenu] {
+  gap: 3px !important;
+  padding: 8px;
+  /* The panel is as tall as the popup allows, never a hard 15rem: the popup
+     itself grows for a submenu below. */
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.45) transparent;
+}
+
+.ko-skin .media-menu-popup > .media-menu-content[data-submenu]::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+
+.ko-skin .media-menu-popup > .media-menu-content[data-submenu]::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* A submenu is usually longer than the card that opened it (Quality can list
+   every rendition), so the popup gets a short fixed window — about five rows —
+   and the panel scrolls inside it: every row can still be reached and clicked,
+   without the card growing to the height of the list. */
+.ko-skin .media-menu-popup:has(> .media-menu-content[data-submenu]) {
+  height: min(var(--media-menu-available-height, 13rem), 13rem);
+  max-height: min(var(--media-menu-available-height, 13rem), 13rem);
+}
+
+.ko-skin .media-menu-popup > .media-menu-content[data-submenu]::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background-color: rgb(255 255 255 / 0.45);
+}
+
+.ko-skin .media-menu-popup > .media-menu-content[data-submenu] .media-menu-radio-item,
+.ko-skin .media-menu-popup > .media-menu-content[data-submenu] .media-menu-back-item {
+  min-height: 36px;
 }
 
 /* ------------------------------------------------------------------
@@ -498,13 +624,18 @@
     backdrop-filter: none;
   }
 
+  .ko-skin::after {
+    display: none;
+  }
+
 
   .ko-skin .vo-bar {
     background-color: #000000;
     backdrop-filter: none;
   }
 
-  .ko-skin .vo-glass {
+  .ko-skin .vo-glass,
+  .ko-skin .vo-bar::after {
     display: none;
   }
 
@@ -515,29 +646,10 @@
     backdrop-filter: none;
   }
 
+  .ko-skin .media-menu-popup::before,
   .ko-skin .media-menu-popup::after {
     display: none;
   }
-}
-
-/* The glass layer: the backdrop behind the panel, gently frosted and rippled
-   by the SVG filter. It was sitting inside the reduced-motion query, so the
-   ripple only ever ran when motion was turned off; it belongs out here. */
-.ko-skin .vo-bar {
-  position: relative;
-  isolation: isolate;
-}
-
-.ko-skin .vo-glass {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  backdrop-filter: blur(3px) saturate(140%);
-  -webkit-backdrop-filter: blur(3px) saturate(140%);
-  filter: url(#glass-distortion);
-  -webkit-filter: url(#glass-distortion);
-  pointer-events: none;
 }
 
 .ko-skin .vo-progress,
@@ -547,6 +659,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ko-skin {
+    transition: none;
+  }
+
   .ko-skin .vo-bar,
   .ko-skin .vo-menu-glow,
   .ko-skin .vo-bar .media-button {
