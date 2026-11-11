@@ -8,14 +8,15 @@ export interface ChosenVideo {
 }
 
 /**
- * The file in `apps/preview/public/`, served at the document's own path so it
- * works at a domain root or in a subfolder. The Mux asset the skin was built
- * against (`pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE`) is kept on file for
- * the submission; swap `src` + `kind` back to `mux` to stream it again.
+ * Hosted on Mux, so the deployed page streams a real video with no file
+ * bundled: the asset stays live through judging, and the URL is the same in
+ * dev and in the build. `1794394115060191.mp4` is still in
+ * `apps/preview/public/` if you want to play the local cut instead — set
+ * `kind: 'mp4'` and `src: './1794394115060191.mp4'`.
  */
 export const SINGLE_VIDEO: ChosenVideo = {
-  id: 'docomo-local',
+  id: 'docomo-mux',
   title: 'Docomo',
-  src: './1794394115060191.mp4',
-  kind: 'mp4',
+  src: 'https://stream.mux.com/pEPlVJYPMuiTQFXHuBrxKEou2702HeT1zLxkhRp0098uE.m3u8',
+  kind: 'mux',
 };
