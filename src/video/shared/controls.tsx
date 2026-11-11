@@ -9,7 +9,6 @@ import { LiveButton } from './live-button';
 import { MuteButton } from './mute-button';
 import { AudioPlayButton, PlayButton } from './play-button';
 import { ProgressSlider } from './progress-slider';
-import { SpeedChips } from './speed-chips';
 import { VolumeSlider } from './volume-slider';
 
 export interface ThumbnailSlot {
@@ -90,7 +89,6 @@ export function ControlsContent({
 
               <div className={'vo-keys-end'}>
                 {captions}
-                {!audio && !live && <SpeedChips />}
                 {rate}
                 {menu}
               </div>
