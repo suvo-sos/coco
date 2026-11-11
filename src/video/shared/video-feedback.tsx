@@ -2,7 +2,7 @@
 
 import { Poster as PosterPrimitive } from '@videojs/react';
 import { BufferingIndicator as BufferingIndicatorPrimitive, Controls } from '@videojs/react';
-import { SpinnerIcon as SpinnerIconPrimitive } from '@videojs/react/icons/scaffold';
+import { LoaderCircle } from 'lucide-react';
 import type { ClassValue } from 'cn';
 
 import { cn, resolveClassName } from '@/lib/resolve-class-name';
@@ -20,7 +20,7 @@ export function BufferingIndicator({ className }: { className?: ClassValue } = {
     <BufferingIndicatorPrimitive
       className={(state) => cn('media-buffering-indicator', resolveClassName(className, state))}
     >
-      <SpinnerIconPrimitive className={'media-buffering-indicator-spinner-icon'} />
+      <LoaderCircle className={'media-buffering-indicator-spinner-icon'} />
     </BufferingIndicatorPrimitive>
   );
 }

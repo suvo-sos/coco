@@ -1,11 +1,7 @@
 /** @jsxImportSource react */
 
 import { PlayButton as PlayButtonPrimitive } from '@videojs/react';
-import {
-  RestartIcon as RestartIconPrimitive,
-  PlayIcon as PlayIconPrimitive,
-  PauseIcon as PauseIconPrimitive,
-} from '@videojs/react/icons/scaffold';
+import { Pause, Play, RotateCcw } from 'lucide-react';
 import type { ClassValue } from 'cn';
 
 import { cn, resolveClassName } from '@/lib/resolve-class-name';
@@ -14,6 +10,12 @@ import { Button } from './button';
 import { ButtonTooltip } from './tooltip';
 import { BufferingIndicator } from './video-feedback';
 
+/**
+ * The transport key: the one orange key on the deck, like the
+ * RECORD key on a pocket operator. It carries its function printed
+ * underneath the glyph, and presses into the panel with the same
+ * hard shadow as every other key.
+ */
 export function PlayButton({
   className,
   iconClassName,
@@ -27,11 +29,15 @@ export function PlayButton({
         className={(state) => cn('media-play-button', resolveClassName(className, state))}
         {...props}
       >
-        <RestartIconPrimitive
-          className={cn('media-button-icon-base', 'media-play-button-restart-icon', iconClassName)}
+        <RotateCcw className={cn('media-button-icon-base', 'media-play-button-restart-icon', iconClassName)} />
+        <Play
+          fill="currentColor"
+          className={cn('media-button-icon-base', 'media-play-button-play-icon', iconClassName)}
         />
-        <PlayIconPrimitive className={cn('media-button-icon-base', 'media-play-button-play-icon', iconClassName)} />
-        <PauseIconPrimitive className={cn('media-button-icon-base', 'media-play-button-pause-icon', iconClassName)} />
+        <Pause
+          fill="currentColor"
+          className={cn('media-button-icon-base', 'media-play-button-pause-icon', iconClassName)}
+        />
       </PlayButtonPrimitive>
     </ButtonTooltip>
   );

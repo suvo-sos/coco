@@ -7,8 +7,9 @@ import { cn } from '@/lib/resolve-class-name';
 
 import { LiveButton } from './live-button';
 import { AudioPlayButton, PlayButton } from './play-button';
+import { TimeSlider } from './time-slider';
 import { type ThumbnailSlot } from './time-slider';
-import { VolumePopover } from './volume-popover';
+import { VolumeControl } from './volume-control';
 
 export function ControlsRow({
   audio = false,
@@ -22,11 +23,11 @@ export function ControlsRow({
   return (
     <Controls.Group className={'video-controls-row'}>
       <Controls.Group className={cn('video-controls-group', 'video-controls-start')}>
-        {audio && <AudioPlayButton />}
+        {audio ? <AudioPlayButton /> : <PlayButton />}
         {seekBackward}
         {seekForward}
         {live && <LiveButton />}
-        {!audio && <VolumePopover />}
+        {!audio && <VolumeControl />}
         {!live && (
           <Time.Group className={'media-time-group'}>
             <Time.Value className={'media-time-toggle'} type="current" toggle />
@@ -40,7 +41,7 @@ export function ControlsRow({
       <Controls.Group className={'video-controls-group'}>
         {captions}
         {rate}
-        {menu ?? (audio && <VolumePopover />)}
+        {menu ?? (audio && <VolumeControl />)}
       </Controls.Group>
     </Controls.Group>
   );
@@ -93,6 +94,7 @@ export function ControlsContent({
             !audio && 'video-controls-video-bottom'
           )}
         >
+          {!live && <TimeSlider audio={audio} renderThumbnail={renderThumbnail} />}
           <ControlsRow
             audio={audio}
             captions={captions}

@@ -1,24 +1,21 @@
 /** @jsxImportSource react */
 
 import { MuteButton as MuteButtonPrimitive } from '@videojs/react';
-import {
-  VolumeOffIcon as VolumeOffIconPrimitive,
-  VolumeHighIcon as VolumeHighIconPrimitive,
-} from '@videojs/react/icons/scaffold';
+import { Volume2, VolumeX } from 'lucide-react';
 
-import { cn, resolveClassName } from '@/lib/resolve-class-name';
+import { cn } from '@/lib/resolve-class-name';
 
 import { Button } from './button';
+import { ButtonTooltip } from './tooltip';
 
-export function MuteButton({ className, ...props }: MuteButtonPrimitive.Props = {}) {
+/** A dedicated mute toggle for the Dynamic Island. */
+export function MuteButton() {
   return (
-    <MuteButtonPrimitive
-      render={<Button />}
-      className={(state) => cn('media-mute-button', resolveClassName(className, state))}
-      {...props}
-    >
-      <VolumeOffIconPrimitive className={cn('media-button-icon', 'media-mute-button-off-icon')} />
-      <VolumeHighIconPrimitive className={cn('media-button-icon', 'media-mute-button-high-icon')} />
-    </MuteButtonPrimitive>
+    <ButtonTooltip>
+      <MuteButtonPrimitive render={<Button />} className={cn('media-mute-button')}>
+        <Volume2 className={cn('media-button-icon', 'media-mute-button-high-icon')} />
+        <VolumeX className={cn('media-button-icon', 'media-mute-button-off-icon')} />
+      </MuteButtonPrimitive>
+    </ButtonTooltip>
   );
 }

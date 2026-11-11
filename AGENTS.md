@@ -1,61 +1,37 @@
 # AGENTS.md
 
-**We are building this for our Video.js hackathon and we have to build a custom Video.js player skin for the hackathon.**
+We are building this for the Video.js hackathon, where we have to build the next video player — like we are redesigning the wheel.
 
 ## What this is
 
-- A Vite + React project on **Video.js v10 (10.3.0)**, entered in the **Video.js Skins Design Challenge**: design a custom skin for the v10 player.
-- The submission needs a public URL, a Video.js v10 player that plays video, and the essential controls working (play/pause, seek, time, volume/mute, fullscreen), responsive at desktop and phone sizes, keyboard operable, readable over bright and dark footage, tap-friendly, with visible focus and reduced-motion support.
-- The skin code lives in `src/video/` (`src/video/skin.tsx` + `src/video/skin.css`).
+- A custom skin for the Video.js v10 player (Vite + React, Video.js 10.3.0).
+- The skin lives in `src/video/` (edit `src/video/skin.tsx` and `src/video/skin.css`).
 - The preview page lives in `apps/preview/` — `apps/preview/index.html` mounts the player alone at `/`.
 
-## What is on the page right now
+## The player right now
 
-- One page, no header and no picker. Background `#A2A09F`.
-- **The playback is the custom skin in `src/video/`**: `apps/preview/src/frame/player.tsx` imports `VideoSkin` from `@/video/skin`. The stock `@videojs/react/video/skin.css` is **not** imported — do not add it back.
+- **The preview renders the Docomo K.O. II skin**: `apps/preview/src/frame/player.tsx` imports `VideoSkin` from `@/video/skin`. Nothing uses the stock Video.js skin or `@videojs/react/video/skin.css`.
+- `src/skins/docomo/` is an older saved snapshot and is unused.
+- One page, white background, just the player — no header, no picker, no upload.
 - It plays one video: the Mux HLS asset in `apps/preview/src/frame/home.tsx`.
-- The skin is a **fresh Scaffold base** (React + CSS, from `npx @videojs/cli skin create --base scaffold`). The earlier Docomo K.O. II deck skin and its `src/skins/docomo/` snapshot have been **deleted** — do not restore them.
-
-## The frame around the video
-
-The video sits in a 3D recessed well, built entirely in `apps/preview/src/frame/preview.css` and composed in `apps/preview/src/frame/main.tsx`.
-
-- `.hop-page`: `#A2A09F`, `min-height: 100vh`, padding `clamp(1.5rem, 5vw, 5rem)`, flex column. Two flex spacers split the leftover height **30% above / 70% below** the frame, so the frame sits in the upper third of the page.
-- `.preview-player`: `--well-wall: clamp(3rem, 8vw, 8rem)` (115.2px at a 1440px window), `padding: var(--well-wall)`, `max-width: calc(var(--preview-player-width) + var(--well-wall) * 2)`, `overflow: hidden`, **sharp corners** (`border-radius: 0`).
-- Video size: `--preview-player-width` defaults to **960px** at 16:9 → **960 × 540**; the frame totals **1190.4 × 770.4** at a 1440px window. It only shrinks below a ~1297px window.
-- `.preview-screen`: the video box, `z-index: 12`, radius `--preview-screen-radius` (currently `0`, sharp), plus a `::after` vignette that darkens the edges into the walls.
-- `.preview-well`: four wall strips (`.preview-well-wall--top/right/bottom/left`) that recede at 45° into the video. Each is cut with a `clip-path` polygon so the outer rim is long and the edge at the footage is short — that chamfer is the whole 3D read, there is no perspective transform on the room.
-- Wall material: gradient `#767473 → #676564 → #535150 → #403e3d → #302e2d`, plus inset shadows on the inner edge and a highlight on the outer edge of each face.
-
-## Working on the 3D view box
-
-The skin's parts live **in the room**, not in a bar over the video. Read this before adding or moving anything mounted on a wall.
-
-- **Only two wall parts exist so far.** The transport key on the left wall (`src/video/shared/wall-play.tsx`, `.wall-play*` in `src/video/skin.css`) and the progress bar on the bottom wall (`src/video/shared/wall-seek.tsx`, `.wall-seek*`). The top and right walls are empty; the scaffold control bar still holds volume, captions, settings and fullscreen.
-- **Everything is measured in wall thickness.** Skin parts read `var(--well-wall, 7rem)` — never hardcode pixels. That single number keeps a part flush with its wall at every player size, including phone width (48px) and desktop (115.2px).
-- **Match the wall's chamfer.** A wall strip is `--well-wall` thick, and its `clip-path` insets the inner rim by exactly one wall thickness at each end, so the taper is 45°:
-  - left wall: `polygon(0 0, 100% wall, 100% calc(100% - wall), 0 100%)`
-  - bottom wall: `polygon(wall 0, calc(100% - wall) 0, 100% 100%, 0 100%)`
-  Derive the top and right walls the same way. The rim at the page surface is the **long** one; the rim at the footage is **short**.
-- **Position wall parts with negative offsets.** A part on a wall is a child of the player container, which is the video box, so it is placed with `left/top/right/bottom: calc(var(--well-wall) * -1)` and a matching size. Painting outside the video box works because `skin.css` sets `.media-skin.media-container.media-video { overflow: visible }` **outside** `@layer components` — the frame's own unclipped rules in `preview.css` are unlayered, so unlayered skin rules and a 3-class selector are what beat them. Do not move that override into a layer.
-- **Shade along the depth axis, never along the length.** Each wall is lit from its outer rim to its inner rim: side-to-side on the left/right walls, bottom-to-top on the top/bottom walls. Gradients, fills, buffers and playheads all run on that axis. A gradient running along a bar's length flattens the face and kills the depth read.
-- **The perspective is one-way.** Near edges are taller/larger, far edges shorter/smaller, and the top and bottom edges of a face tilt. Small parts get this with a single `perspective(...) rotateY(...)` (see `--wall-play-perspective` and `--wall-play-turn` on `.wall-play`), which is what makes the key's left edge stand taller than its right. Big parts use the `clip-path` chamfer above. Nothing on a wall is a plain rectangle.
-- **Walls are not pads.** A part never lies flat on the page or over the video: it sits on a face and recedes with it. Presses travel **into the well**, toward the footage, never toward the page edge (the frame clips at `overflow: hidden`).
-- **Rounded corners need room.** The wall face is a trapezoid, so a rounded part is inset into the face's widest part instead of being clipped by it.
-- **Keep the Video.js behaviour.** Every part is a real v10 primitive (`PlayButton`, `TimeSlider`) rendered with a class and styled by CSS. State comes from the primitive's data attributes and CSS variables (`data-paused`, `data-started`, `data-ended`, `--media-slider-fill`, `--media-slider-buffer`), never from React state.
-- **Focus and motion.** Focus rings are drawn inside the part or just around it (never clipped away), and every transition rides `--media-duration-*` so `prefers-reduced-motion: reduce` switches it off.
-- **Design decisions are recorded in `design/spec.md`.** Update it with the section when you add a wall part.
-
-## Things that were built and then removed
-
-Do not bring these back unless asked: the three thin yellow tape strips, the corner index marks (dot + number `01–04`), the deck slot in the bottom wall, and the `Enter Deck` button.
+- **The concept**: the controls are a pale, moulded plastic deck bolted over the video, built from the Teenage Engineering EP-133 K.O. II reference — a dark chassis lip, an olive LCD for the time, and chunky keys with printed legends. The palette is the reference's: pale plastic `#c7c3c0`, ink `#4a4846`, orange `#d42a02` with highlight `#fb702c`, and the dark PLAY key `#545251`. Depth is hard neumorphic shadow (off-white inset top-left, grey inset bottom-right, cast shadow below), never glass or glow, so the deck reads the same over bright and dark footage.
+- The deck is one short row: the orange PLAY key (set a little lower than the keycaps, like a chunky transport button), the timeline and the volume fader on the left, the time LCD centred, then the pale function keys CC, SET, AIR, PIP, FULL parked in the right corner. It is about 53px tall on a wide player — deliberately half a two-storey control bar — so it sits on the footage without covering it.
+- The timeline is a tape groove pressed into the panel: tick marks in the slot, an orange tape behind the playhead with a bright top edge, and a ridged pale fader cap that sits proud of the groove, sinks while dragged and darkens the fill.
+- The volume key is a speaker key that opens a volume bar (a horizontal fader in a dark chassis plate) on click; the speaker reflects the level and mutes/unmutes, the bar sets the level by click or drag, and the arrow keys, Home, End and `m` work when it has keyboard focus. Wheel over the player is still volume.
+- Keys are about 50px wide and 38px tall on a wide deck and step down to 48, 46 and 44px wide as the player narrows; PIP drops below 40rem, AIR below 34rem, CC below 26rem (SET still reaches captions), labels go in short players, and touch pointers get thumb-height keys back. The LCD keeps `min-width` + `tabular-nums`, so times never shift, and drops to a centred second line below 22rem. Keyboard focus is a white ring with a dark halo on every key, the slider thumb and menu items.
+- Menus, tooltips and the volume readout are dark chassis plates; the settings menu has real Audio, Speed and Captions lists (no fake quality list). Menu highlight is orange.
+- Clean mode: by default the video shows nothing at all, even on hover. A real cursor movement in the player (small shakes under 20px don't count) slides the deck up; it stays while the cursor rests on it, while a menu is open, or while a Tab focus is inside, and fades out after 1.5s of stillness. Clicking the seekbar focuses its thumb but never pins the deck open. A right-drag whose release is missed outside the window ends itself on the next press or move.
+- Right-click and drag anywhere on the player to seek: left back, right forward, full width covers the whole video. A right-click without dragging skips 10s (±10s stacking for quick repeats) with a dark plate, orange chevrons and the seconds on that side. Seeks are throttled to one per animation frame (`fastSeek` where available).
+- Play/pause is a click on the video, double-click is fullscreen, keyboard still works (Space, arrows, F, M). Every play/pause stamps a dark disc with an orange glyph in the centre; volume changes show a dark plate with the level; buffering is a LoaderCircle spinner, all of which stop moving under reduced motion.
+- Icons are all Lucide. The play/pause, mute, captions, fullscreen, PiP and AirPlay glyphs swap in place with a 0.14s fade/scale. Labels printed on the keys are decorative (`aria-hidden`); every key's real name and tooltip come from Video.js i18n.
+- Fonts: Montserrat (Google Fonts, SIL OFL) for legends and menus, a system mono stack for LCD digits. `apps/preview/index.html` loads it with a system fallback.
 
 ## Commands
 
 - `npm install`, then `npm run dev` to run it.
-- `npm run typecheck` and `npm run build` must stay clean — but only run them when asked. For fast visual edits, just make the change and reload the preview.
+- `npm run typecheck` and `npm run build` must stay clean.
 
-## The hackathon brief (pasted from the challenge page)
+and we are building this for this hackathon - Tag badge
 #Video.js Skins Design Challenge
 Join to submit!
 $10K

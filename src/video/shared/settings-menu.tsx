@@ -2,14 +2,7 @@
 import { audioText, captionsText, qualityText, settingsText, speedText } from '@videojs/core/i18n/text/menu';
 import { Text as TextPrimitive } from '@videojs/react';
 import { Menu } from '@videojs/react';
-import {
-  ChevronIcon as ChevronIconPrimitive,
-  SwitchesIcon as SwitchesIconPrimitive,
-  SpeechIcon as SpeechIconPrimitive,
-  SpeedIcon as SpeedIconPrimitive,
-  CaptionsOffIcon as CaptionsOffIconPrimitive,
-  GearIcon as GearIconPrimitive,
-} from '@videojs/react/icons/scaffold';
+import { AudioLines, Captions, ChevronRight, Film, Gauge, Settings } from 'lucide-react';
 import { AudioTrackRadioGroup } from '@videojs/react/ui/audio-track-radio-group';
 import { CaptionsRadioGroup } from '@videojs/react/ui/captions-radio-group';
 import { PlaybackRateRadioGroup } from '@videojs/react/ui/playback-rate-radio-group';
@@ -22,43 +15,7 @@ import { RadioItem } from './menu-item';
 import { ButtonTooltip } from './tooltip';
 
 function MenuChevron({ back = false }: { back?: boolean } = {}) {
-  return <ChevronIconPrimitive className={back ? 'media-menu-back-chevron' : 'media-menu-forward-chevron'} />;
-}
-
-function QualityMenu() {
-  return (
-    <Menu.Root>
-      <QualityRadioGroup.Root>
-        <Menu.Trigger className={'media-menu-item'}>
-          <SwitchesIconPrimitive className={'media-menu-trigger-icon'} />
-          <TextPrimitive token={qualityText.key}>{qualityText.text}</TextPrimitive>
-          <span className={'media-menu-hint'}>
-            <QualityRadioGroup.Value className={'media-menu-hint-label'} />
-            <MenuChevron />
-          </span>
-        </Menu.Trigger>
-        <Menu.Content className={'media-menu-content'}>
-          <Menu.Item className={'media-menu-back-item'}>
-            <MenuChevron back />
-            <TextPrimitive token={qualityText.key}>{qualityText.text}</TextPrimitive>
-          </Menu.Item>
-          <Menu.Separator className={'media-menu-separator'} />
-          <QualityRadioGroup.Options
-            className={'media-menu-radio-group'}
-            renderItem={(props, item) => (
-              <RadioItem {...props}>
-                <span>
-                  <span>{item.label}</span>
-                  {item.tier ? <sup className={'media-menu-tier'}>{item.tier}</sup> : null}
-                </span>
-                {item.badge ? <span className={'media-menu-badge'}>{item.badge}</span> : null}
-              </RadioItem>
-            )}
-          ></QualityRadioGroup.Options>
-        </Menu.Content>
-      </QualityRadioGroup.Root>
-    </Menu.Root>
-  );
+  return <ChevronRight className={back ? 'media-menu-back-chevron' : 'media-menu-forward-chevron'} />;
 }
 
 function AudioTrackMenu() {
@@ -66,7 +23,7 @@ function AudioTrackMenu() {
     <Menu.Root>
       <AudioTrackRadioGroup.Root>
         <Menu.Trigger className={'media-menu-item'}>
-          <SpeechIconPrimitive className={'media-menu-trigger-icon'} />
+          <AudioLines className={'media-menu-trigger-icon'} />
           <TextPrimitive token={audioText.key}>{audioText.text}</TextPrimitive>
           <span className={'media-menu-hint'}>
             <AudioTrackRadioGroup.Value className={'media-menu-hint-label'} />
@@ -98,7 +55,7 @@ function PlaybackRateMenu() {
     <Menu.Root>
       <PlaybackRateRadioGroup.Root>
         <Menu.Trigger className={'media-menu-item'}>
-          <SpeedIconPrimitive className={'media-menu-trigger-icon'} />
+          <Gauge className={'media-menu-trigger-icon'} />
           <TextPrimitive token={speedText.key}>{speedText.text}</TextPrimitive>
           <span className={'media-menu-hint'}>
             <PlaybackRateRadioGroup.Value className={'media-menu-hint-label'} />
@@ -125,12 +82,47 @@ function PlaybackRateMenu() {
   );
 }
 
+function QualityMenu() {
+  return (
+    <Menu.Root>
+      <QualityRadioGroup.Root>
+        <Menu.Trigger className={'media-menu-item'}>
+          <Film className={'media-menu-trigger-icon'} />
+          <TextPrimitive token={qualityText.key}>{qualityText.text}</TextPrimitive>
+          <span className={'media-menu-hint'}>
+            <QualityRadioGroup.Value className={'media-menu-hint-label'} />
+            <MenuChevron />
+          </span>
+        </Menu.Trigger>
+        <Menu.Content className={'media-menu-content'}>
+          <Menu.Item className={'media-menu-back-item'}>
+            <MenuChevron back />
+            <TextPrimitive token={qualityText.key}>{qualityText.text}</TextPrimitive>
+          </Menu.Item>
+          <Menu.Separator className={'media-menu-separator'} />
+          <QualityRadioGroup.Options
+            className={'media-menu-radio-group'}
+            renderItem={(props, item) => (
+              <RadioItem {...props}>
+                <span>{item.label}</span>
+                {('badge' in item && item.badge) ? (
+                  <span className={'media-menu-badge'}>{item.badge as string}</span>
+                ) : null}
+              </RadioItem>
+            )}
+          ></QualityRadioGroup.Options>
+        </Menu.Content>
+      </QualityRadioGroup.Root>
+    </Menu.Root>
+  );
+}
+
 function CaptionsMenu() {
   return (
     <Menu.Root>
       <CaptionsRadioGroup.Root>
         <Menu.Trigger className={'media-menu-item'}>
-          <CaptionsOffIconPrimitive className={'media-menu-trigger-icon'} />
+          <Captions className={'media-menu-trigger-icon'} />
           <TextPrimitive token={captionsText.key}>{captionsText.text}</TextPrimitive>
           <span className={'media-menu-hint'}>
             <CaptionsRadioGroup.Value className={'media-menu-hint-label'} />
@@ -148,6 +140,9 @@ function CaptionsMenu() {
             renderItem={(props, item) => (
               <RadioItem {...props}>
                 <span>{item.label}</span>
+                {('badge' in item && item.badge) ? (
+                  <span className={'media-menu-badge'}>{item.badge as string}</span>
+                ) : null}
               </RadioItem>
             )}
           ></CaptionsRadioGroup.Options>
@@ -162,16 +157,13 @@ export function SettingsMenu() {
     <Menu.Root side="top" align="center">
       <ButtonTooltip label={<TextPrimitive token={settingsText.key}>{settingsText.text}</TextPrimitive>}>
         <Menu.Trigger render={<Button />}>
-          <GearIconPrimitive className={'media-button-icon'} />
-          <TextPrimitive className={'media-settings-button-label'} token={settingsText.key}>
-            {settingsText.text}
-          </TextPrimitive>
+          <Settings className={'media-button-icon'} />
         </Menu.Trigger>
       </ButtonTooltip>
       <Menu.Popup keepMounted className={cn('media-popup', 'media-popup-safe-area', 'media-menu-popup')}>
         <Menu.Content className={'media-menu-content'}>
-          <QualityMenu />
           <AudioTrackMenu />
+          <QualityMenu />
           <PlaybackRateMenu />
           <CaptionsMenu />
         </Menu.Content>
